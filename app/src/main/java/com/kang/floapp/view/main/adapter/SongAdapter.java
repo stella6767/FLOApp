@@ -1,4 +1,4 @@
-package com.kang.floapp.view.common;
+package com.kang.floapp.view.main.adapter;
 
 
 import android.content.Context;
@@ -12,11 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kang.floapp.MainActivity;
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.utils.Constants;
-import com.kang.floapp.view.home.HomeActivity;
+import com.kang.floapp.view.common.Constants;
+import com.kang.floapp.view.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,13 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
     private static final String TAG = "MusicAdapter";
-    private final HomeActivity homeActivity;
+    private final MainActivity mainActivity;
 
     private List<Song> songList = new ArrayList<>();
 
 
-    public SongAdapter(HomeActivity homeActivity) {
-        this.homeActivity = homeActivity;
+    public SongAdapter(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
     public Integer getMovieId(int position) {
@@ -90,7 +89,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
                 try {
                     Log.d(TAG, "MyViewHolder: 음악 클릭됨");
-                    homeActivity.songPrepare(songUrl);
+                    mainActivity.songPrepare(songUrl);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

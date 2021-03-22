@@ -19,9 +19,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".view.home.HomeActivity" />
+        <activity android:name=".view.main.MainActivity" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

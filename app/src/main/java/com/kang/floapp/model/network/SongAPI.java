@@ -2,7 +2,7 @@ package com.kang.floapp.model.network;
 
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.utils.Constants;
+import com.kang.floapp.view.common.Constants;
 
 import java.util.List;
 

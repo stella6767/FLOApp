@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--SeekBar 배경1 : 기본적으로 유지되는 seekbar-->
+    <item android:id="@android:id/background">
+        <shape android:shape="line">    <!--선 : 길이6dp -->
+            <stroke android:width="3dp"  android:color="#f0767676" />
+        </shape>
+    </item>
+
+    <!-- SeekBar 배경2입니다. f08e8e8e-->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape android:shape="line">
+                <stroke android:width="2dp" android:color="#f08e8e8e" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- SeekBar 채워지는 프로그래스입니다. -->
+    <item android:id="@android:id/progress" >
+        <clip>
+            <shape android:shape="line">
+                <stroke android:width="2dp" android:color="#3F3FFF" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

@@ -1,4 +1,4 @@
-package com.kang.floapp.view.home;
+package com.kang.floapp.view.main;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -16,7 +16,7 @@ import com.kang.floapp.utils.PlayService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivityViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
 
     private static final String TAG = "HomeActivityViewModel";
 
@@ -41,7 +41,7 @@ public class HomeActivityViewModel extends ViewModel {
 
     private SongRepository sr = new SongRepository(mtSongList);
 
-    public HomeActivityViewModel() {
+    public MainActivityViewModel() {
         List<Song> musics = new ArrayList<>();
         mtSongList.setValue(musics);
     }

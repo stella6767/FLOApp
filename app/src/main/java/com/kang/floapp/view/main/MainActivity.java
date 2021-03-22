@@ -1,4 +1,4 @@
-package com.kang.floapp.view.home;
+package com.kang.floapp.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -18,18 +18,18 @@ import android.widget.TextView;
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.utils.PlayService;
-import com.kang.floapp.view.common.SongAdapter;
+import com.kang.floapp.view.main.adapter.SongAdapter;
 
 import java.io.IOException;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
-    private HomeActivity mContext = HomeActivity.this;
+    private MainActivity mContext = MainActivity.this;
 
     private PlayService playService;
-    private HomeActivityViewModel homeViewModel;
+    private MainActivityViewModel homeViewModel;
 
 
     private RecyclerView rvMusicList;
@@ -45,12 +45,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
 
         initView();
         //mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        homeViewModel = new ViewModelProvider(this).get(HomeActivityViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
 
         setObservers();
@@ -105,9 +105,9 @@ public class HomeActivity extends AppCompatActivity {
     public void songPrepare(String songUrl) throws IOException {
         seekBarInit();
 
-        Log.d(TAG, "playSong의 MainActivity: " + playService.getHomeActivity());
-        if (playService.getHomeActivity() == null) {
-            playService.setHomeActivity(mContext);
+        Log.d(TAG, "playSong의 MainActivity: " + playService.getMainActivity());
+        if (playService.getMainActivity() == null) {
+            playService.setMainActivity(mContext);
         }
 
         isPlaying = isPlaying * -1;

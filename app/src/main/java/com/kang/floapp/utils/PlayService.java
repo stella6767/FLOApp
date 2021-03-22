@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.kang.floapp.view.home.HomeActivity;
+import com.kang.floapp.view.main.MainActivity;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class PlayService extends Service {
 
     private static final String TAG = "PlayService";
     private MediaPlayer mp;
-    private HomeActivity homeActivity;
+    private MainActivity mainActivity;
     private final IBinder mBinder = new LocalBinder();
 
 
@@ -36,9 +36,9 @@ public class PlayService extends Service {
         return mp;
     }
 
-    public void setHomeActivity(HomeActivity homeActivity) {
+    public void setMainActivity(MainActivity mainActivity) {
         Log.d(TAG, "setHomeActivity: 실행됨");
-        this.homeActivity = homeActivity;
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -79,8 +79,8 @@ public class PlayService extends Service {
 
     public void songPlay() {
         Log.d(TAG, "songPlay: why???");
-        homeActivity.isPlaying = 1;
-        homeActivity.btnPlayGlobal.setImageResource(android.R.drawable.ic_media_pause);
+        mainActivity.isPlaying = 1;
+        mainActivity.btnPlayGlobal.setImageResource(android.R.drawable.ic_media_pause);
         mp.start();
         seekBarUiHandle();
     }
@@ -91,15 +91,15 @@ public class PlayService extends Service {
         uiHandleThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (homeActivity.isPlaying == 1) {
+                while (mainActivity.isPlaying == 1) {
 
                     handler.post(new Runnable() {// runOnUiThread랑 같음, 대신 이렇게 쓰면 uiHandleThread 쓰레드를 원하는데서 참조가능
                         @Override //UI 변경하는 애만 메인 스레드에게 메시지를 전달
                         public void run() {
-                            homeActivity.seekBar.setProgress(mp.getCurrentPosition());
+                            mainActivity.seekBar.setProgress(mp.getCurrentPosition());
 
                             if (mp.getCurrentPosition() >= mp.getDuration()) {
-                                homeActivity.songStop();
+                                mainActivity.songStop();
                             }
                         }
 

@@ -23,6 +23,8 @@ import com.kang.floapp.view.main.adapter.SongAdapter;
 import java.io.IOException;
 import java.util.List;
 
+
+//여기는 Kang1 Branch
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";

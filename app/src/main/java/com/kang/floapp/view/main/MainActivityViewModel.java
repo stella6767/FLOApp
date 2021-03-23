@@ -2,11 +2,13 @@ package com.kang.floapp.view.main;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.kang.floapp.model.SongRepository;
@@ -22,6 +24,8 @@ public class MainActivityViewModel extends ViewModel {
 
     private MutableLiveData<List<Song>> mtSongList = new MutableLiveData<>();
     private MutableLiveData<PlayService.LocalBinder> serviceBinder = new MutableLiveData<>();
+    public MediaPlayer mp;
+    private PlayService playService;
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -35,6 +39,7 @@ public class MainActivityViewModel extends ViewModel {
         public void onServiceDisconnected(ComponentName name) {
             Log.d(TAG, "ServiceConnection: disconnected from service.");
             serviceBinder.postValue(null);
+
         }
     };
 
@@ -53,6 +58,11 @@ public class MainActivityViewModel extends ViewModel {
     public void findAll(){
         sr.networkConnect();
     }
+
+//    public void nextplay(){
+//        mtSongList.getValue().get(1).getFile();
+//    }
+
 
     public ServiceConnection getServiceConnection(){
         return connection;

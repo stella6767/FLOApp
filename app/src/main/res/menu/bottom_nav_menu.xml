@@ -7,20 +7,20 @@
         android:title="홈" />
 
     <item
-        android:id="@+id/bottom_search"
+        android:id="@+id/bottom_tour"
         android:icon="@drawable/ic_glyph_regular_eye_slash"
         android:iconTint="#3F3FFF"
         android:title="둘러보기"/>
 
 
     <item
-        android:id="@+id/bottom_addbox"
+        android:id="@+id/bottom_search"
         android:icon="@drawable/ic_baseline_search_24"
         android:iconTint="#3F3FFF"
         android:title="검색" />
 
     <item
-        android:id="@+id/bottom_heart"
+        android:id="@+id/bottom_storage"
         android:icon="@drawable/ic_glyph_solid_database"
         android:iconTint="#3F3FFF"
         android:title="보관함" />

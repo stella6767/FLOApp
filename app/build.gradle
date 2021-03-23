@@ -40,6 +40,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.gmazzo:fontawesome:0.4'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
 
     implementation 'androidx.appcompat:appcompat:1.2.0'

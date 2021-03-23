@@ -1,13 +1,13 @@
-package com.kang.floapp.utils;
+package com.kang.floapp.utils.eventbus;
 
-public class EventPassenger {
+public class UrlPassenger {
 
     public final String songUrl;
     public int songState;
 
-
-    public EventPassenger(String songUrl, int songState) {
+    public UrlPassenger(String songUrl, int songState) {
         this.songUrl = songUrl;
         this.songState = songState;
     }
 }
+

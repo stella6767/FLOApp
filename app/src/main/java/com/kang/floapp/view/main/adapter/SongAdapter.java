@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.utils.eventbus.SongControlPassenger;
+import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
@@ -29,16 +29,21 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
     private static final String TAG = "MusicAdapter";
-    private final MainActivity mainActivity;
-    private List<Song> songList = new ArrayList<>();
-    public int songId;
+    private MainActivity mainActivity;
+    public List<Song> songList = new ArrayList<>();
+    public int songPosition;
 
 
-    public SongAdapter(MainActivity mainActivity) {
+//    public SongAdapter(MainActivity mainActivity) {
+//        this.mainActivity = mainActivity;
+//        //EventBus.getDefault().register(this);
+//
+//    }
+
+    public void setMainActivity(MainActivity mainActivity){
         this.mainActivity = mainActivity;
-        //EventBus.getDefault().register(this);
-
     }
+
 
 //    public Integer getSongId(int position) {
 //        return songList.get(position).getId();
@@ -108,16 +113,17 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
                 String songUrl = getSongUrl(getAdapterPosition());
 
-                songId = songList.get(getAdapterPosition()).getId();
+                songPosition = getAdapterPosition();
 
-                EventBus.getDefault().post(new SongControlPassenger(songId));
+                EventBus.getDefault().post(new SongIdPassenger(songPosition));
 
-                Log.d(TAG, "MyViewHolder: "+ songId);
+                Log.d(TAG, "MyViewHolder: "+ songPosition);
 
                 mainActivity.tvTitle.setText(songList.get(getAdapterPosition()).getTitle());
                 mainActivity.tvArtist.setText(songList.get(getAdapterPosition()).getArtist());
                 mainActivity.tvPlayViewArtist.setText(songList.get(getAdapterPosition()).getArtist());
                 mainActivity.tvPlayViewTitle.setText(songList.get(getAdapterPosition()).getTitle());
+                mainActivity.tvLyrics.setText(songList.get(getAdapterPosition()).getLyrics());
 
                 try {
                     Log.d(TAG, "MyViewHolder: 음악 클릭됨");

@@ -70,7 +70,9 @@ public class FragTour extends Fragment implements View.OnClickListener{
         rvSongList = view.findViewById(R.id.rv_song_list);;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvSongList.setLayoutManager(layoutManager);
-        songAdapter = new SongAdapter((MainActivity)getActivity());
+        //songAdapter = new SongAdapter((MainActivity)getActivity());
+        songAdapter = mainActivity.songAdapter;
+        songAdapter.setMainActivity((MainActivity)getActivity());
         rvSongList.setAdapter(songAdapter);
 
 
@@ -246,17 +248,17 @@ public class FragTour extends Fragment implements View.OnClickListener{
     public void onClick(View v) { //playbtn listner
         switch (v.getId()){
             case R.id.iv_bar_play:
-                buttonListner();
+                playBtnListner();
                 break;
 
             case R.id.iv_play_view_bar:
-                buttonListner();
+                playBtnListner();
                 break;
         }
     }
 
 
-    public void buttonListner(){
+    public void playBtnListner(){
         if (Constants.isPlaying == 1) {
             Log.d(TAG, "onCreate: 글로벌 버튼 클릭되고 노래멈춤" + Constants.isPlaying);
             songPause();

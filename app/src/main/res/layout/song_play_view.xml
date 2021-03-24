@@ -19,22 +19,22 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/roundedImageView"
-            android:layout_width="270dp"
-            android:layout_height="270dp"
+            android:layout_width="298dp"
+            android:layout_height="172dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ashisland_melody"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.394"
+            app:layout_constraintTop_toBottomOf="@+id/tv_playView_artist"
             app:riv_corner_radius="5dip" />
 
         <TextView
             android:id="@+id/tv_playView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:text="멜로디"
             android:textColor="@color/white"
             android:textSize="25dp"
@@ -48,7 +48,6 @@
             android:id="@+id/tv_playView_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="애쉬아일랜드"
             android:textColor="@color/white"
             android:textSize="15dp"
@@ -57,31 +56,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_playView_title" />
 
-        <TextView
-            android:id="@+id/tv_playView_lyrics"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="여기는 가사가 오는 자리입니다."
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15dp"
+        <ScrollView
+            android:layout_width="313dp"
+            android:layout_height="187dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_heart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roundedImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/roundedImageView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="여기는 가사가 오는 자리입니다."
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="15dp" />
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
 
         <ImageView
             android:id="@+id/iv_heart"
-            android:layout_marginTop="20dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:tint="@color/white"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_playView_lyrics"
-            app:srcCompat="@drawable/ic_favorite_border" />
+            app:srcCompat="@drawable/ic_favorite_border"
+            app:tint="@color/white" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

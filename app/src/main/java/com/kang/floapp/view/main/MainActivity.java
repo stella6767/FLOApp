@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
 import com.kang.floapp.utils.PlayService;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivPlayViewPrev;
     public ImageView ivPlayViewNext;
     public TextView tvLyrics;
+    public ImageView ivPlayViewArt;
 
 
     // 홈 화면 음악 컨트롤바
@@ -154,8 +156,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvPlayViewArtist.setText(songAdapter.songList.get(Constants.prevNext).getArtist());
         tvPlayViewTitle.setText(songAdapter.songList.get(Constants.prevNext).getTitle());
         tvLyrics.setText(songAdapter.songList.get(Constants.prevNext).getLyrics());
-        String songUrl = songAdapter.getSongUrl(Constants.prevNext);
 
+        Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                .with(mContext)
+                .load(songAdapter.songList.get(Constants.prevNext).getImg())
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(ivPlayViewArt);
+
+        String songUrl = songAdapter.getSongUrl(Constants.prevNext);
         EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
     }
 
@@ -267,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayViewPrev = findViewById(R.id.iv_playView_prev);
         ivPlayViewNext = findViewById(R.id.iv_playView_next);
         tvLyrics = findViewById(R.id.tv_lyrics);
+        ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
     }
 
 

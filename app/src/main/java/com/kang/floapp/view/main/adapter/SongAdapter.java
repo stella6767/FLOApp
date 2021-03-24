@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
@@ -34,26 +35,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     public int songPosition;
 
 
-//    public SongAdapter(MainActivity mainActivity) {
-//        this.mainActivity = mainActivity;
-//        //EventBus.getDefault().register(this);
-//
-//    }
+    public SongAdapter() { }
 
-    public void setMainActivity(MainActivity mainActivity){
+    public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
-
-
-//    public Integer getSongId(int position) {
-//        return songList.get(position).getId();
-//    }
-
-//    public int getSongId(){
-//        Log.d(TAG, "getSongId: "+songId);
-//        return songId;
-//    }
-
 
 
     public void setMusics(List<Song> songList) {
@@ -98,7 +84,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         private TextView tvSongTitle;
         private TextView tvSongId;
         private ImageView ivSongPlay;
-        private ImageView ivSongPArt;
+        private ImageView ivSongArt;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -108,6 +94,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             tvSongTitle = itemView.findViewById(R.id.tv_song_title);
             tvSongId = itemView.findViewById(R.id.tv_songId);
             ivSongPlay = itemView.findViewById(R.id.iv_song_play);
+            ivSongArt = itemView.findViewById(R.id.iv_song_art);
 
             ivSongPlay.setOnClickListener(v -> {
 
@@ -117,13 +104,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
                 EventBus.getDefault().post(new SongIdPassenger(songPosition));
 
-                Log.d(TAG, "MyViewHolder: "+ songPosition);
+                Log.d(TAG, "MyViewHolder: " + songPosition);
 
                 mainActivity.tvTitle.setText(songList.get(getAdapterPosition()).getTitle());
                 mainActivity.tvArtist.setText(songList.get(getAdapterPosition()).getArtist());
                 mainActivity.tvPlayViewArtist.setText(songList.get(getAdapterPosition()).getArtist());
                 mainActivity.tvPlayViewTitle.setText(songList.get(getAdapterPosition()).getTitle());
                 mainActivity.tvLyrics.setText(songList.get(getAdapterPosition()).getLyrics());
+
+                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                        .with(mainActivity)
+                        .load(songList.get(getAdapterPosition()).getImg())
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(mainActivity.ivPlayViewArt);
 
                 try {
                     Log.d(TAG, "MyViewHolder: 음악 클릭됨");
@@ -144,27 +138,17 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
                 tvSongTitle.setText(song.getTitle());
                 tvSongArtist.setText(song.getArtist());
                 tvSongId.setText(song.getId().toString());
+
+
+                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                        .with(itemView)
+                        .load(song.getImg())
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(ivSongArt);
             }
 
         }
-
-
-
-        @Subscribe(threadMode = ThreadMode.MAIN)  //구독
-        public void setItemNext(UrlPassenger ControlPassenger){
-
-            Log.d(TAG, "setItemNext: 왜지?");
-//
-//            String songUrl = getSongUrl(getAdapterPosition()+ControlPassenger.prevNext);
-//            EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
-//
-//            mainActivity.tvTitle.setText(songList.get(getAdapterPosition()+ControlPassenger.prevNext).getTitle());
-//            mainActivity.tvArtist.setText(songList.get(getAdapterPosition()+ControlPassenger.prevNext).getArtist());
-//            mainActivity.tvPlayViewArtist.setText(songList.get(getAdapterPosition()+ControlPassenger.prevNext).getArtist());
-//            mainActivity.tvPlayViewTitle.setText(songList.get(getAdapterPosition()+ControlPassenger.prevNext).getTitle());
-        }
-
-
 
 
     }

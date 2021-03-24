@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/category_select"
     android:orientation="vertical"
     android:layout_width="170dp"
     android:layout_height="200dp"
@@ -8,7 +9,7 @@
     android:background="#090D12">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/roundedImageView"
+        android:id="@+id/ivPlayViewArt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
@@ -36,9 +37,6 @@
         android:textSize="10dp"
         android:textColor="@android:color/darker_gray"
         android:gravity="center_vertical"/>
-
-
-
 
 
 </LinearLayout>

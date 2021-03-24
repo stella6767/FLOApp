@@ -18,7 +18,7 @@
         android:background="#090D12">
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/roundedImageView"
+            android:id="@+id/ivPlayViewArt"
             android:layout_width="298dp"
             android:layout_height="172dp"
             android:layout_marginTop="10dp"
@@ -64,7 +64,7 @@
             app:layout_constraintBottom_toTopOf="@+id/iv_heart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roundedImageView">
+            app:layout_constraintTop_toBottomOf="@+id/ivPlayViewArt">
 
             <LinearLayout
                 android:layout_width="match_parent"

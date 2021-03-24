@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.kang.floapp.R;
+import com.kang.floapp.view.main.frag.fragchild.FragHomeCategory;
+import com.kang.floapp.view.main.frag.fragchild.FragHomeChild;
 
 public class FragHome extends Fragment {
 
@@ -18,9 +20,12 @@ public class FragHome extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_home, container, false);
 
-        return view;
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeChild()).commit(); //최초 화면(프레그먼트)
+
+
+
+        return inflater.inflate(R.layout.frag_home, null);
     }
 
 

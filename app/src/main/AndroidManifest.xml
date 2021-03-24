@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FloApp"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".view.songlist.SongListActivity"></activity>
+        android:usesCleartextTraffic="true"
+        android:windowSoftInputMode="adjustResize">
+        <activity android:name=".view.login.JoinActivity"></activity>
+        <activity android:name=".view.login.LoginActivity" />
 
         <service
             android:name=".utils.PlayService"
@@ -20,7 +22,6 @@
             android:exported="true" />
 
         <activity android:name=".view.main.MainActivity" />
-
         <activity android:name=".FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

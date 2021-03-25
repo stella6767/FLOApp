@@ -23,8 +23,9 @@ public class MainActivityViewModel extends ViewModel {
     private static final String TAG = "HomeActivityViewModel";
 
     private MutableLiveData<List<Song>> mtSongList = new MutableLiveData<>();
+    public MutableLiveData<List<Song>> mtMySongList = new MutableLiveData<>();
+
     private MutableLiveData<PlayService.LocalBinder> serviceBinder = new MutableLiveData<>();
-    public MediaPlayer mp;
     private PlayService playService;
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -44,7 +45,7 @@ public class MainActivityViewModel extends ViewModel {
     };
 
 
-    private SongRepository sr = new SongRepository(mtSongList);
+    private SongRepository sr = new SongRepository(mtSongList,mtMySongList);
 
     public MainActivityViewModel() {
         List<Song> musics = new ArrayList<>();
@@ -55,13 +56,13 @@ public class MainActivityViewModel extends ViewModel {
         return mtSongList;
     }
 
-    public void findAll(){
-        sr.networkConnect();
+    public MutableLiveData<List<Song>> MySongListSubscribe(){
+        return mtMySongList;
     }
 
-//    public void nextplay(){
-//        mtSongList.getValue().get(1).getFile();
-//    }
+    public void findAll(){
+        sr.fetchAllSong();
+    }
 
 
     public ServiceConnection getServiceConnection(){

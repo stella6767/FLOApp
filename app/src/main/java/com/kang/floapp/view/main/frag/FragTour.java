@@ -23,7 +23,7 @@ import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
-import com.kang.floapp.view.main.adapter.SongAdapter;
+import com.kang.floapp.view.main.adapter.AllSongAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +43,7 @@ public class FragTour extends Fragment implements View.OnClickListener{
 
 
     private RecyclerView rvSongList;
-    private SongAdapter songAdapter;
+    private AllSongAdapter allSongAdapter;
     private MediaPlayer mp;
     public Thread uiHandleThread;
     private Handler handler = new Handler();
@@ -71,9 +71,9 @@ public class FragTour extends Fragment implements View.OnClickListener{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvSongList.setLayoutManager(layoutManager);
         //songAdapter = new SongAdapter((MainActivity)getActivity());
-        songAdapter = mainActivity.songAdapter;
-        songAdapter.setMainActivity((MainActivity)getActivity());
-        rvSongList.setAdapter(songAdapter);
+        allSongAdapter = mainActivity.allSongAdapter;
+        allSongAdapter.setMainActivity((MainActivity)getActivity());
+        rvSongList.setAdapter(allSongAdapter);
 
 
 //       songAdapter = mainActivity.songAdapter; 이게 안 되네..
@@ -102,7 +102,7 @@ public class FragTour extends Fragment implements View.OnClickListener{
         mainViewModel.subscribe().observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(List<Song> songs) {
-                songAdapter.setMusics(songs);
+                allSongAdapter.setMusics(songs);
             }
         });
     }

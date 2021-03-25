@@ -18,13 +18,15 @@ public class SongRepository {
 
     private static final String TAG = "SongRepository";
     private MutableLiveData<List<Song>> mtSongList;
+    private MutableLiveData<List<Song>> mtMysongList;
 
 
-    public SongRepository(MutableLiveData<List<Song>> mtSongList) {
+    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtMySongList) {
         this.mtSongList = mtSongList;
+        this.mtMysongList = mtMySongList;
     }
 
-    public void networkConnect(){
+    public void fetchAllSong(){
         Call<ResponseDto<List<Song>>> call = SongAPI.retrofit.create(SongAPI.class).findAll();
 
         call.enqueue(new Callback<ResponseDto<List<Song>>>() {

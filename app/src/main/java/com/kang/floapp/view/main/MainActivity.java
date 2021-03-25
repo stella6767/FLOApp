@@ -20,11 +20,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
+import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
-import com.kang.floapp.view.main.adapter.SongAdapter;
+import com.kang.floapp.view.main.adapter.AllSongAdapter;
+import com.kang.floapp.view.main.adapter.MySongAdapter;
 import com.kang.floapp.view.main.frag.FragHome;
 import com.kang.floapp.view.main.frag.FragSearch;
 import com.kang.floapp.view.main.frag.FragStorage;
@@ -33,6 +35,8 @@ import com.kang.floapp.view.main.frag.FragTour;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 
 //여기는 Kang1 Branch
@@ -43,8 +47,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 여기서 쓸지, 프래그먼트에서 쓸지 생각중
     public RecyclerView rvSongList;
-    public SongAdapter songAdapter;
+    public AllSongAdapter allSongAdapter;
     //public boolean threadStatus = false;
+    public MySongAdapter mySongAdapter;
 
     //공용
     public MediaPlayer mp;
@@ -124,16 +129,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
+//    public void mySongListObserver(){
+//
+//        mainViewModel.mtMySongList
+//    }
+
+
+
     public void nextORPrevClick(int nextOrPrev) {
 
         Log.d(TAG, "nextORPrevClick: " + nextOrPrev);
 
-        if (nextOrPrev == 1 && Constants.prevNext < songAdapter.getItemCount()) {  //1=next, 그 외 prev
+        if (nextOrPrev == 1 && Constants.prevNext < allSongAdapter.getItemCount()) {  //1=next, 그 외 prev
             Log.d(TAG, "이전 nextORPrevClick: " + Constants.prevNext + "    " + nextOrPrev);
             Constants.prevNext = Constants.prevNext + 1;
             Log.d(TAG, "onCreate: songPosition" + Constants.prevNext + "    " + nextOrPrev);
 
-            if (Constants.prevNext < songAdapter.getItemCount()) {
+            if (Constants.prevNext < allSongAdapter.getItemCount()) {
                 setSongText();
             }
 
@@ -151,20 +164,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setSongText() {
 
-        tvTitle.setText(songAdapter.songList.get(Constants.prevNext).getTitle());
-        tvArtist.setText(songAdapter.songList.get(Constants.prevNext).getArtist());
-        tvPlayViewArtist.setText(songAdapter.songList.get(Constants.prevNext).getArtist());
-        tvPlayViewTitle.setText(songAdapter.songList.get(Constants.prevNext).getTitle());
-        tvLyrics.setText(songAdapter.songList.get(Constants.prevNext).getLyrics());
+        tvTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
+        tvArtist.setText(allSongAdapter.songList.get(Constants.prevNext).getArtist());
+        tvPlayViewArtist.setText(allSongAdapter.songList.get(Constants.prevNext).getArtist());
+        tvPlayViewTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
+        tvLyrics.setText(allSongAdapter.songList.get(Constants.prevNext).getLyrics());
 
         Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                 .with(mContext)
-                .load(songAdapter.songList.get(Constants.prevNext).getImg())
+                .load(allSongAdapter.songList.get(Constants.prevNext).getImg())
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(ivPlayViewArt);
 
-        String songUrl = songAdapter.getSongUrl(Constants.prevNext);
+        String songUrl = allSongAdapter.getSongUrl(Constants.prevNext);
         EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
     }
 
@@ -255,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView() {
 //        rvSongList = findViewById(R.id.rv_song_list);
-        songAdapter = new SongAdapter();
+        allSongAdapter = new AllSongAdapter();
 //        rvSongList.setAdapter(songAdapter);
 
         bottomNav = findViewById(R.id.bottom_navigation);

@@ -21,13 +21,11 @@ import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
+public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHolder> {
 
     private static final String TAG = "MusicAdapter";
     private MainActivity mainActivity;
@@ -35,7 +33,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     public int songPosition;
 
 
-    public SongAdapter() { }
+    public AllSongAdapter() { }
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;

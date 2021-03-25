@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -26,7 +27,7 @@ import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
-import com.kang.floapp.view.main.adapter.MySongAdapter;
+import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.frag.FragHome;
 import com.kang.floapp.view.main.frag.FragSearch;
 import com.kang.floapp.view.main.frag.FragStorage;
@@ -36,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,7 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public RecyclerView rvSongList;
     public AllSongAdapter allSongAdapter;
     //public boolean threadStatus = false;
-    public MySongAdapter mySongAdapter;
+    public PlayListAdapter playListAdapter;
+    public List<Song> playList = new ArrayList<>();
+    public RecyclerView rvPlayList;
+
+
 
     //공용
     public MediaPlayer mp;
@@ -121,10 +127,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         });
 
+
         ivPlayViewNext.setOnClickListener(this::onClick);
         ivNext.setOnClickListener(this::onClick);
         ivPrev.setOnClickListener(this::onClick);
         ivPlayViewPrev.setOnClickListener(this::onClick);
+
+
+
+
+
+
 
     }
 
@@ -266,12 +279,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    public void playlistAdd(){
+
+
+    }
+
+
+
     private void initView() {
 //        rvSongList = findViewById(R.id.rv_song_list);
         allSongAdapter = new AllSongAdapter();
 //        rvSongList.setAdapter(songAdapter);
 
+
+        //My 플레이리스트
+        rvPlayList = findViewById(R.id.rv_play_list);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        rvPlayList.setLayoutManager(manager);
+        playListAdapter = new PlayListAdapter();
+        playListAdapter.setMySongList(playList);
+        rvPlayList.setAdapter(playListAdapter);
+
+
+        //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
+
+
 
         mainSeekbar = findViewById(R.id.mainSeekBar);
         tvTitle = findViewById(R.id.tv_title);

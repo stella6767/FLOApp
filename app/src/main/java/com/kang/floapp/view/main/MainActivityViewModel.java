@@ -23,7 +23,7 @@ public class MainActivityViewModel extends ViewModel {
     private static final String TAG = "HomeActivityViewModel";
 
     private MutableLiveData<List<Song>> mtSongList = new MutableLiveData<>();
-    public MutableLiveData<List<Song>> mtMySongList = new MutableLiveData<>();
+    public MutableLiveData<List<Song>> mtPlayList = new MutableLiveData<>();
 
     private MutableLiveData<PlayService.LocalBinder> serviceBinder = new MutableLiveData<>();
     private PlayService playService;
@@ -45,7 +45,7 @@ public class MainActivityViewModel extends ViewModel {
     };
 
 
-    private SongRepository sr = new SongRepository(mtSongList,mtMySongList);
+    private SongRepository sr = new SongRepository(mtSongList,mtPlayList);
 
     public MainActivityViewModel() {
         List<Song> musics = new ArrayList<>();
@@ -56,8 +56,8 @@ public class MainActivityViewModel extends ViewModel {
         return mtSongList;
     }
 
-    public MutableLiveData<List<Song>> MySongListSubscribe(){
-        return mtMySongList;
+    public MutableLiveData<List<Song>> PlayListSubscribe(){
+        return mtPlayList;
     }
 
     public void findAll(){

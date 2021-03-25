@@ -18,12 +18,12 @@ public class SongRepository {
 
     private static final String TAG = "SongRepository";
     private MutableLiveData<List<Song>> mtSongList;
-    private MutableLiveData<List<Song>> mtMysongList;
+    private MutableLiveData<List<Song>> mtPlayList;
 
 
-    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtMySongList) {
+    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtPlayList) {
         this.mtSongList = mtSongList;
-        this.mtMysongList = mtMySongList;
+        this.mtPlayList = mtPlayList;
     }
 
     public void fetchAllSong(){

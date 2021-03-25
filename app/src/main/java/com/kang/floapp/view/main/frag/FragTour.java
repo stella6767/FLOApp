@@ -65,19 +65,13 @@ public class FragTour extends Fragment implements View.OnClickListener{
         playViewSeekbar = mainActivity.playViewSeekBar;
 
 
-
-
         rvSongList = view.findViewById(R.id.rv_song_list);;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvSongList.setLayoutManager(layoutManager);
-        //songAdapter = new SongAdapter((MainActivity)getActivity());
         allSongAdapter = mainActivity.allSongAdapter;
         allSongAdapter.setMainActivity((MainActivity)getActivity());
         rvSongList.setAdapter(allSongAdapter);
 
-
-//       songAdapter = mainActivity.songAdapter; 이게 안 되네..
-//       rvSongList = mainActivity.rvSongList;
 
         dataObserver();
         initData();
@@ -98,7 +92,6 @@ public class FragTour extends Fragment implements View.OnClickListener{
 
 
     public void dataObserver(){
-
         mainViewModel.subscribe().observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(List<Song> songs) {
@@ -109,13 +102,6 @@ public class FragTour extends Fragment implements View.OnClickListener{
 
     private void initData() {
         mainViewModel.findAll();
-    }
-
-
-    private void nextSongPlay(){
-        //int id = songAdapter.getSongId();
-
-
     }
 
 
@@ -130,8 +116,8 @@ public class FragTour extends Fragment implements View.OnClickListener{
                     handler.post(new Runnable() {// runOnUiThread랑 같음, 대신 이렇게 쓰면 uiHandleThread 쓰레드를 원하는데서 참조가능
                         @Override //UI 변경하는 애만 메인 스레드에게 메시지를 전달
                         public void run() {
-                              mainSeekbar.setProgress(mp.getCurrentPosition());
-                             //((MainActivity) getActivity()).playViewSeekBar.setProgress(mp.getCurrentPosition()); // 여기가 에러나는 부분
+                            mainSeekbar.setProgress(mp.getCurrentPosition());
+                            //((MainActivity) getActivity()).playViewSeekBar.setProgress(mp.getCurrentPosition()); // 여기가 에러나는 부분
                             playViewSeekbar.setProgress(mp.getCurrentPosition());
 
                             if (mp.getCurrentPosition() >= mp.getDuration()) {

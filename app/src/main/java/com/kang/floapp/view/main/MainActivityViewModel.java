@@ -2,6 +2,7 @@ package com.kang.floapp.view.main;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.graphics.Movie;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
@@ -49,7 +50,9 @@ public class MainActivityViewModel extends ViewModel {
 
     public MainActivityViewModel() {
         List<Song> musics = new ArrayList<>();
+        List<Song> playList= new ArrayList<>();
         mtSongList.setValue(musics);
+        mtPlayList.setValue(playList);
     }
 
     public MutableLiveData<List<Song>> subscribe(){

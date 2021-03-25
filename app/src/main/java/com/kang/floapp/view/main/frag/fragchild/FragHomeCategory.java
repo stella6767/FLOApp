@@ -25,7 +25,7 @@ public class FragHomeCategory extends Fragment {
         ivHomeBack = view.findViewById(R.id.iv_home_back);
 
         ivHomeBack.setOnClickListener(v -> {
-            Fragment selectedFragment = new FragHomeChild();
+            //Fragment selectedFragment = new FragHomeChild();
             getFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeChild()).commit();
         });
 

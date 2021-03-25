@@ -41,18 +41,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-//여기는 Kang2 Branch
+//여기는 Kang3 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
     private MainActivity mContext = MainActivity.this;
 
     // 여기서 쓸지, 프래그먼트에서 쓸지 생각중
-    public RecyclerView rvSongList;
     public AllSongAdapter allSongAdapter;
     //public boolean threadStatus = false;
     public PlayListAdapter playListAdapter;
@@ -125,13 +125,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
+
+
         ivPlayViewNext.setOnClickListener(this::onClick);
         ivNext.setOnClickListener(this::onClick);
         ivPrev.setOnClickListener(this::onClick);
         ivPlayViewPrev.setOnClickListener(this::onClick);
-
-
-
+        ivBarPlay.setOnClickListener(this::onClick);
+        ivPlayViewBar.setOnClickListener(this::onClick);
 
         ivSelect.setOnClickListener(v -> { //재생리스트 전환
             playlistChange = playlistChange * -1;
@@ -142,10 +143,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        seekBarInit();
 
     }
-
-
 
 
 
@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     public void setSongText() {
 
         tvTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
@@ -182,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvPlayViewTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
         tvLyrics.setText(allSongAdapter.songList.get(Constants.prevNext).getLyrics());
 
-        Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+
+        Glide
                 .with(mContext)
                 .load(allSongAdapter.songList.get(Constants.prevNext).getImg())
                 .centerCrop()
@@ -190,28 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .into(ivPlayViewArt);
 
         String songUrl = allSongAdapter.getSongUrl(Constants.prevNext);
-        EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
+        EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying)); //재생목록으로 할지 ALLSong으로 할지 고민중
     }
 
 
-    private void setServiceObservers() {
-
-        mainViewModel.getBinder().observe(this, new Observer<PlayService.LocalBinder>() {
-            @Override
-            public void onChanged(PlayService.LocalBinder localBinder) {
-                if (localBinder == null) {
-                    Log.d(TAG, "onChanged: unbound from service");
-                    mp.stop();
-                    mp.release();
-
-                } else {
-                    Log.d(TAG, "onChanged: bound to service.");
-                    playService = localBinder.getService();
-                    mp = playService.getMediaPlayer();
-                }
-            }
-        });
-    }
 
 
     public void setTotalDuration() {
@@ -222,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String strTime = String.format("%02d:%02d", m, s);
 
         tvTotalTime.setText(strTime);
-
     }
 
 
@@ -276,17 +259,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initView() {
-//        rvSongList = findViewById(R.id.rv_song_list);
-        allSongAdapter = new AllSongAdapter();
-//        rvSongList.setAdapter(songAdapter);
 
-        //My 플레이리스트
-        playListAdapter = new PlayListAdapter();
+        //어댑터 관리
+        allSongAdapter = new AllSongAdapter();
+        playListAdapter = new PlayListAdapter();//My 플레이리스트
 
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
-
 
 
         mainSeekbar = findViewById(R.id.mainSeekBar);
@@ -312,48 +292,129 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+    public void seekBarUiHandle() {
 
+        uiHandleThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (Constants.isPlaying == 1) {
 
+                    handler.post(new Runnable() {// runOnUiThread랑 같음, 대신 이렇게 쓰면 uiHandleThread 쓰레드를 원하는데서 참조가능
+                        @Override //UI 변경하는 애만 메인 스레드에게 메시지를 전달
+                        public void run() {
+                            mainSeekbar.setProgress(mp.getCurrentPosition());
+                            //((MainActivity) getActivity()).playViewSeekBar.setProgress(mp.getCurrentPosition()); // 여기가 에러나는 부분
+                            playViewSeekBar.setProgress(mp.getCurrentPosition());
 
+                            if (mp.getCurrentPosition() >= mp.getDuration()) {
+                                songStop();
+                            }
+                        }
 
+                    });
 
+                    try {
+                        Thread.sleep(1000);
+                        //Log.d(TAG, "run: 33333333");
+                        if (Constants.threadStatus) {
+                            //Log.d(TAG, "run: 222222222");
+                            uiHandleThread.interrupt(); //그 즉시 스레드 종료시키기 위해(강제종료), sleep을 무조건 걸어야 된다. 스레드가 조금이라도 쉬어야 동작함
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        //Log.d(TAG, "run: adadsasdda");
+                    }
 
+                }
+            }
+        });
 
+        uiHandleThread.start();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startService(); //바인딩 서비스
     }
 
-    private void startService() {
-        Intent serviceIntent = new Intent(this, PlayService.class);
-        startService(serviceIntent);
-        bindService();
-    }
 
-    private void bindService() {
-        Intent serviceBindIntent = new Intent(this, PlayService.class);
-        bindService(serviceBindIntent, mainViewModel.getServiceConnection(), Context.BIND_AUTO_CREATE);
+
+    public void seekBarInit() {
+        mainSeekbar.setMax(100000);
+        mainSeekbar.setProgress(0);
+        playViewSeekBar.setProgress(0);
     }
 
 
+
+    public void songPause() {
+        mp.pause();
+        Constants.isPlaying = -1;
+        ivBarPlay.setImageResource(android.R.drawable.ic_media_play);
+        ivPlayViewBar.setImageResource(android.R.drawable.ic_media_play);
+    }
+
+    public void songStop() {
+        mp.reset();
+        mp.seekTo(0);
+        mainSeekbar.setProgress(0);
+        Constants.threadStatus = true;
+        ivBarPlay.setImageResource(android.R.drawable.ic_media_play);
+        ivPlayViewBar.setImageResource(android.R.drawable.ic_media_play);
+        Constants.isPlaying = -1;
+    }
+
+
+    public void songPlay() {
+        mainSeekbar.setMax(mp.getDuration());
+        playViewSeekBar.setMax(mp.getDuration());
+
+        Log.d(TAG, "songPlay: why???");
+        Constants.isPlaying = 1;
+        setTotalDuration();
+        ivBarPlay.setImageResource(android.R.drawable.ic_media_pause);
+        ivPlayViewBar.setImageResource(android.R.drawable.ic_media_pause);
+
+        mp.start();
+        seekBarUiHandle();
+    }
+
+
+
+    public void onPrepared(String songUrl) throws IOException { //이거 나중에 스레드로
+
+        mp.reset();
+        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //하 씨바 미치것네
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                //EventBus.getDefault().post(new SongEvent(songUrl, mainActivity.isPlaying));
+                songPlay();
+            }
+        });
+        mp.setDataSource(songUrl);
+        mp.prepareAsync();
+    }
+
+
+    public void playBtnListner(){
+
+        if (Constants.isPlaying == 1) {
+            Log.d(TAG, "onCreate: 글로벌 버튼 클릭되고 노래멈춤" + Constants.isPlaying);
+            songPause();
+        } else {
+            Log.d(TAG, "onCreate: 노래시작" + Constants.isPlaying);
+            songPlay();
+        }
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void songPrepare(UrlPassenger urlPassenger) throws IOException {
+        seekBarInit();
+        Log.d(TAG, "songPrepare: url 구독");
+
+        Constants.isPlaying = Constants.isPlaying * -1;
+        Log.d(TAG, "songPlay: Song 시작");
+        onPrepared(urlPassenger.songUrl);
+
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -385,8 +446,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 nextORPrevClick(-1);
                 break;
 
+            case R.id.iv_bar_play:
+            case R.id.iv_play_view_bar:
+                playBtnListner();
+                break;
+
         }
     }
+
+
+
+
+    // 서비스 관련~~~~~~~
+    private void setServiceObservers() {
+
+        mainViewModel.getBinder().observe(this, new Observer<PlayService.LocalBinder>() {
+            @Override
+            public void onChanged(PlayService.LocalBinder localBinder) {
+                if (localBinder == null) {
+                    Log.d(TAG, "onChanged: unbound from service");
+                    mp.stop();
+                    mp.release();
+
+                } else {
+                    Log.d(TAG, "onChanged: bound to service.");
+                    playService = localBinder.getService();
+                    mp = playService.getMediaPlayer();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startService(); //바인딩 서비스
+    }
+
+    private void startService() {
+        Intent serviceIntent = new Intent(this, PlayService.class);
+        startService(serviceIntent);
+        bindService();
+    }
+
+    private void bindService() {
+        Intent serviceBindIntent = new Intent(this, PlayService.class);
+        bindService(serviceBindIntent, mainViewModel.getServiceConnection(), Context.BIND_AUTO_CREATE);
+    }
+
+
 
 
     @Override   //이벤트를 받을 액티비티나 프래그먼트에 등록

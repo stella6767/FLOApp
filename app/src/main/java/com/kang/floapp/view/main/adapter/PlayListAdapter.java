@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
@@ -40,7 +41,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
     public void addSong(Song song) { //재생목록에 곡 추가
 
         if(playList == null) { //이게 네트워크로 song을 완전히 전송될때까지 null object가 뜨는 것 같은디..
-            playList.add(song); //약간의 시간이 걸림
+            playList.add(song); //약간의 딜레이 걸림
         }else{
             if (!playList.contains(song)) {
                 playList.add(song);
@@ -49,20 +50,23 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
         notifyDataSetChanged();
 
-        //String songUrl = getSongUrl(song.getId());
-
         EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + song.getFile(), Constants.isPlaying));
+        즉시화면셋팅(song);
 
     }
 
-    public void removeSong() {
+    public void removeSong() { //서버와 동기화시킬지 고민중..
 
     }
 
 
-//    public String 즉시플레이(String filename){
-//
-//    }
+    public void 즉시화면셋팅(Song song){
+        mainActivity.tvTitle.setText(song.getTitle());
+        mainActivity.tvArtist.setText(song.getArtist());
+        mainActivity.tvPlayViewArtist.setText(song.getArtist());
+        mainActivity.tvPlayViewTitle.setText(song.getTitle());
+        mainActivity.tvLyrics.setText(song.getLyrics());
+    }
 
 
 
@@ -70,6 +74,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         String songUrl = Constants.BASEURL + Constants.FILEPATH + playList.get(position).getFile();
         return songUrl;
     }
+
 
     @NonNull
     @Override
@@ -109,6 +114,34 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
             tvPlayId = itemView.findViewById(R.id.tv_play_Id);
             ivPlayPlay = itemView.findViewById(R.id.iv_play_play);
             ivPlayArt = itemView.findViewById(R.id.iv_play_art);
+
+            ivPlayPlay.setOnClickListener(v -> {
+
+                String songUrl = getSongUrl(getAdapterPosition());
+
+                mainActivity.tvTitle.setText(playList.get(getAdapterPosition()).getTitle());
+                mainActivity.tvArtist.setText(playList.get(getAdapterPosition()).getArtist());
+                mainActivity.tvPlayViewArtist.setText(playList.get(getAdapterPosition()).getArtist());
+                mainActivity.tvPlayViewTitle.setText(playList.get(getAdapterPosition()).getTitle());
+                mainActivity.tvLyrics.setText(playList.get(getAdapterPosition()).getLyrics());
+
+                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                        .with(mainActivity)
+                        .load(playList.get(getAdapterPosition()).getImg())
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(mainActivity.ivPlayViewArt);
+
+                try {
+                    Log.d(TAG, "MyViewHolder: 음악 클릭됨");
+                    //songPrepare(songUrl);
+                    EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
 
         }
 

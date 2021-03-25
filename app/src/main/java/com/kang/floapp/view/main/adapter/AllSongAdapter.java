@@ -104,11 +104,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
 
                 Log.d(TAG, "MyViewHolder: " + songPosition);
 
-                mainActivity.tvTitle.setText(songList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvArtist.setText(songList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewArtist.setText(songList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewTitle.setText(songList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvLyrics.setText(songList.get(getAdapterPosition()).getLyrics());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
@@ -117,15 +112,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
 
-                EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition())));
-//                try {
-//                    Log.d(TAG, "MyViewHolder: 음악 클릭됨");
-//                    //songPrepare(songUrl);
-//                    EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                    EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition())));
 
             });
 

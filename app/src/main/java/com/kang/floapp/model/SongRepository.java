@@ -8,6 +8,7 @@ import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.model.network.SongAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,6 +39,8 @@ public class SongRepository {
     }
 
     public MutableLiveData<List<Song>> initPlaylist(){
+        List<Song> playList= new ArrayList<>(); //서버에서 리스트를 받을지(즉, 동기화할지는 나중에 생각하고)
+        mtPlayList.setValue(playList); //여기서 리스트
         return mtPlayList;
     }
 

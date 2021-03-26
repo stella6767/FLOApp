@@ -98,7 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
 
-        //Fragment playlistFrag =  new FragPlaylist(); //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
+        Fragment playlistFrag =  new FragPlaylist(); //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
+//        mainViewModel.PlayListSubscribe().observe(this, songs -> { 방법이 없는데?
+//            playListAdapter.setMySongList(songs);
+//        });
+
 
         listner();
 
@@ -127,9 +131,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         });
 
-
-
-
         ivPlayViewNext.setOnClickListener(this::onClick);
         ivNext.setOnClickListener(this::onClick);
         ivPrev.setOnClickListener(this::onClick);
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivSelect.setOnClickListener(v -> { //재생리스트 전환
             playlistChange = playlistChange * -1;
             if(playlistChange == -1) {
-                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container,  new FragPlaylist()).commit();
+                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container,  playlistFrag).commit();
             }else{
                 getSupportFragmentManager().popBackStack();
             }

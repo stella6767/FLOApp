@@ -21,10 +21,26 @@ public class SongRepository {
     private MutableLiveData<List<Song>> mtPlayList;
 
 
-    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtPlayList) {
-        this.mtSongList = mtSongList;
-        this.mtPlayList = mtPlayList;
+//    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtPlayList) {
+//        this.mtSongList = mtSongList;
+//        this.mtPlayList = mtPlayList;
+//    }
+
+
+    public SongRepository() {
+        mtSongList = new MutableLiveData<>();
+        mtPlayList = new MutableLiveData<>();
     }
+
+    //라이브데이터 넘기기
+    public MutableLiveData<List<Song>> initMtSong(){
+        return mtSongList;
+    }
+
+    public MutableLiveData<List<Song>> initPlaylist(){
+        return mtPlayList;
+    }
+
 
     public void fetchAllSong(){
         Call<ResponseDto<List<Song>>> call = SongAPI.retrofit.create(SongAPI.class).findAll();

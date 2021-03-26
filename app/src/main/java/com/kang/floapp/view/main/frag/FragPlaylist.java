@@ -36,7 +36,7 @@ public class FragPlaylist extends Fragment {
         mainViewModel = mainActivity.mainViewModel;
 
 
-        //아하!!! 이거 먼저 띄우고 해야 view model이 작동하는구나...어쩌지....
+        //아하!!! 이거 먼저 띄우고 해야 view model list가 초기화되도록 로직을 짰구나.. 어쩌지..
         rvPlayList = view.findViewById(R.id.rv_play_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPlayList.setLayoutManager(layoutManager);

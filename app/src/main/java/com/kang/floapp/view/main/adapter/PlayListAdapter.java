@@ -40,7 +40,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
     public void addSong(Song song) { //재생목록에 곡 추가
 
-        if(playList == null) { //이게 네트워크로 song을 완전히 전송될때까지 null object가 뜨는 것 같은디..
+        if(playList == null) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
             playList.add(song); //약간의 딜레이 걸림
         }else{
             if (!playList.contains(song)) {
@@ -94,7 +94,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
     @Override
     public int getItemCount() {
-        return playList.size();
+
+            return playList.size();
+
     }
 
 

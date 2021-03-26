@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initView();
+
+        //Fragment playlistFrag =  new FragPlaylist(); //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
+
         listner();
 
         mainViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivSelect.setOnClickListener(v -> { //재생리스트 전환
             playlistChange = playlistChange * -1;
             if(playlistChange == -1) {
-                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container, new FragPlaylist()).commit();
+                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container,  new FragPlaylist()).commit();
             }else{
                 getSupportFragmentManager().popBackStack();
             }

@@ -83,25 +83,12 @@
 
 
     <!--이부분은 리사이클러뷰가 들어와야합니다.-->
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="#090D12"
-        android:orientation="vertical">
+        android:layout_weight="7"/>
 
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-
-
-
-
-
-    </LinearLayout>
 
 
 </LinearLayout>

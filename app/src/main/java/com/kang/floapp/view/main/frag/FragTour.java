@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FragTour extends Fragment {
@@ -60,6 +61,10 @@ public class FragTour extends Fragment {
 
         dataObserver();
         initData();
+
+
+
+
 
         return view;
     }

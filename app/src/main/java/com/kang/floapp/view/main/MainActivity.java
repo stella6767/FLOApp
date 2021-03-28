@@ -2,11 +2,9 @@ package com.kang.floapp.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
@@ -35,15 +32,12 @@ import com.kang.floapp.view.main.frag.FragPlaylist;
 import com.kang.floapp.view.main.frag.FragSearch;
 import com.kang.floapp.view.main.frag.FragStorage;
 import com.kang.floapp.view.main.frag.FragTour;
-import com.kang.floapp.view.main.frag.fragchild.FragHomeChild;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 //여기는 Kang3 Branch
@@ -89,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivPrev;
     public ImageView ivNext;
     public ImageView ivSelect;
+
+
+    //카테고리 Frag 선택
+    public LinearLayoutManager categorySelect; // FragHomeChild에만 써야되나?
+
 
 
     @Override
@@ -142,7 +141,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             playlistChange = playlistChange * -1;
             if(playlistChange == -1) {
                 getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container,  playlistFrag).commit();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  playlistFrag).commit();
             }else{
+                //getSupportFragmentManager().beginTransaction().remove(playlistFrag).commit();
                 getSupportFragmentManager().popBackStack();
             }
         });
@@ -431,8 +432,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void playlistAdd(SongPassenger songPassenger){
         Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가"+songPassenger.song);
-        playListAdapter.addSong(songPassenger.song);
 
+
+
+        playListAdapter.addSong(songPassenger.song);
     }
 
 

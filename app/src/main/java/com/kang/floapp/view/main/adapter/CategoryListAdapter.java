@@ -1,7 +1,6 @@
 package com.kang.floapp.view.main.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Category;
-import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.model.dto.User;
-import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.frag.home.FragHomeCategory;
-import com.kang.floapp.view.main.frag.home.FragHomeChild;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.categoryViewHolder>{
+public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.categoryViewHolder>{
 
     private static final String TAG = "CategoryAdapter";
     private MainActivity mainActivity;
     public List<Category> category;
 
-    public CategoryAdapter(List<Category> category) {
+    public CategoryListAdapter(List<Category> category) {
         this.category = category;
     }
 
@@ -71,10 +63,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.catego
             tvCategory = itemView.findViewById(R.id.tv_category);
             categorySelect = itemView.findViewById(R.id.category_select);
 
-            categorySelect.setOnClickListener(v -> {
-                mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeCategory(category.get(getAdapterPosition()).getCategory())).commit();
-
-            });
 
         }
 

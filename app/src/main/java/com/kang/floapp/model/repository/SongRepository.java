@@ -1,9 +1,12 @@
-package com.kang.floapp.model;
+package com.kang.floapp.model.repository;
 
+import android.graphics.Movie;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.network.SongAPI;
@@ -147,6 +150,39 @@ public class SongRepository {
 
     }
 
+
+    public void deleteById(final int id) {
+
+        Call<ResponseDto<String>> call = SongAPI.retrofit.create(SongAPI.class).deleteById(id);
+
+        call.enqueue(new Callback<ResponseDto<String>>() {
+            @Override
+            public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
+                Log.d(TAG, "onResponse: response"+response);
+                ResponseDto<String> result = response.body();
+                Log.d(TAG, "onResponse: "+result.getStatusCode());
+
+                if (result.getStatusCode() == 1) {
+                    List<PlaySong> playSongList = mtPlayList.getValue();
+                    for (int i = 0; i < playSongList.size(); i++) {
+                        if (playSongList.get(i).getId() == id) {
+                            playSongList.remove(i);
+                            break;
+                        }
+                        mtPlayList.setValue(playSongList);
+                    }
+                } else {
+                    Log.d(TAG, "onResponse: 삭제 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDto<String>> call, Throwable t) {
+                Log.d(TAG, "onResponse: 삭제 실패");
+            }
+        });
+
+    }
 
 
 

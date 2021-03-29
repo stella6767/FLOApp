@@ -1,6 +1,6 @@
-package com.kang.floapp.model;
+package com.kang.floapp.model.repository;
 
-public class PlaySongRepository {
+public class PlaySongRepository { //일단 나중에 옮기도록 하자
 
     private static final String TAG = "PlaySongRepository";
 

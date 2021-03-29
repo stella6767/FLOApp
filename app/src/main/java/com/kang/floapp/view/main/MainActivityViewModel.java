@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kang.floapp.model.SongRepository;
+import com.kang.floapp.model.repository.SongRepository;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
@@ -90,6 +90,8 @@ public class MainActivityViewModel extends ViewModel {
     public void findPlaylist(){songRepository.fetchPlaylist();}
 
     public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){songRepository.playSongAdd(song, playCallback);}
+
+    public void deleteById(int id){songRepository.deleteById(id);}
 
 
     public ServiceConnection getServiceConnection() {

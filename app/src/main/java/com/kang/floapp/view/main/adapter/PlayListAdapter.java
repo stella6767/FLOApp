@@ -40,7 +40,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
     public int addSong(PlaySong playSong) { //재생목록에 곡 추가
 
-        if (playList == null || !playList.contains(playSong)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
+        if (playList != null && !playList.contains(playSong)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
             playList.add(playSong);
 
             notifyDataSetChanged();
@@ -57,6 +57,11 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
     public void removeSong() { //서버와 동기화시킬지 고민중..
 
     }
+
+    public int getSongId(int position){
+        return playList.get(position).getId();
+    }
+
 
 
     public String getSongUrl(int position) {

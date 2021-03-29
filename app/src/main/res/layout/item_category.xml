@@ -9,7 +9,7 @@
     android:background="#090D12">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/ivPlayViewArt"
+        android:id="@+id/ivCategoryArt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"

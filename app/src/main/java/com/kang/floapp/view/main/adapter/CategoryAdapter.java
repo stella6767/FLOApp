@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Category;
 import com.kang.floapp.view.main.MainActivity;
@@ -57,12 +59,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.catego
 
         private TextView tvCategory;
         private LinearLayout categorySelect;
+        private ImageView ivCategoryArt;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvCategory = itemView.findViewById(R.id.tv_category);
             categorySelect = itemView.findViewById(R.id.category_select);
+            ivCategoryArt = itemView.findViewById(R.id.ivCategoryArt);
 
             categorySelect.setOnClickListener(v -> {
                 Log.d(TAG, "categoryViewHolder: 카테고리 클릭");
@@ -75,6 +79,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.catego
 
         public void setItem(Category category){
             tvCategory.setText(category.getCategory());
+            Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                    .with(itemView)
+                    .load(category.getImg())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(ivCategoryArt);
         }
     }
 

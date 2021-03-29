@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +61,7 @@ public class FragPlaylist extends Fragment {
         rvPlayList.setAdapter(playListAdapter);
 
         initData();
+        swipeListner();
 
         return view;
     }
@@ -68,4 +70,25 @@ public class FragPlaylist extends Fragment {
     private void initData() {
         mainViewModel.findPlaylist();
     }
+
+    private void swipeListner(){
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.d(TAG, "onSwiped: " + viewHolder.getAdapterPosition());
+                int id = playListAdapter.getSongId(viewHolder.getAdapterPosition());
+                mainViewModel.deleteById(id);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(rvPlayList);
+    }
+
+
 }

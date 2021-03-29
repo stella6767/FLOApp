@@ -33,8 +33,8 @@ public interface SongAPI {
     @POST("playSong")
     Call<ResponseDto<PlaySong>> insert(@Body PlaySongSaveReqDto song);
 
-    @DELETE("playsong/{id}")
-    Call<ResponseDto<String>> delete(@Path("id") int id);
+    @DELETE("playSong/{id}")
+    Call<ResponseDto<String>> deleteById(@Path("id") int id);
 
 
     Retrofit retrofit = new Retrofit.Builder()

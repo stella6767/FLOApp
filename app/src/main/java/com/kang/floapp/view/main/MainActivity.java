@@ -471,6 +471,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         int result = playListAdapter.addSong(playSong);
                         if (result == 1) {
                             Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
+                        }else if(result == -1){
+                            EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + playSong.getSong().getFile(), Constants.isPlaying));
                         }
                     }
 

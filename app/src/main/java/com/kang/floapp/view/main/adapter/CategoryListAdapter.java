@@ -5,17 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Category;
-import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.model.Song;
 import com.kang.floapp.view.main.MainActivity;
-import com.kang.floapp.view.main.frag.home.FragHomeCategory;
 
 import java.util.List;
 

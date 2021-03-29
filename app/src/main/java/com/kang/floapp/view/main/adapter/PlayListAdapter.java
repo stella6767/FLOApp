@@ -7,16 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
-import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
@@ -29,9 +27,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
     private static final String TAG = "PlayListAdapter";
     private MainActivity mainActivity;
-    public List<Song> playList;
+    public List<PlaySong> playList;
 
-    public void setMySongList(List<Song> playList) {
+    public void setMySongList(List<PlaySong> playList) {
         this.playList = playList;
         notifyDataSetChanged();
     }
@@ -40,14 +38,14 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         this.mainActivity = (MainActivity)mainActivity;
     }
 
-    public int addSong(Song song) { //재생목록에 곡 추가
+    public int addSong(PlaySong playSong) { //재생목록에 곡 추가
 
-        if (playList == null || !playList.contains(song)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
-            playList.add(song);
+        if (playList == null || !playList.contains(playSong)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
+            playList.add(playSong);
 
             notifyDataSetChanged();
 
-            EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + song.getFile(), Constants.isPlaying));
+            EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + playSong.getSong().getFile(), Constants.isPlaying));
             EventBus.getDefault().post(new SongIdPassenger(playList.size() - 1));
 
             return 1;
@@ -62,7 +60,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
 
     public String getSongUrl(int position) {
-        String songUrl = Constants.BASEURL + Constants.FILEPATH + playList.get(position).getFile();
+        String songUrl = Constants.BASEURL + Constants.FILEPATH + playList.get(position).getSong().getFile();
         return songUrl;
     }
 
@@ -86,8 +84,10 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
     @Override
     public int getItemCount() {
 
-        return playList.size();
-
+        if(playList != null) {
+            return playList.size();
+        }
+        return 0;
     }
 
 
@@ -112,15 +112,15 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
                 String songUrl = getSongUrl(getAdapterPosition());
 
-                mainActivity.tvTitle.setText(playList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvArtist.setText(playList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewArtist.setText(playList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewTitle.setText(playList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvLyrics.setText(playList.get(getAdapterPosition()).getLyrics());
+                mainActivity.tvTitle.setText(playList.get(getAdapterPosition()).getSong().getTitle());
+                mainActivity.tvArtist.setText(playList.get(getAdapterPosition()).getSong().getArtist());
+                mainActivity.tvPlayViewArtist.setText(playList.get(getAdapterPosition()).getSong().getArtist());
+                mainActivity.tvPlayViewTitle.setText(playList.get(getAdapterPosition()).getSong().getTitle());
+                mainActivity.tvLyrics.setText(playList.get(getAdapterPosition()).getSong().getLyrics());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(playList.get(getAdapterPosition()).getImg())
+                        .load(playList.get(getAdapterPosition()).getSong().getImg())
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
@@ -139,17 +139,17 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         }
 
 
-        public void setItem(Song song) {
+        public void setItem(PlaySong playSong) {
 
-            if (song != null) {
-                tvPlayTitle.setText(song.getTitle());
-                tvPlayArtist.setText(song.getArtist());
+            if (playSong != null) {
+                tvPlayTitle.setText(playSong.getSong().getTitle());
+                tvPlayArtist.setText(playSong.getSong().getArtist());
                 tvPlayId.setText(getAdapterPosition() + 1 + "");
 
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(itemView)
-                        .load(song.getImg())
+                        .load(playSong.getSong().getImg())
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(ivPlayArt);

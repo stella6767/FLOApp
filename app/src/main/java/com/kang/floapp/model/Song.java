@@ -1,4 +1,4 @@
-package com.kang.floapp.model.dto;
+package com.kang.floapp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -6,25 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
-import com.kang.floapp.view.main.adapter.AllSongAdapter;
-import com.kang.floapp.view.main.adapter.CategoryAdapter;
 import com.kang.floapp.view.main.adapter.CategoryListAdapter;
-import com.kang.floapp.view.main.frag.home.FragHomeChild;
-
-import java.util.List;
 
 public class FragHomeCategory extends Fragment {
 

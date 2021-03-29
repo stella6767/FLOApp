@@ -12,17 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Category;
-import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.model.dto.User;
-import com.kang.floapp.utils.eventbus.SongIdPassenger;
+import com.kang.floapp.model.Category;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.frag.home.FragHomeCategory;
-import com.kang.floapp.view.main.frag.home.FragHomeChild;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.categoryViewHolder>{

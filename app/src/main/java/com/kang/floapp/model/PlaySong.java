@@ -1,4 +1,6 @@
-package com.kang.floapp.model.dto;
+package com.kang.floapp.model;
+
+import com.kang.floapp.model.Song;
 
 import java.sql.Timestamp;
 
@@ -13,6 +15,7 @@ public class PlaySong {
 
     private Integer id;
     private Song song;
+
     private Timestamp createDate;
 
 }

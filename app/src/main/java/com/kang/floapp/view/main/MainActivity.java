@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +20,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.Song;
+import com.kang.floapp.model.dto.PlaySongSaveReqDto;
+import com.kang.floapp.utils.PlayCallback;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
@@ -46,7 +47,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-//여기는 Kang3 Branch
+//여기는 Kang4 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
@@ -94,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivNext;
     public ImageView ivSelect;
 
-
-    //카테고리 Frag 선택
-    public LinearLayoutManager categorySelect; // FragHomeChild에만 써야되나?
 
 
     @Override
@@ -168,9 +166,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
-            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
-            playListAdapter.setMySongList(songs);
+//        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
+//            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
+//            playListAdapter.setMySongList(songs);
+//        });
+
+        mainViewModel.PlayListSubscribe().observe(this, playSongs -> {
+           playListAdapter.setMySongList(playSongs);
         });
 
         mainViewModel.categoryListSubscribe().observe(this, new Observer<List<Song>>() {
@@ -210,15 +212,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setSongText() {
 
-        tvTitle.setText(playListAdapter.playList.get(Constants.prevNext).getTitle());
-        tvArtist.setText(playListAdapter.playList.get(Constants.prevNext).getArtist());
-        tvPlayViewArtist.setText(playListAdapter.playList.get(Constants.prevNext).getArtist());
-        tvPlayViewTitle.setText(playListAdapter.playList.get(Constants.prevNext).getTitle());
-        tvLyrics.setText(playListAdapter.playList.get(Constants.prevNext).getLyrics());
+        tvTitle.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getTitle());
+        tvArtist.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getArtist());
+        tvPlayViewArtist.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getArtist());
+        tvPlayViewTitle.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getTitle());
+        tvLyrics.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getLyrics());
 
         Glide
                 .with(mContext)
-                .load(playListAdapter.playList.get(Constants.prevNext).getImg())
+                .load(playListAdapter.playList.get(Constants.prevNext).getSong().getImg())
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(ivPlayViewArt);
@@ -462,11 +464,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가" + songPassenger.song);
 
         즉시화면셋팅(songPassenger.song);
-        int result = playListAdapter.addSong(songPassenger.song);
 
-        if (result == 1) {
-            Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
-        }
+        mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new PlayCallback<PlaySong>(){ //인터페이스 콜백패턴.
+                    @Override
+                    public void onSucess(PlaySong playSong) {
+                        int result = playListAdapter.addSong(playSong);
+                        if (result == 1) {
+                            Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Log.d(TAG, "onFailure: 실패...");
+                    }
+                });
+
     }
 
 

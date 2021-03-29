@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Category;
+import com.kang.floapp.model.Category;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.adapter.CategoryAdapter;
 

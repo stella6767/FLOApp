@@ -59,8 +59,13 @@ public class FragPlaylist extends Fragment {
 //        playListAdapter.setMainActivity((MainActivity)getActivity());
         rvPlayList.setAdapter(playListAdapter);
 
-
+        initData();
 
         return view;
+    }
+
+
+    private void initData() {
+        mainViewModel.findPlaylist();
     }
 }

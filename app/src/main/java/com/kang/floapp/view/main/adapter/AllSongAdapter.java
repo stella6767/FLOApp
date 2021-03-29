@@ -2,7 +2,6 @@ package com.kang.floapp.view.main.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.utils.eventbus.SongIdPassenger;
+import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.eventbus.SongPassenger;
-import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 

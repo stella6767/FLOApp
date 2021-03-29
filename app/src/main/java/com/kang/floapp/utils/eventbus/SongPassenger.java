@@ -1,6 +1,6 @@
 package com.kang.floapp.utils.eventbus;
 
-import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.model.Song;
 
 public class SongPassenger {
     public Song song;

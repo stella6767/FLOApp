@@ -2,21 +2,20 @@ package com.kang.floapp.view.main;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
-import android.graphics.Movie;
-import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.kang.floapp.model.SongRepository;
-import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.Song;
+import com.kang.floapp.model.dto.PlaySongSaveReqDto;
+import com.kang.floapp.utils.PlayCallback;
 import com.kang.floapp.utils.PlayService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
@@ -26,7 +25,7 @@ public class MainActivityViewModel extends ViewModel {
     private SongRepository songRepository;
 
     private MutableLiveData<List<Song>> mtSongList;
-    public MutableLiveData<List<Song>> mtPlayList;
+    public MutableLiveData<List<PlaySong>> mtPlayList;
 
     //이거는 카테고리 라이브데이터로 하나로 통합을 할지, 아니면 장르별로 만들지는 아직 생각중, 전자가 낫긴한데..
     private MutableLiveData<List<Song>> mtCategoryList;
@@ -74,7 +73,7 @@ public class MainActivityViewModel extends ViewModel {
         return mtSongList;
     }
 
-    public MutableLiveData<List<Song>> PlayListSubscribe() {
+    public MutableLiveData<List<PlaySong>> PlayListSubscribe() {
         return mtPlayList;
     }
 
@@ -87,6 +86,10 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void findCategory(String category){songRepository.fetchCaetgory(category);}
+
+    public void findPlaylist(){songRepository.fetchPlaylist();}
+
+    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){songRepository.playSongAdd(song, playCallback);}
 
 
     public ServiceConnection getServiceConnection() {

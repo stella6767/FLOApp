@@ -59,12 +59,8 @@ public class FragTour extends Fragment {
         allSongAdapter.setMainActivity((MainActivity)getActivity());
         rvSongList.setAdapter(allSongAdapter);
 
-        dataObserver();
+
         initData();
-
-
-
-
 
         return view;
     }
@@ -74,15 +70,6 @@ public class FragTour extends Fragment {
         super.onStart();
     }
 
-
-    public void dataObserver(){
-        mainViewModel.subscribe().observe(this, new Observer<List<Song>>() {
-            @Override
-            public void onChanged(List<Song> songs) {
-                allSongAdapter.setMusics(songs);
-            }
-        });
-    }
 
     private void initData() {
         mainViewModel.findAll();

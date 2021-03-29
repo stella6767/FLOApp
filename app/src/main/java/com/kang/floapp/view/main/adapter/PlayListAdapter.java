@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.dto.Song;
+import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
@@ -34,40 +36,29 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         notifyDataSetChanged();
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public PlayListAdapter(Context mainActivity) {
+        this.mainActivity = (MainActivity)mainActivity;
     }
 
-    public void addSong(Song song) { //재생목록에 곡 추가
+    public int addSong(Song song) { //재생목록에 곡 추가
 
-        if(playList == null) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
-            playList.add(song); //약간의 딜레이 걸림
-        }else{
-            if (!playList.contains(song)) {
-                playList.add(song);
-            }
+        if (playList == null || !playList.contains(song)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
+            playList.add(song);
+
+            notifyDataSetChanged();
+
+            EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + song.getFile(), Constants.isPlaying));
+            EventBus.getDefault().post(new SongIdPassenger(playList.size() - 1));
+
+            return 1;
         }
 
-        notifyDataSetChanged();
-
-        EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + song.getFile(), Constants.isPlaying));
-        즉시화면셋팅(song);
-
+        return -1;
     }
 
     public void removeSong() { //서버와 동기화시킬지 고민중..
 
     }
-
-
-    public void 즉시화면셋팅(Song song){
-        mainActivity.tvTitle.setText(song.getTitle());
-        mainActivity.tvArtist.setText(song.getArtist());
-        mainActivity.tvPlayViewArtist.setText(song.getArtist());
-        mainActivity.tvPlayViewTitle.setText(song.getTitle());
-        mainActivity.tvLyrics.setText(song.getLyrics());
-    }
-
 
 
     public String getSongUrl(int position) {
@@ -95,7 +86,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
     @Override
     public int getItemCount() {
 
-            return playList.size();
+        return playList.size();
 
     }
 
@@ -153,7 +144,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
             if (song != null) {
                 tvPlayTitle.setText(song.getTitle());
                 tvPlayArtist.setText(song.getArtist());
-                tvPlayId.setText(song.getId().toString());
+                tvPlayId.setText(getAdapterPosition() + 1 + "");
 
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)

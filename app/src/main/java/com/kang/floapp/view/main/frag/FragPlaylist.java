@@ -1,5 +1,6 @@
 package com.kang.floapp.view.main.frag;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,10 +32,10 @@ public class FragPlaylist extends Fragment {
     private MainActivity mainActivity;
 
 
-    public FragPlaylist(MediaPlayer mp, PlayListAdapter playListAdapter, MainActivityViewModel mainViewModel, MainActivity mainActivity) {
+    public FragPlaylist(MediaPlayer mp, PlayListAdapter playListAdapter, MainActivityViewModel mainViewModel, Context mainActivity) {
         this.mp = mp;
         this.mainViewModel = mainViewModel;
-        this.mainActivity = mainActivity;
+        this.mainActivity = (MainActivity)mainActivity;
         this.playListAdapter = playListAdapter;
     }
 
@@ -50,19 +51,13 @@ public class FragPlaylist extends Fragment {
 //        mainViewModel = mainActivity.mainViewModel;
 
 
-        //아하!!! 이거 먼저 띄우고 해야 view model list가 초기화되도록 로직을 짰구나.. 어쩌지..
+        //아하!!! 이거 먼저 띄우고 해야 view model list가 초기화되도록 로직을 짰구나..
         rvPlayList = view.findViewById(R.id.rv_play_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPlayList.setLayoutManager(layoutManager);
 //        playListAdapter = mainActivity.playListAdapter;
 //        playListAdapter.setMainActivity((MainActivity)getActivity());
         rvPlayList.setAdapter(playListAdapter);
-
-
-
-//        mainViewModel.PlayListSubscribe().observe(this, songs -> {
-//            playListAdapter.setMySongList(songs);
-//        });
 
 
 

@@ -33,9 +33,6 @@ public class FragHome extends Fragment {
         super.onStart();
 
 
-
-
-
     }
 
 

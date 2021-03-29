@@ -11,7 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragMentAdapter extends FragmentPagerAdapter { //프래그먼트 미리 메모리에 띄울려면 써야될듯..
+public class MainFragMentAdapter extends FragmentPagerAdapter { //안써도 됨!! 아직 확정 아님!!!!
 
     private List<Fragment> mFragments = new ArrayList<>();
 

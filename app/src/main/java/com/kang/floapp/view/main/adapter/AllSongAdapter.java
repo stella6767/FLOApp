@@ -97,13 +97,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
 
             ivSongPlay.setOnClickListener(v -> {
 
-                String songUrl = getSongUrl(getAdapterPosition());
-
-                songPosition = getAdapterPosition();
-                EventBus.getDefault().post(new SongIdPassenger(songPosition));
-
-                Log.d(TAG, "MyViewHolder: " + songPosition);
-
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
@@ -112,7 +105,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
 
-                    EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition())));
+                    EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
 
             });
 

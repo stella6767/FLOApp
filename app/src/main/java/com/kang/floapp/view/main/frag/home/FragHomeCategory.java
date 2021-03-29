@@ -38,10 +38,8 @@ public class FragHomeCategory extends Fragment {
 
 
     public FragHomeCategory(String category) {
-        Log.d(TAG, "FragHomeCategory: 들어왔는데..");
+        Log.d(TAG, "FragHomeCategory: 카테고리 넘겨받기: " + category);
         this.category = category;
-//        dataObserver();
-//        initData(category);
     }
 
 
@@ -51,23 +49,20 @@ public class FragHomeCategory extends Fragment {
         View view = inflater.inflate(R.layout.frag_home_category, container, false);
 
 
-        ivHomeBack = view.findViewById(R.id.iv_home_back);
+
         MainActivity mainActivity = (MainActivity) container.getContext();
+        ivHomeBack = view.findViewById(R.id.iv_home_back);
         mainViewModel = mainActivity.mainViewModel;
 
 
         rvCategoryList = view.findViewById(R.id.rv_category_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvCategoryList.setLayoutManager(layoutManager);
-        categoryListAdapter = new CategoryListAdapter();
+        categoryListAdapter = mainActivity.categoryListAdapter;
         rvCategoryList.setAdapter(categoryListAdapter);
 
 
-
-
-        dataObserver();
         initData(category);
-
 
         ivHomeBack.setOnClickListener(v -> {
             //Fragment selectedFragment = new FragHomeChild();
@@ -79,15 +74,6 @@ public class FragHomeCategory extends Fragment {
     }
 
 
-    public void dataObserver(){
-        mainViewModel.categoryListSubscribe().observe(this, new Observer<List<Song>>() {
-            @Override
-            public void onChanged(List<Song> songs) {
-                Log.d(TAG, "onCreateView: 왜 초기화가 안 되나?");
-                categoryListAdapter.setMusics(songs);
-            }
-        });
-    }
 
     private void initData(String category) {
         mainViewModel.findCategory(category);

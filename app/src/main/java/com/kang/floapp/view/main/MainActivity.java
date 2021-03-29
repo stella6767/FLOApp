@@ -22,12 +22,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
+import com.kang.floapp.model.dto.Song;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
+import com.kang.floapp.view.main.adapter.CategoryListAdapter;
 import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.frag.FragHome;
@@ -41,22 +43,25 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.List;
 
 
 //여기는 Kang3 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
-    private MainActivity mContext = MainActivity.this;
+    //private MainActivity mContext = MainActivity.this;
+    private Context mContext = MainActivity.this;
 
-    // 여기서 쓸지, 프래그먼트에서 쓸지 생각중
-    public AllSongAdapter allSongAdapter;
-    //public boolean threadStatus = false;
     private MainFragMentAdapter mainFragMentAdapter;
-
-    //playList 어댑터도 여기서, 구독도 여기서 해서 미리 new
     public int playlistChange = 1;
+
+
+    //어댑터
+    public CategoryListAdapter categoryListAdapter;
+    public AllSongAdapter allSongAdapter;
     public PlayListAdapter playListAdapter;
+
 
     //공용
     public MediaPlayer mp;
@@ -94,29 +99,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public LinearLayoutManager categorySelect; // FragHomeChild에만 써야되나?
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initView();
+        dataObserver();
+        serviceObservers();
 
-        setServiceObservers();
 
         //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
-        Fragment playlistFrag =  new FragPlaylist(mp, playListAdapter, mainViewModel, mContext);
+        Fragment playlistFrag = new FragPlaylist(mp, playListAdapter, mainViewModel, mContext);
 
 
         listner();
-
-
-//        mainFragMentAdapter = new MainFragMentAdapter(getSupportFragmentManager(),1);
-//        mainFragMentAdapter.addFragment(new FragHome());
-//        mainFragMentAdapter.addFragment(new FragTour());
-//        mainFragMentAdapter.addFragment(new FragPlaylist());
-
-
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragHome()).commit(); //최초 화면(프레그먼트)
@@ -150,11 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ivSelect.setOnClickListener(v -> { //재생리스트 전환
             playlistChange = playlistChange * -1;
-            if(playlistChange == -1) {
-                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container,  playlistFrag).commit();
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  playlistFrag).commit();
-            }else{
-                //getSupportFragmentManager().beginTransaction().remove(playlistFrag).commit();
+            if (playlistChange == -1) {
+                getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.fragment_container, playlistFrag).commit();
+            } else {
                 getSupportFragmentManager().popBackStack();
             }
         });
@@ -164,17 +159,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    public void dataObserver() {
 
-    public void nextORPrevClick(int nextOrPrev) {
+        mainViewModel.subscribe().observe(this, new Observer<List<Song>>() {
+            @Override
+            public void onChanged(List<Song> songs) {
+                allSongAdapter.setMusics(songs);
+            }
+        });
 
-        Log.d(TAG, "nextORPrevClick: " + nextOrPrev);
+        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
+            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
+            playListAdapter.setMySongList(songs);
+        });
 
-        if (nextOrPrev == 1 && Constants.prevNext < allSongAdapter.getItemCount()) {  //1=next, 그 외 prev
+        mainViewModel.categoryListSubscribe().observe(this, new Observer<List<Song>>() {
+            @Override
+            public void onChanged(List<Song> songs) {
+                Log.d(TAG, "onCreateView: 왜 초기화가 안 되나?");
+                categoryListAdapter.setMusics(songs);
+            }
+        });
+    }
+
+
+    public void nextORPrevClick(int nextOrPrev) { //재생목록 이전곡, 다음곡 재생
+
+        Log.d(TAG, "nextORPrevClick: " + nextOrPrev + ", " + Constants.prevNext);
+
+        if (nextOrPrev == 1 && Constants.prevNext < playListAdapter.getItemCount()) {  //1=next, 그 외 prev
             Log.d(TAG, "이전 nextORPrevClick: " + Constants.prevNext + "    " + nextOrPrev);
             Constants.prevNext = Constants.prevNext + 1;
             Log.d(TAG, "onCreate: songPosition" + Constants.prevNext + "    " + nextOrPrev);
 
-            if (Constants.prevNext < allSongAdapter.getItemCount()) {
+            if (Constants.prevNext < playListAdapter.getItemCount()) {
                 setSongText();
             }
 
@@ -190,28 +208,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     public void setSongText() {
 
-        tvTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
-        tvArtist.setText(allSongAdapter.songList.get(Constants.prevNext).getArtist());
-        tvPlayViewArtist.setText(allSongAdapter.songList.get(Constants.prevNext).getArtist());
-        tvPlayViewTitle.setText(allSongAdapter.songList.get(Constants.prevNext).getTitle());
-        tvLyrics.setText(allSongAdapter.songList.get(Constants.prevNext).getLyrics());
-
+        tvTitle.setText(playListAdapter.playList.get(Constants.prevNext).getTitle());
+        tvArtist.setText(playListAdapter.playList.get(Constants.prevNext).getArtist());
+        tvPlayViewArtist.setText(playListAdapter.playList.get(Constants.prevNext).getArtist());
+        tvPlayViewTitle.setText(playListAdapter.playList.get(Constants.prevNext).getTitle());
+        tvLyrics.setText(playListAdapter.playList.get(Constants.prevNext).getLyrics());
 
         Glide
                 .with(mContext)
-                .load(allSongAdapter.songList.get(Constants.prevNext).getImg())
+                .load(playListAdapter.playList.get(Constants.prevNext).getImg())
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(ivPlayViewArt);
 
-        String songUrl = allSongAdapter.getSongUrl(Constants.prevNext);
-        EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying)); //재생목록으로 할지 ALLSong으로 할지 고민중
+
+        String songUrl = playListAdapter.getSongUrl(Constants.prevNext);
+        Log.d(TAG, "setSongText: " + songUrl);
+        EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying)); //재생목록 다음 or 이전 곡 재생
     }
-
-
 
 
     public void setTotalDuration() {
@@ -223,8 +239,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tvTotalTime.setText(strTime);
     }
-
-
 
 
     private void listner() { //나중에 시크바 리스너로 통합
@@ -272,15 +286,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
     private void initView() {
 
         mainViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         //어댑터 관리
         allSongAdapter = new AllSongAdapter();
-
+        categoryListAdapter = new CategoryListAdapter();
+        playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -305,18 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvLyrics = findViewById(R.id.tv_lyrics);
         ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
 
-
-
-        playListAdapter = new PlayListAdapter();//My 플레이리스트
-
-        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
-            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
-            playListAdapter.setMySongList(songs);
-        });
-
     }
-
-
 
 
     public void seekBarUiHandle() {
@@ -361,13 +363,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     public void seekBarInit() {
         mainSeekbar.setMax(100000);
         mainSeekbar.setProgress(0);
         playViewSeekBar.setProgress(0);
     }
-
 
 
     public void songPause() {
@@ -403,7 +403,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     public void onPrepared(String songUrl) throws IOException { //이거 나중에 스레드로
 
         mp.reset();
@@ -419,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void playBtnListner(){
+    public void playBtnListner() {
 
         if (Constants.isPlaying == 1) {
             Log.d(TAG, "onCreate: 글로벌 버튼 클릭되고 노래멈춤" + Constants.isPlaying);
@@ -430,6 +429,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void 즉시화면셋팅(Song song) {
+        tvTitle.setText(song.getTitle());
+        tvArtist.setText(song.getArtist());
+        tvPlayViewArtist.setText(song.getArtist());
+        tvPlayViewTitle.setText(song.getTitle());
+        tvLyrics.setText(song.getLyrics());
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -447,20 +453,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void nextSong(SongIdPassenger songIdPassenger) {  // 자꾸 private으로 주네. eventbus는 public method만!!
         Log.d(TAG, "nextSong: " + songIdPassenger.songId);
-        Constants.prevNext = songIdPassenger.songId;
+        Constants.prevNext = songIdPassenger.songId; //여기서 songId가 아닌 listposition을 받아야되지..
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void playlistAdd(SongPassenger songPassenger){
-        Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가"+songPassenger.song);
+    public void playlistAdd(SongPassenger songPassenger) {
+        Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가" + songPassenger.song);
 
-        Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
+        즉시화면셋팅(songPassenger.song);
+        int result = playListAdapter.addSong(songPassenger.song);
 
-
-        playListAdapter.addSong(songPassenger.song);
+        if (result == 1) {
+            Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
-
 
 
     @Override
@@ -485,10 +492,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
     // 서비스 관련~~~~~~~
-    private void setServiceObservers() {
+    private void serviceObservers() {
 
         mainViewModel.getBinder().observe(this, new Observer<PlayService.LocalBinder>() {
             @Override
@@ -523,8 +528,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent serviceBindIntent = new Intent(this, PlayService.class);
         bindService(serviceBindIntent, mainViewModel.getServiceConnection(), Context.BIND_AUTO_CREATE);
     }
-
-
 
 
     @Override   //이벤트를 받을 액티비티나 프래그먼트에 등록

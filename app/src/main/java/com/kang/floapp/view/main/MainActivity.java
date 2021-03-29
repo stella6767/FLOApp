@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +28,7 @@ import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
+import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.frag.FragHome;
 import com.kang.floapp.view.main.frag.FragPlaylist;
@@ -49,9 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 여기서 쓸지, 프래그먼트에서 쓸지 생각중
     public AllSongAdapter allSongAdapter;
     //public boolean threadStatus = false;
-    public PlayListAdapter playListAdapter;
-    public int playlistChange = 1;
+    private MainFragMentAdapter mainFragMentAdapter;
 
+    //playList 어댑터도 여기서, 구독도 여기서 해서 미리 new
+    public int playlistChange = 1;
+    public PlayListAdapter playListAdapter;
 
     //공용
     public MediaPlayer mp;
@@ -97,16 +102,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
 
-        Fragment playlistFrag =  new FragPlaylist(); //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
-//        mainViewModel.PlayListSubscribe().observe(this, songs -> { 방법이 없는데?
-//            playListAdapter.setMySongList(songs);
-//        });
+        setServiceObservers();
+
+        //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
+        Fragment playlistFrag =  new FragPlaylist(mp, playListAdapter, mainViewModel, mContext);
 
 
         listner();
 
-        mainViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        setServiceObservers();
+
+//        mainFragMentAdapter = new MainFragMentAdapter(getSupportFragmentManager(),1);
+//        mainFragMentAdapter.addFragment(new FragHome());
+//        mainFragMentAdapter.addFragment(new FragTour());
+//        mainFragMentAdapter.addFragment(new FragPlaylist());
+
+
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragHome()).commit(); //최초 화면(프레그먼트)
         bottomNav.setOnNavigationItemSelectedListener(item -> {
@@ -265,9 +276,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView() {
 
+        mainViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
         //어댑터 관리
         allSongAdapter = new AllSongAdapter();
-        playListAdapter = new PlayListAdapter();//My 플레이리스트
 
 
         //자식프래그먼트 조절
@@ -292,6 +304,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayViewNext = findViewById(R.id.iv_playView_next);
         tvLyrics = findViewById(R.id.tv_lyrics);
         ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
+
+
+
+        playListAdapter = new PlayListAdapter();//My 플레이리스트
+
+        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
+            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
+            playListAdapter.setMySongList(songs);
+        });
+
     }
 
 
@@ -433,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void playlistAdd(SongPassenger songPassenger){
         Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가"+songPassenger.song);
 
+        Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
 
 
         playListAdapter.addSong(songPassenger.song);

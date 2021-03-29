@@ -24,7 +24,7 @@ public class SongRepository {
     private MutableLiveData<List<Song>> mtPlayList;
 
     //카테고리 라이브 데이터 하나 혹은 8개 전부?
-    private MutableLiveData<List<Song>> mtBalladeList;
+    private MutableLiveData<List<Song>> mtCategoryList;
 
 
 //    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtPlayList) {
@@ -36,7 +36,7 @@ public class SongRepository {
     public SongRepository() {
         mtSongList = new MutableLiveData<>();
         mtPlayList = new MutableLiveData<>();
-        mtBalladeList = new MutableLiveData<>();
+        mtCategoryList = new MutableLiveData<>();
     }
 
     //라이브데이터 넘기기
@@ -56,21 +56,21 @@ public class SongRepository {
         return mtPlayList;
     }
 
-    public MutableLiveData<List<Song>> initBallladeList(){
-        return mtBalladeList;
+    public MutableLiveData<List<Song>> initCategoryList(){
+        return mtCategoryList;
     }
 
 
-    public void fetchBallade(){
-        Call<ResponseDto<List<Song>>> call = SongAPI.retrofit.create(SongAPI.class).findBallade();
+    public void fetchCaetgory(String category){
+        Call<ResponseDto<List<Song>>> call = SongAPI.retrofit.create(SongAPI.class).findCategory(category);
 
         call.enqueue(new Callback<ResponseDto<List<Song>>>() {
             @Override
             public void onResponse(Call<ResponseDto<List<Song>>> call, Response<ResponseDto<List<Song>>> response) {
-                Log.d(TAG, "onResponse: 발라드 리스트 서버 받기 통신 성공");
+                Log.d(TAG, "onResponse: 카테고리 리스트 서버 받기 통신 성공");
                 ResponseDto<List<Song>> result = response.body();
                 Log.d(TAG, "onResponse: result: " + result);
-                mtBalladeList.setValue(result.getData());
+                mtCategoryList.setValue(result.getData());
             }
 
             @Override

@@ -12,17 +12,20 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SongAPI {
 
     @GET("song")
     Call<ResponseDto<List<Song>>> findAll();
 
-    @GET("song/ballade")
-    Call<ResponseDto<List<Song>>> findBallade();
+    @GET("song/category")
+    Call<ResponseDto<List<Song>>> findCategory(@Query("category") String category);
 
 
     @GET("playSong")
@@ -30,6 +33,9 @@ public interface SongAPI {
 
     @POST("song")
     Call<Song> insert(@Body Song song);
+
+    @DELETE("playsong/{id}")
+    Call<ResponseDto<String>> delete(@Path("id") int id);
 
 
     Retrofit retrofit = new Retrofit.Builder()

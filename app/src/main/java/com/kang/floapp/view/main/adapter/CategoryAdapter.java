@@ -72,6 +72,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.catego
             categorySelect = itemView.findViewById(R.id.category_select);
 
             categorySelect.setOnClickListener(v -> {
+                Log.d(TAG, "categoryViewHolder: 카테고리 클릭");
                 mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeCategory(category.get(getAdapterPosition()).getCategory())).commit();
 
             });

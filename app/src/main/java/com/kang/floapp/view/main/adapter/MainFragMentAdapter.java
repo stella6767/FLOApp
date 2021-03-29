@@ -4,21 +4,37 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainFragMentAdapter extends FragmentPagerAdapter { //프래그먼트 미리 메모리에 띄울려면 써야될듯..
+
+    private List<Fragment> mFragments = new ArrayList<>();
 
     public MainFragMentAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 
+    public void addFragment(Fragment fragment){
+        mFragments.add(fragment);
+    }
+
+    public void addFragments(List<Fragment> fragments){
+        this.mFragments = fragments;
+    }
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mFragments.size();
     }
 }

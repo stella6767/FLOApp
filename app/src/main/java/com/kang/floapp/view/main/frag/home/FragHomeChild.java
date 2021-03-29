@@ -47,11 +47,11 @@ public class FragHomeChild extends Fragment {
         rvCategory = view.findViewById(R.id.rv_category);
 
         List<Category> category = new ArrayList<>();  //이미지랑 키워드랑,
-        category.add(new Category("ballade", ""));
-        category.add(new Category("pop", ""));
-        category.add(new Category("rock", ""));
-        category.add(new Category("indi", ""));
-        category.add(new Category("hiphop", ""));
+        category.add(new Category("POP", ""));
+        category.add(new Category("ROCK", ""));
+        category.add(new Category("HIPHOP", ""));
+        category.add(new Category("BALLADE", ""));
+        category.add(new Category("INDI", ""));
 
 
         categoryAdapter = new CategoryAdapter(category);

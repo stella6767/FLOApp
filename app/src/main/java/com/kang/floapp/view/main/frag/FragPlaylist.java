@@ -2,6 +2,7 @@ package com.kang.floapp.view.main.frag;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,33 +22,47 @@ import com.kang.floapp.view.main.adapter.PlayListAdapter;
 public class FragPlaylist extends Fragment {
 
     private static final String TAG = "FragPlaylist";
+    private Fragment fragPlaylist = FragPlaylist.this;
+
     private MediaPlayer mp;
     public RecyclerView rvPlayList;
     public PlayListAdapter playListAdapter;
     private MainActivityViewModel mainViewModel;
+    private MainActivity mainActivity;
+
+
+    public FragPlaylist(MediaPlayer mp, PlayListAdapter playListAdapter, MainActivityViewModel mainViewModel, MainActivity mainActivity) {
+        this.mp = mp;
+        this.mainViewModel = mainViewModel;
+        this.mainActivity = mainActivity;
+        this.playListAdapter = playListAdapter;
+    }
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) { //여기서 띄우면 메모리 타이밍이 늦음
         View view = inflater.inflate(R.layout.play_list, container, false);
-        MainActivity mainActivity = (MainActivity) container.getContext();
-        mp = mainActivity.mp;
-        mainViewModel = mainActivity.mainViewModel;
+
+
+//        MainActivity mainActivity = (MainActivity) container.getContext();
+//        mp = mainActivity.mp;
+//        mainViewModel = mainActivity.mainViewModel;
 
 
         //아하!!! 이거 먼저 띄우고 해야 view model list가 초기화되도록 로직을 짰구나.. 어쩌지..
         rvPlayList = view.findViewById(R.id.rv_play_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPlayList.setLayoutManager(layoutManager);
-        playListAdapter = mainActivity.playListAdapter;
-        playListAdapter.setMainActivity((MainActivity)getActivity());
+//        playListAdapter = mainActivity.playListAdapter;
+//        playListAdapter.setMainActivity((MainActivity)getActivity());
         rvPlayList.setAdapter(playListAdapter);
 
 
 
-        mainViewModel.PlayListSubscribe().observe(this, songs -> {
-            playListAdapter.setMySongList(songs);
-        });
+//        mainViewModel.PlayListSubscribe().observe(this, songs -> {
+//            playListAdapter.setMySongList(songs);
+//        });
 
 
 

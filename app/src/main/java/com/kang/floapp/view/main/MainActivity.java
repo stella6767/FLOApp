@@ -34,10 +34,10 @@ import com.kang.floapp.view.main.adapter.CategoryListAdapter;
 import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
-import com.kang.floapp.view.main.frag.FragHome;
+import com.kang.floapp.view.main.frag.home.FragHome;
 import com.kang.floapp.view.main.frag.FragPlaylist;
-import com.kang.floapp.view.main.frag.FragSearch;
-import com.kang.floapp.view.main.frag.FragStorage;
+import com.kang.floapp.view.main.frag.search.FragSearch;
+import com.kang.floapp.view.main.frag.storage.FragStorage;
 import com.kang.floapp.view.main.frag.FragTour;
 
 import org.greenrobot.eventbus.EventBus;

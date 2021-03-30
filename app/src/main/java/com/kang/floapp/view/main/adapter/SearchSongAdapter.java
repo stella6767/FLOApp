@@ -1,6 +1,5 @@
 package com.kang.floapp.view.main.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,52 +16,35 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.main.MainActivity;
-import com.kang.floapp.view.main.frag.home.FragHome;
-import com.kang.floapp.view.main.frag.home.FragHomeCategory;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.categoryViewHolder> {
+public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.categoryViewHolder> {
 
-    private static final String TAG = "CategoryAdapter";
+    private static final String TAG = "SearchSongAdapter";
     private MainActivity mainActivity;
-    public List<Song> categorySongList;
-    private TextView tvCategoryTotal;
-
-//    private FragHomeCategory aaa;
-//
-//    public void setFragment(FragHomeCategory aaa){
-//        this.aaa = aaa;
-//
-//    }
+    public List<Song> searchSongList;
 
 
-    public void setMusics(List<Song> categorySongList) {
-        Log.d(TAG, "setMusics: 넘겨줬는데??" + categorySongList);
-        this.categorySongList = categorySongList;
+    public void setMusics(List<Song> searchSongList) {
+        Log.d(TAG, "검색결과 송리스트(title or 가수): " + searchSongList);
+        this.searchSongList = searchSongList;
         notifyDataSetChanged();
     }
-
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
-    public void setTotalCategory(TextView tvCategoryTotal){
-        this.tvCategoryTotal = tvCategoryTotal;
-    }
 
     @NonNull
     @Override
     public categoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_category_list, parent, false);
+        View view = inflater.inflate(R.layout.item_search_list, parent, false);
 
-        //aaa.getNowTime();
 
 
         return new categoryViewHolder(view); //view가 리스트뷰에 하나 그려짐.
@@ -71,15 +52,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull categoryViewHolder holder, int position) {
-        tvCategoryTotal.setText(getItemCount()+"");
-        holder.setItem(categorySongList.get(position));
+        holder.setItem(searchSongList.get(position));
     }
 
     @Override
     public int getItemCount() {
 
-        if (categorySongList != null) {
-            return categorySongList.size();
+        if (searchSongList != null) {
+            return searchSongList.size();
         } else {
             return 0;
         }
@@ -87,31 +67,31 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public class categoryViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvCategoryListArtist;
-        private TextView tvCategoryListTitle;
-        private ImageView ivCategoryListArt;
-        private ImageView ivCategoryListPlay;
+        private TextView tvSearchListArtist;
+        private TextView tvSearchListTitle;
+        private ImageView ivSearchListArt;
+        private ImageView ivSearchListPlay;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvCategoryListArtist = itemView.findViewById(R.id.tv_category_list_artist);
-            tvCategoryListTitle = itemView.findViewById(R.id.tv_category_list_title);
-            ivCategoryListArt = itemView.findViewById(R.id.iv_category_list_art);
-            ivCategoryListPlay = itemView.findViewById(R.id.iv_category_list_play);
+            tvSearchListArtist = itemView.findViewById(R.id.tv_search_list_artist);
+            tvSearchListTitle = itemView.findViewById(R.id.tv_search_list_title);
+            ivSearchListArt = itemView.findViewById(R.id.iv_search_list_art);
+            ivSearchListPlay = itemView.findViewById(R.id.iv_search_list_play);
 
-            ivCategoryListPlay.setOnClickListener(v -> {
+            ivSearchListPlay.setOnClickListener(v -> {
 
                 Log.d(TAG, "categoryViewHolder: 클릭됨");
                 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(categorySongList.get(getAdapterPosition()).getImg())
+                        .load(searchSongList.get(getAdapterPosition()).getImg())
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
 
-                EventBus.getDefault().post(new SongPassenger(categorySongList.get(getAdapterPosition())));
+                EventBus.getDefault().post(new SongPassenger(searchSongList.get(getAdapterPosition())));
             });
 
 
@@ -119,15 +99,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
 
         public void setItem(Song song) {
-            tvCategoryListArtist.setText(song.getArtist());
-            tvCategoryListTitle.setText(song.getTitle());
+            tvSearchListArtist.setText(song.getArtist());
+            tvSearchListTitle.setText(song.getTitle());
 
             Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                     .with(itemView)
                     .load(song.getImg())
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
-                    .into(ivCategoryListArt);
+                    .into(ivSearchListArt);
 
         }
     }

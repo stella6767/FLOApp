@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
+import com.kang.floapp.view.main.frag.home.FragHome;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,6 +33,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
     public int songPosition;
 
 
+
     public AllSongAdapter() { }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -42,6 +45,8 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
         this.songList = songList;
         notifyDataSetChanged();
     }
+
+
 
 
     public String getSongUrl(int position) {
@@ -101,6 +106,8 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
+
+
 
                     EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
 

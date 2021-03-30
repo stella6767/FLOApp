@@ -23,16 +23,14 @@ public class SongRepository {
     private static final String TAG = "SongRepository";
 
     private MutableLiveData<List<Song>> mtSongList;
-
-    private MutableLiveData<List<PlaySong>> mtPlayList;
-
+    private MutableLiveData<List<Song>> mtSerchSongList;
     //카테고리 라이브 데이터(8개 카테고리)
     private MutableLiveData<List<Song>> mtCategoryList;
 
 
     public SongRepository() {
         mtSongList = new MutableLiveData<>();
-        mtPlayList = new MutableLiveData<>();
+        mtSerchSongList = new MutableLiveData<>();
         mtCategoryList = new MutableLiveData<>();
     }
 
@@ -48,8 +46,8 @@ public class SongRepository {
 //        return mtPlayList;
 //    }
 
-    public MutableLiveData<List<PlaySong>> initPlaylist(){
-        return mtPlayList;
+    public MutableLiveData<List<Song>> initSearchSongList(){
+        return mtSerchSongList;
     }
 
     public MutableLiveData<List<Song>> initCategoryList(){
@@ -98,82 +96,23 @@ public class SongRepository {
         });
     }
 
-    public void fetchPlaylist(){
 
-        Call<ResponseDto<List<PlaySong>>> call = SongAPI.retrofit.create(SongAPI.class).findPlaylsit();
+    public void fetchSearchList(String keyword){
 
-        call.enqueue(new Callback<ResponseDto<List<PlaySong>>>() {
+        Call<ResponseDto<List<Song>>> call = SongAPI.retrofit.create(SongAPI.class).findByKeyword(keyword);
+
+        call.enqueue(new Callback<ResponseDto<List<Song>>>() {
             @Override
-            public void onResponse(Call<ResponseDto<List<PlaySong>>> call, Response<ResponseDto<List<PlaySong>>> response) {
+            public void onResponse(Call<ResponseDto<List<Song>>> call, Response<ResponseDto<List<Song>>> response) {
                 Log.d(TAG, "onResponse: 성공");
-                ResponseDto<List<PlaySong>> result = response.body();
+                ResponseDto<List<Song>> result = response.body();
                 Log.d(TAG, "onResponse: result: "+result);
-                mtPlayList.setValue(result.getData());
+                mtSerchSongList.setValue(result.getData());
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<List<PlaySong>>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<List<Song>>> call, Throwable t) {
                 Log.d(TAG, "onFailure: "+t.getMessage());
-            }
-        });
-
-    }
-
-
-
-
-    public void playSongAdd(PlaySongSaveReqDto song, PlayCallback playCallback){
-
-
-        Call<ResponseDto<PlaySong>> call = SongAPI.retrofit.create(SongAPI.class).insert(song);
-
-        call.enqueue(new Callback<ResponseDto<PlaySong>>() {
-            @Override
-            public void onResponse(Call<ResponseDto<PlaySong>> call, Response<ResponseDto<PlaySong>> response) {
-                Log.d(TAG, "onResponse: 재생목록에 곡 추가 성공" + response.body());
-                ResponseDto<PlaySong> result = response.body();
-                PlaySong playSong = result.getData(); //리턴을 못하는 문제\
-                playCallback.onSucess(playSong); //callback으로 리턴받기
-            }
-
-            @Override
-            public void onFailure(Call<ResponseDto<PlaySong>> call, Throwable t) {
-                Log.d(TAG, "onFailure: "+t.getMessage());
-                playCallback.onFailure();
-            }
-        });
-
-    }
-
-
-    public void deleteById(final int id) {
-
-        Call<ResponseDto<String>> call = SongAPI.retrofit.create(SongAPI.class).deleteById(id);
-
-        call.enqueue(new Callback<ResponseDto<String>>() {
-            @Override
-            public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
-                Log.d(TAG, "onResponse: response"+response);
-                ResponseDto<String> result = response.body();
-                Log.d(TAG, "onResponse: "+result.getStatusCode());
-
-                if (result.getStatusCode() == 1) {
-                    List<PlaySong> playSongList = mtPlayList.getValue();
-                    for (int i = 0; i < playSongList.size(); i++) {
-                        if (playSongList.get(i).getId() == id) {
-                            playSongList.remove(i);
-                            break;
-                        }
-                        mtPlayList.setValue(playSongList);
-                    }
-                } else {
-                    Log.d(TAG, "onResponse: 삭제 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseDto<String>> call, Throwable t) {
-                Log.d(TAG, "onResponse: 삭제 실패");
             }
         });
 

@@ -1,4 +1,4 @@
-package com.kang.floapp.view.main.frag;
+package com.kang.floapp.view.main.frag.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

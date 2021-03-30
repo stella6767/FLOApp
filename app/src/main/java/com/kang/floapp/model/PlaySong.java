@@ -15,7 +15,6 @@ public class PlaySong { //내 재생목록
 
     private Integer id;
     private Song song;
-
     private Timestamp createDate;
 
 }

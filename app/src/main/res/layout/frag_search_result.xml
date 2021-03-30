@@ -6,12 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar_search"/>
 
-    <!--메인화면-->
-    <FrameLayout
-        android:id="@+id/fragment_search_child_container"
+
+    <!--이부분은 리사이클러뷰가 들어와야합니다.-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_list"
+        android:background="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="7"/>
 
 
 

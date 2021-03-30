@@ -27,7 +27,8 @@ public class MainActivityViewModel extends ViewModel {
     private PlaySongRepository playSongRepository;
 
     private MutableLiveData<List<Song>> mtSongList;
-    public MutableLiveData<List<PlaySong>> mtPlayList;
+    private MutableLiveData<List<PlaySong>> mtPlayList;
+    private MutableLiveData<List<Song>> mtSearchSongList;
 
     //이거는 카테고리 라이브데이터로 하나로 통합을 할지, 아니면 장르별로 만들지는 아직 생각중, 전자가 낫긴한데..
     private MutableLiveData<List<Song>> mtCategoryList;
@@ -62,6 +63,7 @@ public class MainActivityViewModel extends ViewModel {
         mtSongList = songRepository.initMtSong();
         mtPlayList = playSongRepository.initPlaylist();
         mtCategoryList = songRepository.initCategoryList();
+        mtSearchSongList = songRepository.initSearchSongList();
     }
 
  //   private SongRepository sr = new SongRepository(mtSongList, mtPlayList);
@@ -85,11 +87,21 @@ public class MainActivityViewModel extends ViewModel {
         return mtCategoryList;
     }
 
+    public MutableLiveData<List<Song>> searchSongListSubscribe() {
+        return mtSearchSongList;
+    }
+
+
+
+
     public void findAll() {
         songRepository.fetchAllSong();
     }
 
     public void findCategory(String category){songRepository.fetchCaetgory(category);}
+
+    public void findBykeyword(String keyword){songRepository.fetchSearchList(keyword);}
+
 
     public void findPlaylist(){playSongRepository.fetchPlaylist();}
 

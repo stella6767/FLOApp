@@ -26,6 +26,8 @@ import java.util.Date;
 public class FragHomeCategory extends Fragment {
 
     private static final String TAG = "FragHomeCategory";
+    //private FragHomeCategory aaa = FragHomeCategory.this;
+
     public ImageView ivHomeBack;
 
     public CategoryListAdapter categoryListAdapter;
@@ -34,6 +36,8 @@ public class FragHomeCategory extends Fragment {
     private String img;
     private String desc;
 
+
+    private TextView tvToolbarCategory;
 
     private RecyclerView rvCategoryList;
     private TextView tvCurrentDate;
@@ -56,8 +60,6 @@ public class FragHomeCategory extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_home_category, container, false);
 
-
-
         MainActivity mainActivity = (MainActivity) container.getContext();
         ivHomeBack = view.findViewById(R.id.iv_home_back);
         mainViewModel = mainActivity.mainViewModel;
@@ -69,6 +71,7 @@ public class FragHomeCategory extends Fragment {
         categoryListAdapter = mainActivity.categoryListAdapter;
         rvCategoryList.setAdapter(categoryListAdapter);
 
+        tvToolbarCategory = view.findViewById(R.id.tv_toolbar_category);
 
         tvCurrentDate = view.findViewById(R.id.tv_current_date);
         tvCategoryTotal = view.findViewById(R.id.tv_category_total);
@@ -78,8 +81,12 @@ public class FragHomeCategory extends Fragment {
 
 
         initData(category);
-
         setCategoryImgText();
+
+        categoryListAdapter.setMainActivity(mainActivity);
+        categoryListAdapter.setTotalCategory(tvCategoryTotal);
+
+        //categoryListAdapter.setFragment(aaa);
 
         ivHomeBack.setOnClickListener(v -> {
             //Fragment selectedFragment = new FragHomeChild();
@@ -94,9 +101,8 @@ public class FragHomeCategory extends Fragment {
 
         tvCurrentDate.setText(getNowTime());
         tvCategoryDesc.setText(desc);
-        tvCategoryTotal.setText(categoryListAdapter.getItemCount()+"");
 
-        Log.d(TAG, "setCategoryImgText: "+categoryListAdapter.getItemCount());
+        tvToolbarCategory.setText(category);
 
         Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                 .with(this)
@@ -110,7 +116,7 @@ public class FragHomeCategory extends Fragment {
         mainViewModel.findCategory(category);
     }
 
-    private String getNowTime() {
+    public String getNowTime() {
         long lNow;
         Date dt;
         SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -120,4 +126,10 @@ public class FragHomeCategory extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Log.d(TAG, "setCategoryImgText: "+categoryListAdapter.getItemCount());
+//        tvCategoryTotal.setText(categoryListAdapter.getItemCount()+"");
+    }
 }

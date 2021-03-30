@@ -26,6 +26,11 @@ public interface SongAPI {
     @GET("song/category")
     Call<ResponseDto<List<Song>>> findCategory(@Query("category") String category);
 
+    @GET("song/search")
+    Call<ResponseDto<List<Song>>> findByKeyword(@Query("keyword") String keyword);
+
+
+    //////////////////////////////////////////////
 
     @GET("playSong")
     Call<ResponseDto<List<PlaySong>>> findPlaylsit();

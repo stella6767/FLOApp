@@ -14,6 +14,8 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.view.main.MainActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.categoryViewHolder> {
@@ -30,6 +32,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+    }
+
+    private String getNowTime() {
+        long lNow;
+        Date dt;
+        SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        lNow = System.currentTimeMillis();
+        dt = new Date(lNow);
+        return sdfFormat.format(dt);
     }
 
 

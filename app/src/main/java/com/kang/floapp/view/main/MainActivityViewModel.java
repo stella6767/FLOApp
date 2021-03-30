@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kang.floapp.model.repository.PlaySongRepository;
 import com.kang.floapp.model.repository.SongRepository;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
@@ -23,6 +24,7 @@ public class MainActivityViewModel extends ViewModel {
     private static final String TAG = "HomeActivityViewModel";
 
     private SongRepository songRepository;
+    private PlaySongRepository playSongRepository;
 
     private MutableLiveData<List<Song>> mtSongList;
     public MutableLiveData<List<PlaySong>> mtPlayList;

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PlaySong {
+public class PlaySong { //내 재생목록
 
     private Integer id;
     private Song song;

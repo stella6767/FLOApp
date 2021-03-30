@@ -21,18 +21,13 @@ import retrofit2.Response;
 public class SongRepository {
 
     private static final String TAG = "SongRepository";
+
     private MutableLiveData<List<Song>> mtSongList;
-    //private MutableLiveData<List<PlaySong>> mtPlayList;
+
     private MutableLiveData<List<PlaySong>> mtPlayList;
 
-    //카테고리 라이브 데이터 하나 혹은 8개 전부?
+    //카테고리 라이브 데이터(8개 카테고리)
     private MutableLiveData<List<Song>> mtCategoryList;
-
-
-//    public SongRepository(MutableLiveData<List<Song>> mtSongList, MutableLiveData<List<Song>> mtPlayList) {
-//        this.mtSongList = mtSongList;
-//        this.mtPlayList = mtPlayList;
-//    }
 
 
     public SongRepository() {

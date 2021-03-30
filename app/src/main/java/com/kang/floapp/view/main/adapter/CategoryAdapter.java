@@ -71,6 +71,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.catego
             categorySelect.setOnClickListener(v -> {
                 Log.d(TAG, "categoryViewHolder: 카테고리 클릭");
                 mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeCategory(category.get(getAdapterPosition()).getCategory())).commit();
+                //여기서 생성자로 desc와 img를 넘겨줄거다.
 
             });
 

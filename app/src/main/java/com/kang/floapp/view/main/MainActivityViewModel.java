@@ -57,8 +57,10 @@ public class MainActivityViewModel extends ViewModel {
 
     public MainActivityViewModel() {
         songRepository = new SongRepository();
+        playSongRepository = new PlaySongRepository();
+
         mtSongList = songRepository.initMtSong();
-        mtPlayList = songRepository.initPlaylist();
+        mtPlayList = playSongRepository.initPlaylist();
         mtCategoryList = songRepository.initCategoryList();
     }
 
@@ -89,11 +91,11 @@ public class MainActivityViewModel extends ViewModel {
 
     public void findCategory(String category){songRepository.fetchCaetgory(category);}
 
-    public void findPlaylist(){songRepository.fetchPlaylist();}
+    public void findPlaylist(){playSongRepository.fetchPlaylist();}
 
-    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){songRepository.playSongAdd(song, playCallback);}
+    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){playSongRepository.playSongAdd(song, playCallback);}
 
-    public void deleteById(int id){songRepository.deleteById(id);}
+    public void deleteById(int id){playSongRepository.deleteById(id);}
 
 
     public ServiceConnection getServiceConnection() {

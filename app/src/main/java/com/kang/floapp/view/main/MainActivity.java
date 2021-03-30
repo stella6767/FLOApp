@@ -33,6 +33,7 @@ import com.kang.floapp.view.main.adapter.AllSongAdapter;
 import com.kang.floapp.view.main.adapter.CategoryListAdapter;
 import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
+import com.kang.floapp.view.main.adapter.StorageAdapter;
 import com.kang.floapp.view.main.frag.FragHome;
 import com.kang.floapp.view.main.frag.FragPlaylist;
 import com.kang.floapp.view.main.frag.FragSearch;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public CategoryListAdapter categoryListAdapter;
     public AllSongAdapter allSongAdapter;
     public PlayListAdapter playListAdapter;
+    public StorageAdapter storageAdapter;
 
 
     //공용

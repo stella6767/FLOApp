@@ -24,24 +24,21 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private MainActivity mainActivity;
     public List<Song> categorySongList;
 
+
+
     public void setMusics(List<Song> categorySongList) {
         Log.d(TAG, "setMusics: 넘겨줬는데??" + categorySongList);
         this.categorySongList = categorySongList;
         notifyDataSetChanged();
     }
 
+
+
+
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
-    private String getNowTime() {
-        long lNow;
-        Date dt;
-        SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        lNow = System.currentTimeMillis();
-        dt = new Date(lNow);
-        return sdfFormat.format(dt);
-    }
 
 
     @NonNull

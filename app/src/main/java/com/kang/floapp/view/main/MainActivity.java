@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Random;
 
 
-//여기는 Kang4 Branch
+//여기는 Kang5 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivPlayViewArt;
     public ImageView ivRepeat;
     public ImageView ivRandome;
+    public ImageView ivHeart;
 
 
     // 홈 화면 음악 컨트롤바
@@ -357,6 +358,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
         ivRepeat = findViewById(R.id.iv_repeat);
         ivRandome = findViewById(R.id.iv_random);
+        ivHeart = findViewById(R.id.iv_heart);
+
 
     }
 

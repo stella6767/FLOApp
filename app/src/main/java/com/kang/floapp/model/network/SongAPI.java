@@ -1,6 +1,7 @@
 package com.kang.floapp.model.network;
 
 import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.dto.HeartSaveReqDto;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.Song;
@@ -40,6 +41,14 @@ public interface SongAPI {
 
     @DELETE("playSong/{id}")
     Call<ResponseDto<String>> deleteById(@Path("id") int id);
+
+
+
+    ///////////////////////////////////////////
+    @POST("heart")
+    Call<ResponseDto<PlaySong>> insertHeart(@Body HeartSaveReqDto heartSaveReqDto);
+
+
 
 
     Retrofit retrofit = new Retrofit.Builder()

@@ -16,11 +16,11 @@
         android:background="#090D12">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText2"
+            android:id="@+id/input_join_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:hint="아이디"
+            android:hint="유저네임"
             android:backgroundTint="@android:color/darker_gray"
             android:textColorHint="@android:color/darker_gray"
             android:textColor="@android:color/darker_gray"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText"
+            android:id="@+id/input_join_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -37,12 +37,13 @@
             android:backgroundTint="@android:color/darker_gray"
             android:textColorHint="@android:color/darker_gray"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="@+id/textInputEditText2"
+            app:layout_constraintEnd_toEndOf="@+id/input_join_name"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textInputEditText2"
-            app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+            app:layout_constraintStart_toStartOf="@+id/input_join_name"
+            app:layout_constraintTop_toBottomOf="@+id/input_join_name" />
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_join_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -50,13 +51,13 @@
             android:backgroundTint="@android:color/darker_gray"
             android:textColorHint="@android:color/darker_gray"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="@+id/textInputEditText3"
+            app:layout_constraintEnd_toEndOf="@+id/input_join_password_check"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textInputEditText3"
-            app:layout_constraintTop_toBottomOf="@+id/textInputEditText3" />
+            app:layout_constraintStart_toStartOf="@+id/input_join_password_check"
+            app:layout_constraintTop_toBottomOf="@+id/input_join_password_check" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText3"
+            android:id="@+id/input_join_password_check"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -64,10 +65,10 @@
             android:backgroundTint="@android:color/darker_gray"
             android:textColorHint="@android:color/darker_gray"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="@+id/textInputEditText"
+            app:layout_constraintEnd_toEndOf="@+id/input_join_password"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textInputEditText"
-            app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+            app:layout_constraintStart_toStartOf="@+id/input_join_password"
+            app:layout_constraintTop_toBottomOf="@+id/input_join_password" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline5"
@@ -92,14 +93,17 @@
         android:background="#090D12">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/mt_btn_join"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="20dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="4dp"
             android:text="가입완료"
             android:textSize="20sp"
             app:backgroundTint="#3F3FFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

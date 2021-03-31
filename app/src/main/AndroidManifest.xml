@@ -13,8 +13,11 @@
         android:theme="@style/Theme.FloApp"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize">
-        <activity android:name=".view.login.JoinActivity"></activity>
-        <activity android:name=".view.login.LoginActivity" />
+        <activity android:name=".view.profile.ProfileActivity"></activity>
+        <activity android:name=".view.user.JoinActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".view.user.LoginActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
         <service
             android:name=".utils.PlayService"

@@ -1,9 +1,12 @@
 package com.kang.floapp.view.main.frag.home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +18,8 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Category;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.adapter.CategoryAdapter;
+import com.kang.floapp.view.user.JoinActivity;
+import com.kang.floapp.view.user.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ public class FragHomeChild extends Fragment {
     public RecyclerView rvCategory;
     public CategoryAdapter categoryAdapter;
     private MainActivity mainActivity;
+    private ImageView ivProfileMove;
 
 
     @Override
@@ -40,7 +46,7 @@ public class FragHomeChild extends Fragment {
 
         MainActivity mainActivity = (MainActivity) container.getContext();
 
-
+        ivProfileMove = view.findViewById(R.id.iv_profile_move);
         rvCategory = view.findViewById(R.id.rv_category);
 
         List<Category> category = new ArrayList<>();  //이미지랑 키워드랑,
@@ -63,10 +69,10 @@ public class FragHomeChild extends Fragment {
         categoryAdapter.setMainActivity(mainActivity);
 
 
-//        categorySelect.setOnClickListener(v -> {
-//
-//            getFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeCategory()).commit();
-//        });
+        ivProfileMove.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        });
+
 
         return view;
     }

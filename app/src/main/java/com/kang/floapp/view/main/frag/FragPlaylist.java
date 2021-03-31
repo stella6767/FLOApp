@@ -47,17 +47,14 @@ public class FragPlaylist extends Fragment {
         View view = inflater.inflate(R.layout.play_list, container, false);
 
 
-//        MainActivity mainActivity = (MainActivity) container.getContext();
-//        mp = mainActivity.mp;
-//        mainViewModel = mainActivity.mainViewModel;
+        MainActivity mainActivity = (MainActivity) container.getContext();
 
 
         //아하!!! 이거 먼저 띄우고 해야 view model list가 초기화되도록 로직을 짰구나..
         rvPlayList = view.findViewById(R.id.rv_play_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvPlayList.setLayoutManager(layoutManager);
-//        playListAdapter = mainActivity.playListAdapter;
-//        playListAdapter.setMainActivity((MainActivity)getActivity());
+
         rvPlayList.setAdapter(playListAdapter);
 
         initData();

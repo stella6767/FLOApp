@@ -173,7 +173,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:tint="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/imageView17"
+            app:layout_constraintEnd_toStartOf="@+id/iv_random"
             app:layout_constraintStart_toEndOf="@+id/iv_play_view_bar"
             app:layout_constraintTop_toTopOf="@+id/iv_playView_prev"
             app:srcCompat="@drawable/ic_skip_next" />
@@ -186,12 +186,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_play_view_bar"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/iv_repeat"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_skip_previous" />
 
         <ImageView
-            android:id="@+id/imageView17"
+            android:id="@+id/iv_random"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:tint="@color/white"
@@ -201,7 +201,7 @@
             app:srcCompat="@drawable/ic_shuffle" />
 
         <ImageView
-            android:id="@+id/imageView18"
+            android:id="@+id/iv_repeat"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:tint="@color/white"

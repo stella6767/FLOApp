@@ -43,31 +43,27 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         if (playList != null && !playList.contains(playSong)) { //이게 프래그먼트에서 띄우는 거라, 프래그먼트가 먼저 발동해야 되는디..
             playList.add(playSong);
 
-            notifyDataSetChanged();
+            Log.d(TAG, "addSong: 내 재생목록에 곡 추가");
 
             EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + playSong.getSong().getFile(), Constants.isPlaying));
-            EventBus.getDefault().post(new SongIdPassenger(playList.size() - 1));
+            EventBus.getDefault().post(new SongIdPassenger(playList.size() - 1)); //이게 좀 에바인데, 딱히 방법이 생각안나네
 
+            notifyDataSetChanged();
             return 1;
+
+
         }
+
+
 
         return -1;
     }
 
-    public void removeSong() { //서버와 동기화시킬지 고민중..
-
-    }
 
     public int getSongId(int position){
         return playList.get(position).getId();
     }
 
-
-
-    public String getSongUrl(int position) {
-        String songUrl = Constants.BASEURL + Constants.FILEPATH + playList.get(position).getSong().getFile();
-        return songUrl;
-    }
 
 
     @NonNull
@@ -115,7 +111,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
             ivPlayPlay.setOnClickListener(v -> {
 
-                String songUrl = getSongUrl(getAdapterPosition());
+                EventBus.getDefault().post(new SongIdPassenger(getAdapterPosition()));
+
+                String songUrl = mainActivity.getSongUrl(playList.get(getAdapterPosition()).getSong().getFile());
 
                 mainActivity.tvTitle.setText(playList.get(getAdapterPosition()).getSong().getTitle());
                 mainActivity.tvArtist.setText(playList.get(getAdapterPosition()).getSong().getArtist());

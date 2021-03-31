@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 
 //여기는 Kang4 Branch
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivPlayViewNext;
     public TextView tvLyrics;
     public ImageView ivPlayViewArt;
+    public ImageView ivRepeat;
+    public ImageView ivRandome;
 
 
     // 홈 화면 음악 컨트롤바
@@ -154,6 +157,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+        ivRepeat.setOnClickListener(v -> {
+            playRepeat();
+        });
+
+        ivRandome.setOnClickListener(v -> {
+            playRandom();
+        });
+
         seekBarInit();
 
     }
@@ -184,6 +196,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 categoryListAdapter.setMusics(songs);
             }
         });
+    }
+
+    public String getSongUrl(String file){
+        return Constants.BASEURL + Constants.FILEPATH + file;
+    }
+
+
+    public void playRandom(){
+        Random random = new Random();
+
+        if(playListAdapter.playList != null) {
+            int randomsong = random.nextInt(playListAdapter.getItemCount());
+            Log.d(TAG, "playRandom: " + randomsong);
+            Toast.makeText(mContext, "내 재생목록 중 랜덤한 노래를 플레이합니다", Toast.LENGTH_SHORT).show();
+            즉시화면셋팅(playListAdapter.playList.get(randomsong).getSong());
+            Constants.prevNext = randomsong;
+            String songUrl = getSongUrl(playListAdapter.playList.get(randomsong).getSong().getFile());
+            setSongText();
+            EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
+        }
     }
 
 
@@ -228,7 +260,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .into(ivPlayViewArt);
 
 
-        String songUrl = playListAdapter.getSongUrl(Constants.prevNext);
+        String songUrl = getSongUrl(playListAdapter.playList.get(Constants.prevNext).getSong().getFile());
+
+
         Log.d(TAG, "setSongText: " + songUrl);
         EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying)); //재생목록 다음 or 이전 곡 재생
     }
@@ -321,8 +355,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayViewNext = findViewById(R.id.iv_playView_next);
         tvLyrics = findViewById(R.id.tv_lyrics);
         ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
+        ivRepeat = findViewById(R.id.iv_repeat);
+        ivRandome = findViewById(R.id.iv_random);
 
     }
+
+
+
+    public void playRepeat(){
+        Constants.isRepeat = Constants.isRepeat * -1;
+
+        if(Constants.isRepeat == 1) {
+            Toast.makeText(mContext, "노래 반복모드를 켰습니다.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(mContext, "노래 반복모드를 껐습니다.", Toast.LENGTH_SHORT).show();
+        }
+        Log.d(TAG, "playRepeat: isRepeat: " + Constants.isRepeat);
+    }
+
+
+
+
 
 
     public void seekBarUiHandle() {
@@ -339,8 +392,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //((MainActivity) getActivity()).playViewSeekBar.setProgress(mp.getCurrentPosition()); // 여기가 에러나는 부분
                             playViewSeekBar.setProgress(mp.getCurrentPosition());
 
-                            if (mp.getCurrentPosition() >= mp.getDuration()) {
-                                songStop();
+                            if (mp.getCurrentPosition() >= mp.getDuration() && Constants.isRepeat == -1) {
+                                mp.setLooping(false);
+                                //songStop();
+                                songAgain();
+                            }else if(mp.getCurrentPosition() >= mp.getDuration() && Constants.isRepeat == 1){
+                                mp.setLooping(true);
+                                Log.d(TAG, "run: 반복재생");
                             }
                         }
 
@@ -380,6 +438,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivBarPlay.setImageResource(android.R.drawable.ic_media_play);
         ivPlayViewBar.setImageResource(android.R.drawable.ic_media_play);
     }
+
+
+    public void songAgain(){
+        mp.seekTo(0);
+        mainSeekbar.setProgress(0);
+        mp.pause();
+        Constants.isPlaying = -1;
+        ivBarPlay.setImageResource(android.R.drawable.ic_media_play);
+        ivPlayViewBar.setImageResource(android.R.drawable.ic_media_play);
+    }
+
+
 
     public void songStop() {
         mp.reset();
@@ -474,7 +544,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (result == 1) {
                             Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
                         }else if(result == -1){
-                            EventBus.getDefault().post(new UrlPassenger(Constants.BASEURL + Constants.FILEPATH + playSong.getSong().getFile(), Constants.isPlaying));
+                            String songUrl = getSongUrl(playSong.getSong().getFile());
+
+                            if (playListAdapter.playList != null) {
+                                for (PlaySong play : playListAdapter.playList) {
+                                    if (playSong.getSong().getId() == play.getSong().getId()) {
+                                        EventBus.getDefault().post(new SongIdPassenger(play.getId()-1));
+                                        Log.d(TAG, "addSong: 같다면" + play.getId());
+                                    }
+                                }
+                            }
+
+                            EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
                         }
                     }
 

@@ -32,8 +32,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
     public List<Song> songList = new ArrayList<>();
     public int songPosition;
 
-
-
     public AllSongAdapter() { }
 
     public void setMainActivity(MainActivity mainActivity) {
@@ -46,13 +44,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
-
-
-
-    public String getSongUrl(int position) {
-        String songUrl = Constants.BASEURL + Constants.FILEPATH + songList.get(position).getFile();
-        return songUrl;
-    }
 
 
     @NonNull

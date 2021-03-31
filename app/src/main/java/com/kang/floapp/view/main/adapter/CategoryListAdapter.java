@@ -34,13 +34,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public List<Song> categorySongList;
     private TextView tvCategoryTotal;
 
-//    private FragHomeCategory aaa;
-//
-//    public void setFragment(FragHomeCategory aaa){
-//        this.aaa = aaa;
-//
-//    }
-
 
     public void setMusics(List<Song> categorySongList) {
         Log.d(TAG, "setMusics: 넘겨줬는데??" + categorySongList);
@@ -62,8 +55,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public categoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_category_list, parent, false);
-
-        //aaa.getNowTime();
 
 
         return new categoryViewHolder(view); //view가 리스트뷰에 하나 그려짐.

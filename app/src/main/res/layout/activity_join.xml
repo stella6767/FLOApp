@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:background="#090D12">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -84,12 +85,22 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="395dp" />
 
+        <TextView
+            android:id="@+id/tv_error_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/input_join_email"
+            app:layout_constraintTop_toBottomOf="@+id/input_join_email"
+            tools:text="테스트 " />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:background="#090D12">
 
         <com.google.android.material.button.MaterialButton

@@ -1,16 +1,12 @@
 package com.kang.floapp.model.repository;
 
-import android.graphics.Movie;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
-import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.network.SongAPI;
-import com.kang.floapp.utils.PlayCallback;
 
 import java.util.List;
 

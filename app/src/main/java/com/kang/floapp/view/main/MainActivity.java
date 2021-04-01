@@ -23,7 +23,7 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
-import com.kang.floapp.utils.PlayCallback;
+import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         즉시화면셋팅(songPassenger.song);
 
-        mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new PlayCallback<PlaySong>(){ //인터페이스 콜백패턴.
+        mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new AddCallback<PlaySong>(){ //인터페이스 콜백패턴.
                     @Override
                     public void onSucess(PlaySong playSong) {
                         int result = playListAdapter.addSong(playSong);

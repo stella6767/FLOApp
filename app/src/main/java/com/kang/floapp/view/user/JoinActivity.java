@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,6 +38,7 @@ public class JoinActivity extends AppCompatActivity {
     private TextInputEditText inputJoinPasswordCheck;
     private TextInputEditText inputJoinEmail;
     private Button mtBtnJoin;
+    private TextView tvErrorEmail;
 
     private ImageView ivJoinBack;
 
@@ -41,16 +47,42 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN); //매니페스트에서는 안 먹힌다.
+
+
         inputJoinName = findViewById(R.id.input_join_name);
         inputJoinPassword = findViewById(R.id.input_join_password);
         inputJoinPasswordCheck = findViewById(R.id.input_join_password_check);
         inputJoinEmail = findViewById(R.id.input_join_email);
         mtBtnJoin = findViewById(R.id.mt_btn_join);
+        tvErrorEmail = findViewById(R.id.tv_error_email);
 
         ivJoinBack = findViewById(R.id.iv_join_back);
 
         ivJoinBack.setOnClickListener(v -> {
             finish();
+        });
+
+        inputJoinEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+
+        inputJoinEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
+                    tvErrorEmail.setText("이메일 형식으로 입력해주세요");
+                }else{
+                    tvErrorEmail.setText("");
+                }
+            }
         });
 
 
@@ -63,8 +95,7 @@ public class JoinActivity extends AppCompatActivity {
 
             Log.d(TAG, "onCreate: "+username+password+email);
 
-
-            if (!password.equals(passwordCheck) || username.equals("") || password.equals("") || email.equals("") ){
+            if (!password.equals(passwordCheck) || username.equals("") || password.equals("") || email.equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                 Toast.makeText(this, "무언가 입력이 잘못되었습니다. 다시 한번 입력해주십시오.", Toast.LENGTH_SHORT).show();
 
             }else{
@@ -86,7 +117,9 @@ public class JoinActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: 성공");
                         ResponseDto<Void> result = response.body();
                         if (result.getStatusCode() == 1){
-                            alert("회원가입에 성공하였습니다.");
+                            alert(result.getMsg());
+                        }else{
+                            alert(result.getMsg());
                         }
                     }
 

@@ -5,11 +5,10 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.kang.floapp.model.PlaySong;
-import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.network.SongAPI;
-import com.kang.floapp.utils.PlayCallback;
+import com.kang.floapp.utils.callback.AddCallback;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class PlaySongRepository { //일단 나중에 옮기도록 하자
     }
 
 
-    public void playSongAdd(PlaySongSaveReqDto song, PlayCallback playCallback){
+    public void playSongAdd(PlaySongSaveReqDto song, AddCallback addCallback){
 
 
         Call<ResponseDto<PlaySong>> call = SongAPI.retrofit.create(SongAPI.class).insert(song);
@@ -66,13 +65,13 @@ public class PlaySongRepository { //일단 나중에 옮기도록 하자
                 Log.d(TAG, "onResponse: 재생목록에 곡 추가 성공" + response.body());
                 ResponseDto<PlaySong> result = response.body();
                 PlaySong playSong = result.getData(); //리턴을 못하는 문제\
-                playCallback.onSucess(playSong); //callback으로 리턴받기
+                addCallback.onSucess(playSong); //callback으로 리턴받기
             }
 
             @Override
             public void onFailure(Call<ResponseDto<PlaySong>> call, Throwable t) {
                 Log.d(TAG, "onFailure: "+t.getMessage());
-                playCallback.onFailure();
+                addCallback.onFailure();
             }
         });
 
@@ -90,7 +89,7 @@ public class PlaySongRepository { //일단 나중에 옮기도록 하자
                 ResponseDto<String> result = response.body();
                 Log.d(TAG, "onResponse: "+result.getStatusCode());
 
-                if (result.getStatusCode() == 1) {
+                if (result.getStatusCode() == 1) {  //요렇게 해서 playsong add 할 수 있겠는디..
                     List<PlaySong> playSongList = mtPlayList.getValue();
                     for (int i = 0; i < playSongList.size(); i++) {
                         if (playSongList.get(i).getId() == id) {

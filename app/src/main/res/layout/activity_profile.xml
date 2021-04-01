@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:background="#090D12">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -31,14 +32,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#090D12"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:background="#090D12">
 
         <com.google.android.material.button.MaterialButton
@@ -46,7 +45,7 @@
             android:layout_width="236dp"
             android:layout_height="77dp"
             android:layout_marginStart="84dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="40dp"
             android:text="정보수정"
             android:textSize="20sp"
             app:backgroundTint="#3F3FFF"
@@ -54,17 +53,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbtn_join"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:id="@+id/mt_btn_logout"
+            android:layout_width="294dp"
+            android:layout_height="98dp"
             android:layout_margin="20dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="104dp"
+            android:layout_marginTop="32dp"
             android:text="로그아웃"
             android:textSize="20sp"
             app:backgroundTint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialButton3" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

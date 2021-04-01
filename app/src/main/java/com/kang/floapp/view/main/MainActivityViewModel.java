@@ -14,7 +14,7 @@ import com.kang.floapp.model.repository.SongRepository;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
-import com.kang.floapp.utils.PlayCallback;
+import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 
 import java.util.List;
@@ -105,7 +105,7 @@ public class MainActivityViewModel extends ViewModel {
 
     public void findPlaylist(){playSongRepository.fetchPlaylist();}
 
-    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){playSongRepository.playSongAdd(song, playCallback);}
+    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, AddCallback addCallback){playSongRepository.playSongAdd(song, addCallback);}
 
     public void deleteById(int id){playSongRepository.deleteById(id);}
 

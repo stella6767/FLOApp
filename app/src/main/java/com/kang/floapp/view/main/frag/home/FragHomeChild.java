@@ -3,6 +3,7 @@ package com.kang.floapp.view.main.frag.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Category;
+import com.kang.floapp.model.dto.AuthLoginRespDto;
+import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.adapter.CategoryAdapter;
+import com.kang.floapp.view.profile.ProfileActivity;
 import com.kang.floapp.view.user.JoinActivity;
 import com.kang.floapp.view.user.LoginActivity;
 
@@ -69,8 +74,28 @@ public class FragHomeChild extends Fragment {
         categoryAdapter.setMainActivity(mainActivity);
 
 
+
+
         ivProfileMove.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+
+            Gson gson = new Gson();
+
+            String principal = SharedPreference.getAttribute(mainActivity, "principal");
+            Log.d(TAG, "onCreateView: 인증" + principal);
+
+            AuthLoginRespDto loginRespDto = gson.fromJson(principal, AuthLoginRespDto.class);
+            Log.d(TAG, "onCreateView: 됨?" + loginRespDto);
+
+            if(loginRespDto != null){
+//                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                getActivity().startActivity(intent);
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
+
+            }else{
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+
         });
 
 

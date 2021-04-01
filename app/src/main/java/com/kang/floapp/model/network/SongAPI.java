@@ -1,9 +1,11 @@
 package com.kang.floapp.model.network;
 
 import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.Song;
+import com.kang.floapp.model.dto.StorageSaveDto;
 import com.kang.floapp.view.common.Constants;
 
 import java.util.List;
@@ -41,6 +43,17 @@ public interface SongAPI {
     @DELETE("playSong/{id}")
     Call<ResponseDto<String>> deleteById(@Path("id") int id);
 
+    //////////////////////////////////////////////
+
+    @GET("storage")
+    Call<ResponseDto<List<Storage>>> findAllStorage();
+
+    @POST("storage")
+    Call<ResponseDto<Storage>> saveStorage(@Body StorageSaveDto storageSaveDto);
+
+    // ResponseDto로 통일되게 수정하기
+    @DELETE("storage/{id}")
+    Call<ResponseDto<String>> deleteByIdStorage(@Path("id") Integer id);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constants.BASEURL)

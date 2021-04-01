@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
+import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.utils.PlayCallback;
 import com.kang.floapp.utils.PlayService;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         dataObserver();
         serviceObservers();
+        initData();
 
 
         //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
@@ -170,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void initData(){
+        mainViewModel.findStorage();
+    }
 
     public void dataObserver() {
 
@@ -196,6 +201,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 categoryListAdapter.setMusics(songs);
             }
         });
+
+        mainViewModel.storageSubscribe().observe(this, new Observer<List<Storage>>() {
+            @Override
+            public void onChanged(List<Storage> storages) {
+                Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");
+                storageAdapter.setStorage(storages);
+                //storageSelectAdapter.setStorage(storages);
+            }
+        });
+
     }
 
     public String getSongUrl(String file){
@@ -332,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         allSongAdapter = new AllSongAdapter();
         categoryListAdapter = new CategoryListAdapter();
         playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
+        storageAdapter = new StorageAdapter(MainActivity.this);
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);

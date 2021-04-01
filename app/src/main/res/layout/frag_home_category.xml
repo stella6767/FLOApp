@@ -17,7 +17,7 @@
 
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/roundedImageView"
+            android:id="@+id/iv_category_img"
             android:layout_width="144dp"
             android:layout_height="107dp"
             android:layout_marginStart="20dp"
@@ -43,7 +43,7 @@
             app:layout_constraintGuide_end="20dp" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/tv_category_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
@@ -52,30 +52,30 @@
             android:textColor="@color/white"
             android:textSize="17dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/roundedImageView"
+            app:layout_constraintStart_toEndOf="@+id/iv_category_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/tv_current_date"
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2021.03.20"
             android:textSize="10dp"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintStart_toStartOf="@+id/tv_category_desc"
+            app:layout_constraintTop_toBottomOf="@+id/tv_category_desc" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/tv_category_total"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="총 4곡"
             android:textSize="10dp"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toTopOf="@+id/textView14" />
+            app:layout_constraintStart_toEndOf="@+id/tv_current_date"
+            app:layout_constraintTop_toTopOf="@+id/tv_current_date" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -83,25 +83,13 @@
 
 
     <!--이부분은 리사이클러뷰가 들어와야합니다.-->
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category_list"
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="#090D12"
-        android:orientation="vertical">
+        android:layout_weight="7"/>
 
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-        <include layout="@layout/item_category_list"/>
-
-
-
-
-
-    </LinearLayout>
 
 
 </LinearLayout>

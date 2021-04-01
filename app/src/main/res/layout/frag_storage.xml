@@ -6,95 +6,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#090D12">
-
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline20"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="보관함"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline87"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline87"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="20dp" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/toolbar_storage"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="6"
         android:background="#090D12"
         android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_storage"
+            android:background="#090D12"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="#3F3FFF"
+            app:tabIndicatorColor="#3F3FFF"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="100dp"
-                android:layout_height="57dp"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_add_circle"
-                app:tint="@color/white" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:text="새로운 리스트 만들기"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-        <!--이부분은 리사이클러뷰가 들어와야합니다.-->
-<!--        <include layout="@layout/item_storage" />-->
-
-<!--        <include layout="@layout/item_storage" />-->
-
-<!--        <include layout="@layout/item_storage" />-->
-
-<!--        <include layout="@layout/item_storage" />-->
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_storage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 
 

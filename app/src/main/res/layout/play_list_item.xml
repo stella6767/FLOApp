@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#090D12"
+    android:layout_width="match_parent"
+    android:layout_margin="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_height="50dp">
+
+
+    <TextView
+        android:id="@+id/tv_play_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="3dp"
+        android:text="애쉬아일랜드"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_play_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_play_title" />
+
+    <TextView
+        android:id="@+id/tv_play_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="7dp"
+        android:text="멜로디"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/iv_play_art"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_play_Id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="1"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/iv_play_art"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_play_play"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/ic_play"
+        app:tint="@color/white" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/iv_play_art"
+        android:layout_width="46dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ashisland_melody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="25dip"
+        app:riv_mutate_background="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

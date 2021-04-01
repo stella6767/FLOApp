@@ -3,19 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="#090D12"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.main.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include layout="@layout/toolbar_tour"/>
+
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="500dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/tv_floChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="FLO 차트 100곡"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_updateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="17:00 업데이트"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_floChart"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.529" />
+
+            <ImageView
+                android:layout_marginRight="5dp"
+                android:id="@+id/iv_floChart_listenAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_floChart_listenAll"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_play" />
+
+            <TextView
+                android:id="@+id/tv_floChart_listenAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체듣기"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_song_list"
+            android:background="@drawable/rounded"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv_song_list"-->
+<!--            android:background="@color/black"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 

@@ -2,7 +2,6 @@ package com.kang.floapp.view.main.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
-import com.kang.floapp.model.dto.Song;
-import com.kang.floapp.utils.eventbus.SongIdPassenger;
-import com.kang.floapp.utils.eventbus.UrlPassenger;
+import com.kang.floapp.model.Song;
+import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
+import com.kang.floapp.view.main.frag.home.FragHome;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,11 +27,10 @@ import java.util.List;
 
 public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHolder> {
 
-    private static final String TAG = "MusicAdapter";
+    private static final String TAG = "AllSongAdapter";
     private MainActivity mainActivity;
     public List<Song> songList = new ArrayList<>();
     public int songPosition;
-
 
     public AllSongAdapter() { }
 
@@ -45,11 +44,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
-
-    public String getSongUrl(int position) {
-        String songUrl = Constants.BASEURL + Constants.FILEPATH + songList.get(position).getFile();
-        return songUrl;
-    }
 
 
     @NonNull
@@ -90,25 +84,12 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
             super(itemView);
             tvSongArtist = itemView.findViewById(R.id.tv_song_artist);
             tvSongTitle = itemView.findViewById(R.id.tv_song_title);
-            tvSongId = itemView.findViewById(R.id.tv_songId);
+            tvSongId = itemView.findViewById(R.id.tv_song_Id);
             ivSongPlay = itemView.findViewById(R.id.iv_song_play);
             ivSongArt = itemView.findViewById(R.id.iv_song_art);
 
             ivSongPlay.setOnClickListener(v -> {
 
-                String songUrl = getSongUrl(getAdapterPosition());
-
-                songPosition = getAdapterPosition();
-
-                EventBus.getDefault().post(new SongIdPassenger(songPosition));
-
-                Log.d(TAG, "MyViewHolder: " + songPosition);
-
-                mainActivity.tvTitle.setText(songList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvArtist.setText(songList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewArtist.setText(songList.get(getAdapterPosition()).getArtist());
-                mainActivity.tvPlayViewTitle.setText(songList.get(getAdapterPosition()).getTitle());
-                mainActivity.tvLyrics.setText(songList.get(getAdapterPosition()).getLyrics());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
@@ -117,14 +98,9 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
 
-                try {
-                    Log.d(TAG, "MyViewHolder: 음악 클릭됨");
-                    //songPrepare(songUrl);
-                    EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                    EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
 
             });
 

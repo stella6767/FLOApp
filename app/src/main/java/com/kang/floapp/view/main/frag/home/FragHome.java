@@ -1,4 +1,4 @@
-package com.kang.floapp.view.main.frag;
+package com.kang.floapp.view.main.frag.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.kang.floapp.R;
-import com.kang.floapp.view.main.frag.fragchild.FragHomeCategory;
-import com.kang.floapp.view.main.frag.fragchild.FragHomeChild;
+import com.kang.floapp.view.main.frag.home.FragHomeChild;
 
 public class FragHome extends Fragment {
 
@@ -32,9 +31,6 @@ public class FragHome extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
-
 
 
     }

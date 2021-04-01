@@ -1,4 +1,4 @@
-package com.kang.floapp.model.dto;
+package com.kang.floapp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +16,6 @@ public class Song {
     private String lyrics;
     private String date;
     private String img;
-    //private List<>
+    //private List<> heart
     private String file;
 }

@@ -2,10 +2,12 @@ package com.kang.floapp.model.network;
 
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.Song;
-import com.kang.floapp.model.dto.StorageSaveDto;
+import com.kang.floapp.model.dto.StorageSaveReqDto;
+import com.kang.floapp.model.dto.StorageSongSaveReqDto;
 import com.kang.floapp.view.common.Constants;
 
 import java.util.List;
@@ -49,11 +51,20 @@ public interface SongAPI {
     Call<ResponseDto<List<Storage>>> findAllStorage();
 
     @POST("storage")
-    Call<ResponseDto<Storage>> saveStorage(@Body StorageSaveDto storageSaveDto);
+    Call<ResponseDto<Storage>> saveStorage(@Body StorageSaveReqDto storageSaveReqDto);
 
-    // ResponseDto로 통일되게 수정하기
     @DELETE("storage/{id}")
     Call<ResponseDto<String>> deleteByIdStorage(@Path("id") Integer id);
+
+    //////////////////////////////////////////////
+
+    // 보관함에 노래 저장하기
+    @POST("storageSong")
+    Call<Void> saveStorageSong(@Body StorageSongSaveReqDto storageSongSaveReqDto);
+
+    // 보관함 노래 찾기
+    @GET("storageSong/{id}")
+    Call<ResponseDto<List<StorageSong>>> findAllStorageSong(@Path("id") Integer id);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constants.BASEURL)

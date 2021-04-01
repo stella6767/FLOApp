@@ -16,6 +16,7 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.main.MainActivity;
+import com.kang.floapp.view.main.frag.storage.FragSelectStorage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,6 +27,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
     private static final String TAG = "SearchSongAdapter";
     private MainActivity mainActivity;
     public List<Song> searchSongList;
+    private StorageSelectAdapter storageSelectAdapter;
 
 
     public void setMusics(List<Song> searchSongList) {
@@ -71,6 +73,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
         private TextView tvSearchListTitle;
         private ImageView ivSearchListArt;
         private ImageView ivSearchListPlay;
+        private ImageView ivSearchListAdd;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +82,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
             tvSearchListTitle = itemView.findViewById(R.id.tv_search_list_title);
             ivSearchListArt = itemView.findViewById(R.id.iv_search_list_art);
             ivSearchListPlay = itemView.findViewById(R.id.iv_search_list_play);
+            ivSearchListAdd = itemView.findViewById(R.id.iv_search_list_add);
 
             ivSearchListPlay.setOnClickListener(v -> {
 
@@ -92,6 +96,15 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
                         .into(mainActivity.ivPlayViewArt);
 
                 EventBus.getDefault().post(new SongPassenger(searchSongList.get(getAdapterPosition())));
+            });
+
+            // 검색 리스트에서 보관함 추가하기 로직 (04.01 추가 - 신율)
+            storageSelectAdapter = mainActivity.storageSelectAdapter;
+            ivSearchListAdd.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                Song song = searchSongList.get(pos);
+                storageSelectAdapter.transSongData(song);
+                ((MainActivity)v.getContext()).replace(FragSelectStorage.newInstance());
             });
 
 

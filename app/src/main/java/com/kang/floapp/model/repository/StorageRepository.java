@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.ResponseDto;
-import com.kang.floapp.model.dto.StorageSaveDto;
+import com.kang.floapp.model.dto.StorageSaveReqDto;
 import com.kang.floapp.model.network.SongAPI;
 
 import java.util.List;
@@ -53,13 +53,17 @@ public class StorageRepository {
         });
     }
 
-    public void saveStorage(StorageSaveDto storageSaveDto){
-        Call<ResponseDto<Storage>> call = SongAPI.retrofit.create(SongAPI.class).saveStorage(storageSaveDto);
+    public void saveStorage(StorageSaveReqDto storageSaveReqDto){
+        Call<ResponseDto<Storage>> call = SongAPI.retrofit.create(SongAPI.class).saveStorage(storageSaveReqDto);
 
         call.enqueue(new Callback<ResponseDto<Storage>>() {
             @Override
             public void onResponse(Call<ResponseDto<Storage>> call, Response<ResponseDto<Storage>> response) {
                 Log.d(TAG, "onResponse: 보관함 리스트 추가하기 성공 : " + response.body().getData());
+                List<Storage> storageList = mtStorageList.getValue();
+                Log.d(TAG, "onResponse: storageList = " + storageList);
+
+
             }
 
             @Override

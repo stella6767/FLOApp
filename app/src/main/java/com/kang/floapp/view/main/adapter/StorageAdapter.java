@@ -17,6 +17,7 @@ import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
+import com.kang.floapp.view.main.frag.storage.FragStorageSongList;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     private static final String TAG = "StorageAdapter";
     private List<Storage> storageList = new ArrayList<>();
     private StorageRepository storageRepository = new StorageRepository();
-    // 내일 일어나서 리스트 뿌릴 때 주석 풀어줘야함
-    //private StorageSongRepository storageSongRepository;
     private MainActivityViewModel mainActivityViewModel;
     private MainActivity mainActivity;
     private Storage storageInfo;
@@ -119,16 +118,14 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
                 int itemId = storage.getId();
 
                 storageInfo = storage;
-                // 내일 일어나서 리스트 뿌릴 때 주석 풀어줘야함
-                //mainActivityViewModel.findAllStorageSong(itemId);
+                mainActivityViewModel.findStorageSong(itemId);
 
 
                 // 음원을 서버로부터 다운받아와야 하기 때문에 로딩시간을 줍니다.
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // 내일 일어나서 리스트 뿌릴 때 주석 풀어줘야함
-                        //((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
+                        ((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
                     }
                 }, 1000);
 
@@ -147,6 +144,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
                 mainActivityViewModel.deleteByIdStorage(itemId);
                 removeStorage(itemPos);
+
+
             });
 
 

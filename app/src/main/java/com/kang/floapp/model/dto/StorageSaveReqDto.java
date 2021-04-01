@@ -5,7 +5,7 @@ import com.kang.floapp.model.Storage;
 import lombok.Data;
 
 @Data
-public class StorageSaveDto {
+public class StorageSaveReqDto {
     private String title;
 
     public Storage toEntity(){

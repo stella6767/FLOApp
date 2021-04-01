@@ -2,6 +2,8 @@ package com.kang.floapp.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
@@ -35,6 +38,7 @@ import com.kang.floapp.view.main.adapter.CategoryListAdapter;
 import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
+import com.kang.floapp.view.main.adapter.StorageSelectAdapter;
 import com.kang.floapp.view.main.frag.home.FragHome;
 import com.kang.floapp.view.main.frag.FragPlaylist;
 import com.kang.floapp.view.main.frag.search.FragSearch;
@@ -48,6 +52,22 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+
+// 해야 할 것 - 신율.
+// 1. 삭제하기 cascade로 리스트 다 삭제하기
+// 2. 보관함 속 음악 리스트도 삭제하기
+// 3. 좋아요 탭
+// 4. 보관함 이미지 설정하기
+// 5. 보관함에 노래 넣을 때 노래 중복 확인하기
+// 6. 행동에 대해서 Toast나 snackbar 만들어 주기
+// 7. 보관함 추가하기 UI바로 안뜨는 것.
+//      (완료) = 순서의 문제 입니다.
+// 8. 보관함 추가하기 하면 실패 뜨는것.
+//      (완료) = 서버 Response와 레트로핏 Call 응답 타입을 같게 해줘야합니다.
+// 9. notification 알아보기.
+// 10. 콜백 말고 레포에서 바로 setValue로 처리. (04.01 - 보류)
+// 11. 추가나 조회시 전체 레이아웃을 클릭하도록 바꾸기.
+// * 코드 정돈
 
 
 //여기는 Kang4 Branch
@@ -66,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public AllSongAdapter allSongAdapter;
     public PlayListAdapter playListAdapter;
     public StorageAdapter storageAdapter;
+    public StorageSelectAdapter storageSelectAdapter;
 
 
     //공용
@@ -172,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    // 앱 실행시 서버로부터 보관함 리스트를 가져옵니다. (04.01 추가 - 신율)
     public void initData(){
         mainViewModel.findStorage();
     }
@@ -202,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mainViewModel.storageSubscribe().observe(this, new Observer<List<Storage>>() {
+        mainViewModel.storageListSubscribe().observe(this, new Observer<List<Storage>>() {
             @Override
             public void onChanged(List<Storage> storages) {
                 Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");
@@ -348,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         categoryListAdapter = new CategoryListAdapter();
         playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
         storageAdapter = new StorageAdapter(MainActivity.this);
+        storageSelectAdapter = new StorageSelectAdapter(MainActivity.this);
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -495,6 +518,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onPrepared(String songUrl) throws IOException { //이거 나중에 스레드로
 
+        Log.d(TAG, "onPrepared: "+ songUrl);
         mp.reset();
         mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //하 씨바 미치것네
             @Override
@@ -626,11 +650,77 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    //***************** 프래그먼트에서 뒤로가기 구현을 위한 코드 (04.01) 추가 - 신율 *****************//
+    // 뒤로가기 버튼 입력시간이 담길 long 객체
+    private long pressedTime = 0;
+
+    // 리스너 생성
+    public interface OnBackPressedListener {
+        public void onBack();
+    }
+
+    // 리스너 객체 생성
+    private OnBackPressedListener mBackListener;
+
+    // 리스너 설정 메소드
+    public void setOnBackPressedListener(OnBackPressedListener listener) {
+        mBackListener = listener;
+    }
+
+    // 뒤로가기 버튼을 눌렀을 때의 오버라이드 메소드
+    @Override
+    public void onBackPressed() {
+
+        // 다른 Fragment 에서 리스너를 설정했을 때 처리됩니다.
+        if(mBackListener != null) {
+            mBackListener.onBack();
+            Log.e("!!!", "Listener is not null");
+            // 리스너가 설정되지 않은 상태(예를들어 메인Fragment)라면
+            // 뒤로가기 버튼을 연속적으로 두번 눌렀을 때 앱이 종료됩니다.
+        } else {
+            Log.e("!!!", "Listener is null");
+            if ( pressedTime == 0 ) {
+                Snackbar.make(findViewById(R.id.fragment_container),
+                        " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
+                pressedTime = System.currentTimeMillis();
+            }
+            else {
+                int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+                if ( seconds > 2000 ) {
+                    Snackbar.make(findViewById(R.id.fragment_container),
+                            " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
+                    pressedTime = 0 ;
+                }
+                else {
+                    super.onBackPressed();
+                    Log.e("!!!", "onBackPressed : finish, killProcess");
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }
+        }
+    }
+    //***************** 프래그먼트에서 뒤로가기 구현을 위한 코드 (04.01) - 신율 *****************//
+
+
+
+
+
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
         startService(); //바인딩 서비스
+        //EventBus.getDefault().register(this);
+
     }
+
+
 
     private void startService() {
         Intent serviceIntent = new Intent(this, PlayService.class);
@@ -645,15 +735,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override   //이벤트를 받을 액티비티나 프래그먼트에 등록
-    protected void onStart() {
+   protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        // 앱을 나갔다가 다시 들어오면 생기는 이벤트 버스 중복 문제 해결책. (04.01 추가 - 신율)
+//        EventBus.getDefault().unregister(this);
+//    }
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    // 프래그먼트 끼리 이동을 위한 함수 입니다. (04.01 추가 - 신율)
+    public void replace(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
     }
 
 }

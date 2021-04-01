@@ -10,13 +10,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kang.floapp.model.Storage;
-import com.kang.floapp.model.dto.StorageSaveDto;
+import com.kang.floapp.model.StorageSong;
+import com.kang.floapp.model.dto.StorageSaveReqDto;
+import com.kang.floapp.model.dto.StorageSongSaveReqDto;
 import com.kang.floapp.model.repository.PlaySongRepository;
 import com.kang.floapp.model.repository.SongRepository;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.repository.StorageRepository;
+import com.kang.floapp.model.repository.StorageSongRepository;
 import com.kang.floapp.utils.PlayCallback;
 import com.kang.floapp.utils.PlayService;
 
@@ -29,11 +32,13 @@ public class MainActivityViewModel extends ViewModel {
     private SongRepository songRepository;
     private PlaySongRepository playSongRepository;
     private StorageRepository storageRepository;
+    private StorageSongRepository storageSongRepository;
 
     private MutableLiveData<List<Song>> mtSongList;
     private MutableLiveData<List<PlaySong>> mtPlayList;
     private MutableLiveData<List<Song>> mtSearchSongList;
     private MutableLiveData<List<Storage>> mtStorageList;
+    private MutableLiveData<List<StorageSong>> mtStorageSongList;
 
     //이거는 카테고리 라이브데이터로 하나로 통합을 할지, 아니면 장르별로 만들지는 아직 생각중, 전자가 낫긴한데..
     private MutableLiveData<List<Song>> mtCategoryList;
@@ -65,12 +70,14 @@ public class MainActivityViewModel extends ViewModel {
         songRepository = new SongRepository();
         playSongRepository = new PlaySongRepository();
         storageRepository = new StorageRepository();
+        storageSongRepository = new StorageSongRepository();
 
         mtSongList = songRepository.initMtSong();
         mtPlayList = playSongRepository.initPlaylist();
         mtCategoryList = songRepository.initCategoryList();
         mtSearchSongList = songRepository.initSearchSongList();
         mtStorageList = storageRepository.initMtStorage();
+        mtStorageSongList = storageSongRepository.initMtStorageSong();
     }
 
  //   private SongRepository sr = new SongRepository(mtSongList, mtPlayList);
@@ -98,7 +105,9 @@ public class MainActivityViewModel extends ViewModel {
         return mtSearchSongList;
     }
 
-    public MutableLiveData<List<Storage>> storageSubscribe() {return mtStorageList;}
+    public MutableLiveData<List<Storage>> storageListSubscribe() {return mtStorageList;}
+
+    public MutableLiveData<List<StorageSong>> storageSongListSubscribe() {return  mtStorageSongList;}
 
 
 
@@ -120,13 +129,15 @@ public class MainActivityViewModel extends ViewModel {
 
     public void findStorage(){storageRepository.fetchAllStorage();}
 
-    public void addStorage(StorageSaveDto storageSaveDto){
-        storageRepository.saveStorage(storageSaveDto);
-    }
+    public void addStorage(StorageSaveReqDto storageSaveReqDto){ storageRepository.saveStorage(storageSaveReqDto);}
 
-    public void deleteByIdStorage(int id){
-        storageRepository.deleteStorage(id);
-    }
+    public void deleteByIdStorage(int id){ storageRepository.deleteStorage(id); }
+
+
+    public void findStorageSong(int id){storageSongRepository.fetchFindAll(id);}
+
+    public void addStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){storageSongRepository.saveStorageSong(storageSongSaveReqDto);}
+
 
     public ServiceConnection getServiceConnection() {
         return connection;

@@ -23,23 +23,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Storage;
 
-import com.kang.floapp.model.dto.StorageSaveDto;
+import com.kang.floapp.model.dto.StorageSaveReqDto;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
 
 import java.util.List;
 
-// 해야 할 것
-// 1. 삭제하기 cascade로 리스트 다 삭제하기
-// 2. 보관함 속 음악 리스트도 삭제하기
-// 3. 좋아요 탭
-// 4. 보관함 이미지 설정하기
-// 5. 보관함에 노래 넣을 때 노래 중복 확인하기
-// 6. 행동에 대해서 Toast나 snackbar 만들어 주기
-// 7. 보관함 추가하기 UI바로 안뜨는 것 해결.
-// 8. 보관함 추가하기 하면 실패 뜨는것 해결.
-// * 코드 정돈
+
 
 public class FragList extends Fragment {
 
@@ -72,6 +63,7 @@ public class FragList extends Fragment {
 
         MainActivity mainActivity = (MainActivity) container.getContext();
         mainViewModel = mainActivity.mainViewModel;
+        dataObserver();
 
         // 리스트를 만들면 프래그먼트가 새로고침을 할 수 있도록 객체를 생성했습니다.
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -98,6 +90,7 @@ public class FragList extends Fragment {
 
             tiDialogTitle = dialog.findViewById(R.id.ti_dialog_title);
             tvDialogCancel = dialog.findViewById(R.id.tv_dialog_cancel);
+
             tvDialogCancel.setOnClickListener(v1 -> {
                 Log.d(TAG, "다이얼 취소 버튼 클릭 됨.");
 
@@ -108,20 +101,18 @@ public class FragList extends Fragment {
             tvDialogComfirm.setOnClickListener(v1 -> {
                 Log.d(TAG, "다이얼 확인 버튼 클릭 됨.");
                 String title = tiDialogTitle.getText().toString();
-                StorageSaveDto storageSaveDto = new StorageSaveDto();
-                storageSaveDto.setTitle(title);
+                StorageSaveReqDto storageSaveReqDto = new StorageSaveReqDto();
+                storageSaveReqDto.setTitle(title);
 
-                mainViewModel.addStorage(storageSaveDto);
+                mainViewModel.addStorage(storageSaveReqDto);
                 // 어댑터한테 보관함이 추가 된 것을 알려주면
                 // 뷰 모델에 알림이 발생해서 리스트를 ..?? 일단 어댑터로 바로 쐈습니다.
-                storageAdapter.addStorage(storageSaveDto.toEntity());
+                storageAdapter.addStorage(storageSaveReqDto.toEntity());
                 // 어댑터에서 UI는 그렸지만 DB에서 Id값이 동기화 되지 않아
                 // NPE 발생
                 // initData()와 dataObserver()를 통해
                 // 다시 전체 찾기를 해주면 해결됩니다.
                 ft.detach(this).attach(this).commit();
-                dataObserver();
-                initData();
 
 
                 alertDialog.dismiss();
@@ -133,6 +124,7 @@ public class FragList extends Fragment {
 
 
 
+        initData();
         return view;
     }
 
@@ -143,7 +135,7 @@ public class FragList extends Fragment {
 
     // 뷰 모델 구독
     public void dataObserver(){
-        mainViewModel.storageSubscribe().observe(this, new Observer<List<Storage>>() {
+        mainViewModel.storageListSubscribe().observe(this, new Observer<List<Storage>>() {
             @Override
             public void onChanged(List<Storage> storages) {
                 Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");

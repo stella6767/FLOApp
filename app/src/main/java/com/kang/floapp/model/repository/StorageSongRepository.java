@@ -9,6 +9,7 @@ import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.StorageSongSaveReqDto;
 import com.kang.floapp.model.network.SongAPI;
+import com.kang.floapp.model.network.StorageAPI;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class StorageSongRepository {
     }
     
     public void fetchFindAll (int id){
-        Call<ResponseDto<List<StorageSong>>> call = SongAPI.retrofit.create(SongAPI.class).findAllStorageSong(id);
+        Call<ResponseDto<List<StorageSong>>> call = StorageAPI.retrofit.create(StorageAPI.class).findAllStorageSong(id);
         
         call.enqueue(new Callback<ResponseDto<List<StorageSong>>>() {
             @Override
@@ -49,7 +50,7 @@ public class StorageSongRepository {
     }
 
     public void saveStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){
-        Call<Void> call = SongAPI.retrofit.create(SongAPI.class).saveStorageSong(storageSongSaveReqDto);
+        Call<Void> call = StorageAPI.retrofit.create(StorageAPI.class).saveStorageSong(storageSongSaveReqDto);
 
         call.enqueue(new Callback<Void>() {
             @Override

@@ -5,10 +5,12 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 
+import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.StorageSaveReqDto;
 import com.kang.floapp.model.network.SongAPI;
+import com.kang.floapp.model.network.StorageAPI;
 
 import java.util.List;
 
@@ -34,9 +36,8 @@ public class StorageRepository {
     }
 
 
-
     public void fetchAllStorage(){
-        Call<ResponseDto<List<Storage>>> call = SongAPI.retrofit.create(SongAPI.class).findAllStorage();
+        Call<ResponseDto<List<Storage>>> call = StorageAPI.retrofit.create(StorageAPI.class).findAllStorage();
 
         call.enqueue(new Callback<ResponseDto<List<Storage>>>() {
             @Override
@@ -54,16 +55,21 @@ public class StorageRepository {
     }
 
     public void saveStorage(StorageSaveReqDto storageSaveReqDto){
-        Call<ResponseDto<Storage>> call = SongAPI.retrofit.create(SongAPI.class).saveStorage(storageSaveReqDto);
+
+        Call<ResponseDto<Storage>> call = StorageAPI.retrofit.create(StorageAPI.class).saveStorage(storageSaveReqDto);
 
         call.enqueue(new Callback<ResponseDto<Storage>>() {
             @Override
             public void onResponse(Call<ResponseDto<Storage>> call, Response<ResponseDto<Storage>> response) {
                 Log.d(TAG, "onResponse: 보관함 리스트 추가하기 성공 : " + response.body().getData());
+
+                Storage storage = response.body().getData();
+                Log.d(TAG, "onResponse: storage : " + storage);
+
                 List<Storage> storageList = mtStorageList.getValue();
-                Log.d(TAG, "onResponse: storageList = " + storageList);
+                storageList.add(storage);
 
-
+                mtStorageList.setValue(storageList);
             }
 
             @Override
@@ -73,14 +79,33 @@ public class StorageRepository {
         });
 
     }
-    
-    public void deleteStorage(int id){
-        Call<ResponseDto<String>> call = SongAPI.retrofit.create(SongAPI.class).deleteByIdStorage(id);
-        
+
+
+
+    public void storagedeleteById(int id){
+        Call<ResponseDto<String>> call = StorageAPI.retrofit.create(StorageAPI.class).deleteByIdStorage(id);
+
         call.enqueue(new Callback<ResponseDto<String>>() {
             @Override
             public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
-                Log.d(TAG, "onResponse: 보관함 삭제 하기 성공");
+                Log.d(TAG, "onResponse: 보관함 삭제 하기" + response.body());
+                ResponseDto<String> result = response.body();
+
+                Log.d(TAG, "onResponse: "+result.getStatusCode());
+
+                if (result.getStatusCode() == 1) {
+                    List<Storage> storageList = mtStorageList.getValue();
+                    for (int i = 0; i < storageList.size(); i++) {
+                        if (storageList.get(i).getId() == id) {
+                            storageList.remove(i);
+                            break;
+                        }
+                        mtStorageList.setValue(storageList);
+                    }
+                } else {
+                    Log.d(TAG, "onResponse: 삭제 실패");
+                }
+
             }
 
             @Override

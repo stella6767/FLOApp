@@ -1,4 +1,4 @@
-package com.kang.floapp.view.main.frag.storage;
+package com.kang.floapp.view.main.frag.storage.child;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -49,12 +49,6 @@ public class FragList extends Fragment {
     private TextInputEditText tiDialogTitle;
 
 
-
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,10 +58,6 @@ public class FragList extends Fragment {
         MainActivity mainActivity = (MainActivity) container.getContext();
         mainViewModel = mainActivity.mainViewModel;
         dataObserver();
-
-        // 리스트를 만들면 프래그먼트가 새로고침을 할 수 있도록 객체를 생성했습니다.
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
 
         rvStorage = view.findViewById(R.id.rv_storage);
 
@@ -105,16 +95,6 @@ public class FragList extends Fragment {
                 storageSaveReqDto.setTitle(title);
 
                 mainViewModel.addStorage(storageSaveReqDto);
-                // 어댑터한테 보관함이 추가 된 것을 알려주면
-                // 뷰 모델에 알림이 발생해서 리스트를 ..?? 일단 어댑터로 바로 쐈습니다.
-                storageAdapter.addStorage(storageSaveReqDto.toEntity());
-                // 어댑터에서 UI는 그렸지만 DB에서 Id값이 동기화 되지 않아
-                // NPE 발생
-                // initData()와 dataObserver()를 통해
-                // 다시 전체 찾기를 해주면 해결됩니다.
-                ft.detach(this).attach(this).commit();
-
-
                 alertDialog.dismiss();
             });
 

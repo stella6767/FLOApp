@@ -1,4 +1,4 @@
-package com.kang.floapp.view.main.frag.storage;
+package com.kang.floapp.view.main.frag;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import com.kang.floapp.model.Storage;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
 import com.kang.floapp.view.main.adapter.StorageSelectAdapter;
-import com.kang.floapp.view.main.frag.FragTour;
 
 import java.util.List;
 

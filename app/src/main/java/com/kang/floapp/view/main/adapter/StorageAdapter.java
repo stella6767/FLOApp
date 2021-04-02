@@ -17,7 +17,7 @@ import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
-import com.kang.floapp.view.main.frag.storage.FragStorageSongList;
+import com.kang.floapp.view.main.frag.storage.child.grandChild.FragStorageSongList;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -50,16 +50,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
         return storageList;
     }
 
-
-    public void removeStorage(int id) {
-        this.storageList.remove(id);
-        notifyDataSetChanged();
-    }
-
-    public void addStorage(Storage storage) {
-        this.storageList.add(storage);
-        notifyDataSetChanged();
-    }
 
     public void setStorage(List<Storage> storageList) {
         this.storageList = storageList;
@@ -120,14 +110,14 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
                 storageInfo = storage;
                 mainActivityViewModel.findStorageSong(itemId);
 
-
-                // 음원을 서버로부터 다운받아와야 하기 때문에 로딩시간을 줍니다.
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
-                    }
-                }, 1000);
+//
+//                // 음원을 서버로부터 다운받아와야 하기 때문에 로딩시간을 줍니다.
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
+//                    }
+//                }, 1000);
 
 
             });
@@ -136,14 +126,15 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
             // 삭제
             ivStorageDelete.setOnClickListener(v -> {
                 // 리스트 아이템 ID 찾기
-                int itemPos = getAdapterPosition();
-                Log.d(TAG, "itemPos : " + itemPos);
-                Storage storage = storageList.get(itemPos);
-                Log.d(TAG, "storage : " + storage);
-                int itemId = storage.getId();
+//                int itemPos = getAdapterPosition();
+//                Log.d(TAG, "itemPos : " + itemPos);
+//                Storage storage = storageList.get(itemPos);
+//                Log.d(TAG, "storage : " + storage);
+//                int itemId = storage.getId();
+                int itemId = getAdapterPosition();
+                Log.d(TAG, "MyViewHolder:  storageListid:" + getAdapterPosition());
 
-                mainActivityViewModel.deleteByIdStorage(itemId);
-                removeStorage(itemPos);
+                mainActivityViewModel.deleteByIdStorage(itemId+1);
 
 
             });

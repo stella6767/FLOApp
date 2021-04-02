@@ -27,7 +27,7 @@ import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
-import com.kang.floapp.utils.PlayCallback;
+import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
@@ -207,10 +207,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
-//            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
-//            playListAdapter.setMySongList(songs);
-//        });
 
         mainViewModel.PlayListSubscribe().observe(this, playSongs -> {
            playListAdapter.setMySongList(playSongs);
@@ -229,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onChanged(List<Storage> storages) {
                 Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");
                 storageAdapter.setStorage(storages);
-                //storageSelectAdapter.setStorage(storages);
+
             }
         });
 
@@ -577,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         즉시화면셋팅(songPassenger.song);
 
-        mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new PlayCallback<PlaySong>(){ //인터페이스 콜백패턴.
+        mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new AddCallback<PlaySong>(){ //인터페이스 콜백패턴.
                     @Override
                     public void onSucess(PlaySong playSong) {
                         int result = playListAdapter.addSong(playSong);

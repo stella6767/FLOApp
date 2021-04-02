@@ -1,6 +1,5 @@
 package com.kang.floapp.view.main.frag.storage;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.kang.floapp.R;
 import com.kang.floapp.view.main.adapter.MyFragPagerAdapter;
+import com.kang.floapp.view.main.frag.storage.child.FragFavorite;
+import com.kang.floapp.view.main.frag.storage.child.FragList;
 
 public class FragStorage extends Fragment {
 

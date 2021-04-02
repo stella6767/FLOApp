@@ -16,7 +16,7 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.main.MainActivity;
-import com.kang.floapp.view.main.frag.storage.FragSelectStorage;
+import com.kang.floapp.view.main.frag.FragSelectStorage;
 
 import org.greenrobot.eventbus.EventBus;
 

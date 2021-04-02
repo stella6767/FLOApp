@@ -20,7 +20,7 @@ import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.model.repository.StorageSongRepository;
-import com.kang.floapp.utils.PlayCallback;
+import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 
 import java.util.List;
@@ -80,14 +80,7 @@ public class MainActivityViewModel extends ViewModel {
         mtStorageSongList = storageSongRepository.initMtStorageSong();
     }
 
- //   private SongRepository sr = new SongRepository(mtSongList, mtPlayList);
 
-//    public MainActivityViewModel() {
-//        List<Song> musics = new ArrayList<>();
-//        List<Song> playList= new ArrayList<>();
-//        mtSongList.setValue(musics);
-//        mtPlayList.setValue(playList);
-//    }
 
     public MutableLiveData<List<Song>> subscribe() {
         return mtSongList;
@@ -122,7 +115,7 @@ public class MainActivityViewModel extends ViewModel {
 
     public void findPlaylist(){playSongRepository.fetchPlaylist();}
 
-    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, PlayCallback playCallback){playSongRepository.playSongAdd(song, playCallback);}
+    public void addAndCallbackPlaysong(PlaySongSaveReqDto song, AddCallback addCallback){playSongRepository.playSongAdd(song, addCallback);}
 
     public void deleteById(int id){playSongRepository.deleteById(id);}
 
@@ -131,7 +124,7 @@ public class MainActivityViewModel extends ViewModel {
 
     public void addStorage(StorageSaveReqDto storageSaveReqDto){ storageRepository.saveStorage(storageSaveReqDto);}
 
-    public void deleteByIdStorage(int id){ storageRepository.deleteStorage(id); }
+    public void deleteByIdStorage(int id){ storageRepository.storagedeleteById(id); }
 
 
     public void findStorageSong(int id){storageSongRepository.fetchFindAll(id);}

@@ -54,8 +54,6 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
         }
 
-
-
         return -1;
     }
 

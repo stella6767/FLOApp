@@ -16,11 +16,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
+import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.AuthLoginRespDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.network.AuthAPI;
 import com.kang.floapp.model.network.SongAPI;
 import com.kang.floapp.utils.SharedPreference;
+import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 
 import retrofit2.Call;
@@ -66,23 +68,25 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Call<Void> call = AuthAPI.retrofit.create(AuthAPI.class).login(username, password);
 
-                Call<ResponseDto<AuthLoginRespDto>> call = AuthAPI.retrofit.create(AuthAPI.class).login(username, password);
+                Call<ResponseDto<User>> call = AuthAPI.retrofit.create(AuthAPI.class).login(username, password);
 
 
-                call.enqueue(new Callback<ResponseDto<AuthLoginRespDto>>() {
+                call.enqueue(new Callback<ResponseDto<User>>() {
                     @Override
-                    public void onResponse(Call<ResponseDto<AuthLoginRespDto>> call, Response<ResponseDto<AuthLoginRespDto>> response) {
+                    public void onResponse(Call<ResponseDto<User>> call, Response<ResponseDto<User>> response) {
                         Log.d(TAG, "onResponse: " + response.body());
 
 
                         if(response.body().getStatusCode() == 1){
-                            AuthLoginRespDto loginRespDto = response.body().getData(); //한글은 못 받는디??
-                            Log.d(TAG, "onResponse: 받아온 유저 객체: " + loginRespDto);
+                            User user = response.body().getData(); //한글은 못 받는디??
+                            Log.d(TAG, "onResponse: 받아온 유저 객체: " + user);
 
                             Gson gson = new Gson();
-                            String principal = gson.toJson(loginRespDto);
+                            String principal = gson.toJson(user);
                             Log.d(TAG, "onResponse: gson 변환 " + principal);
                             SharedPreference.setAttribute(mContext,"principal",principal);// 세션 저장
+
+                            Constants.user = user;
 
                             alert(response.body().getMsg());
 
@@ -93,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseDto<AuthLoginRespDto>> call, Throwable t) {
+                    public void onFailure(Call<ResponseDto<User>> call, Throwable t) {
                         Log.d(TAG, "onFailure: " + t.getMessage());
                         alert("서버와 통신에 실패하였습니다.");
                     }

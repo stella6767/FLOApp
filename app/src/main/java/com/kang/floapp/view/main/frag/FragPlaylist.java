@@ -79,7 +79,7 @@ public class FragPlaylist extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Log.d(TAG, "onSwiped: " + viewHolder.getAdapterPosition());
                 int id = playListAdapter.getSongId(viewHolder.getAdapterPosition());
-                mainViewModel.deleteById(id);
+                mainViewModel.deleteByPlaylistId(id);
             }
         };
 

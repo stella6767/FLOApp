@@ -1,5 +1,6 @@
 package com.kang.floapp.model.network;
 
+import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.AuthJoinReqDto;
 import com.kang.floapp.model.dto.AuthLoginRespDto;
 import com.kang.floapp.model.dto.ResponseDto;
@@ -18,7 +19,7 @@ public interface AuthAPI {
     Call<ResponseDto<Void>> join(@Body AuthJoinReqDto authJoinReqDto);
 
     @POST("login")
-    Call<ResponseDto<AuthLoginRespDto>> login(@Query("username") String username, @Query("password") String password);
+    Call<ResponseDto<User>> login(@Query("username") String username, @Query("password") String password);
 
 
     Retrofit retrofit = new Retrofit.Builder()

@@ -1,17 +1,18 @@
 package com.kang.floapp.model;
 
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Heart {
-
-    private int id;
-    private User user;
-    private Song song;
-    private int heart; //1이면 좋아요, 0이면 아님
+public class Storage {
+    private Integer id;
+    private String title;
+    private Timestamp createDate;
 }

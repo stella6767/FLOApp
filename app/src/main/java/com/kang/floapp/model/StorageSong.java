@@ -1,5 +1,6 @@
 package com.kang.floapp.model;
 
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User { //서버로부터 로그인 성공후 응답받은 유저 객체
+public class StorageSong {
+
     private int id;
-    private String username;
-    private String email;
-    private String role;
+    private User user;
+    private Storage storage;
+    private Song song;
+    private Timestamp createDate;
+
 }

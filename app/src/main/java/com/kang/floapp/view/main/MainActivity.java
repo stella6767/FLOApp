@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
+import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
@@ -31,7 +32,6 @@ import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
 import com.kang.floapp.view.main.adapter.CategoryListAdapter;
-import com.kang.floapp.view.main.adapter.MainFragMentAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
 import com.kang.floapp.view.main.frag.home.FragHome;
@@ -49,14 +49,12 @@ import java.util.List;
 import java.util.Random;
 
 
-//여기는 Kang5 Branch
+//여기는 Kang7 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
     //private MainActivity mContext = MainActivity.this;
     private Context mContext = MainActivity.this;
-
-    private MainFragMentAdapter mainFragMentAdapter;
     public int playlistChange = 1;
 
 
@@ -181,10 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        mainViewModel.PlayListSubscribe().observe(this, songs -> { //여기서 하면 되겄다.
-//            Log.d(TAG, "FragPlaylist: 제발>>>>>>" + songs);
-//            playListAdapter.setMySongList(songs);
-//        });
 
         mainViewModel.PlayListSubscribe().observe(this, playSongs -> {
            playListAdapter.setMySongList(playSongs);
@@ -193,10 +187,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainViewModel.categoryListSubscribe().observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(List<Song> songs) {
-                Log.d(TAG, "onCreateView: 왜 초기화가 안 되나?");
                 categoryListAdapter.setMusics(songs);
             }
         });
+
+
+        mainViewModel.storageListSubscribe().observe(this, new Observer<List<Storage>>() {
+            @Override
+            public void onChanged(List<Storage> storages) {
+                Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");
+                storageAdapter.setStorage(storages);
+            }
+        });
+
+        mainViewModel.findStorage(); //storage는 데이터 get까지 여기서 작업
+
     }
 
     public String getSongUrl(String file){
@@ -333,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         allSongAdapter = new AllSongAdapter();
         categoryListAdapter = new CategoryListAdapter();
         playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
+        storageAdapter = new StorageAdapter((MainActivity)mContext, mainViewModel);
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -634,13 +640,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override   //이벤트를 받을 액티비티나 프래그먼트에 등록
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
 }

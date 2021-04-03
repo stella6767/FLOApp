@@ -1,19 +1,15 @@
 package com.kang.floapp.view.main.frag.search;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.kang.floapp.R;
-import com.kang.floapp.view.main.frag.home.FragHomeChild;
 
 public class FragSearch extends Fragment {
 

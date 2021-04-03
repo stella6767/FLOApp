@@ -38,7 +38,7 @@ public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<PlaySong>> mtPlayList;
     private MutableLiveData<List<Song>> mtSearchSongList;
     private MutableLiveData<List<Storage>> mtStorageList;
-    private MutableLiveData<List<StorageSong>> mtStorageSongList;
+    private MutableLiveData<List<Song>> mtStorageSongList;
     private MutableLiveData<List<Song>> mtCategoryList;
 
 
@@ -92,7 +92,7 @@ public class MainActivityViewModel extends ViewModel {
         return mtSearchSongList;
     }
     public MutableLiveData<List<Storage>> storageListSubscribe() {return mtStorageList;}
-    public MutableLiveData<List<StorageSong>> storageSongListSubscribe() {return  mtStorageSongList;}
+    public MutableLiveData<List<Song>> storageSongListSubscribe() {return  mtStorageSongList;}
 
 
 
@@ -118,7 +118,7 @@ public class MainActivityViewModel extends ViewModel {
 
     //내 저장소에 추가한 곡 관련
     public void addStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){storageSongRepository.saveStorageSong(storageSongSaveReqDto);}
-
+    public void findByStorageId(int storageId, int userId){storageSongRepository.fetchFindByStoarageId(storageId,userId);}
 
 
     //서비스 관련

@@ -21,6 +21,7 @@ import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
+import com.kang.floapp.view.main.frag.storage.FragStorageSongList;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -94,9 +95,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
             layoutStorageBtnArea.setOnClickListener(v -> {
                 Log.d(TAG, "MyViewHolder: " + getAdapterPosition());
-                //Storage storage = storageList.get(getAdapterPosition());
 
-                //((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
+                mainActivity.replace(new FragStorageSongList(storageList.get(getAdapterPosition()).getId()));
 
             });
 

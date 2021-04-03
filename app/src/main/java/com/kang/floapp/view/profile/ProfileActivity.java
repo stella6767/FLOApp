@@ -31,7 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mtBtnLogout.setOnClickListener(v -> {
             SharedPreference.removeAttribute(mContext, "principal");
-            Constants.user = null;
+            //Constants.user = null;
 
             alert("로그아웃");
         });

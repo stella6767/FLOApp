@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "onResponse: gson 변환 " + principal);
                             SharedPreference.setAttribute(mContext,"principal",principal);// 세션 저장
 
-                            Constants.user = user;
+                            //Constants.user = user; 이거 안 쓸거임.. 앱 종료하고 시작하면 아마 null로 될꺼 같아서..
 
                             alert(response.body().getMsg());
 

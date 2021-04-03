@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Category;
+import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.AuthLoginRespDto;
 import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.view.main.MainActivity;
@@ -29,7 +30,7 @@ import com.kang.floapp.view.user.LoginActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragHomeChild extends Fragment {
+public class FragHomeMain extends Fragment {
 
     private static final String TAG = "FragHomeChild";
 
@@ -78,15 +79,10 @@ public class FragHomeChild extends Fragment {
 
         ivProfileMove.setOnClickListener(v -> {
 
-            Gson gson = new Gson();
+            User user = mainActivity.userValidaionCheck();
 
-            String principal = SharedPreference.getAttribute(mainActivity, "principal");
-            Log.d(TAG, "onCreateView: 인증" + principal);
 
-            AuthLoginRespDto loginRespDto = gson.fromJson(principal, AuthLoginRespDto.class);
-            Log.d(TAG, "onCreateView: 됨?" + loginRespDto);
-
-            if(loginRespDto != null){
+            if(user != null){
 //                Intent intent = new Intent(getActivity(), ProfileActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //                getActivity().startActivity(intent);

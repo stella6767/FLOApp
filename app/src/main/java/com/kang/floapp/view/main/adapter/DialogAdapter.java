@@ -13,10 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.StorageSongSaveReqDto;
+import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
@@ -94,11 +97,18 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MyViewHold
                 Storage storage = selectStorageList.get(getAdapterPosition());
                 Log.d(TAG, "MyViewHolder: add버튼 클릭됨   곡제목: " + song.getTitle() + ",  Storage: " + storage);
 
-                StorageSongSaveReqDto storageSongSaveReqDto = new StorageSongSaveReqDto(Constants.user, song, storage);
-                Log.d(TAG, "MyViewHolder: storageSong 추기: " + storageSongSaveReqDto);
-                //storageSongSaveReqDto.getStorage().setCreateDate();
+                User user = mainActivity.userValidaionCheck();
 
-                mainViewModel.addStorageSong(storageSongSaveReqDto);
+                if(user != null){
+                    StorageSongSaveReqDto storageSongSaveReqDto = new StorageSongSaveReqDto(user, song, storage);
+                    Log.d(TAG, "MyViewHolder: storageSong 추기: " + storageSongSaveReqDto);
+                    //storageSongSaveReqDto.getStorage().setCreateDate();
+                    mainViewModel.addStorageSong(storageSongSaveReqDto);
+                }else{
+                    Toast.makeText(mainActivity, "저장소를 이용할려면 로그인이 요구됩니다.", Toast.LENGTH_SHORT).show();
+
+                }
+
 
             });
 

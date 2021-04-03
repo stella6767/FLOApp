@@ -21,11 +21,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
+import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
@@ -37,6 +40,7 @@ import com.kang.floapp.view.main.adapter.CategoryListAdapter;
 import com.kang.floapp.view.main.adapter.DialogAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
+import com.kang.floapp.view.main.adapter.StorageSongAdapter;
 import com.kang.floapp.view.main.frag.home.FragHome;
 import com.kang.floapp.view.main.frag.FragPlaylist;
 import com.kang.floapp.view.main.frag.search.FragSearch;
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public PlayListAdapter playListAdapter;
     public StorageAdapter storageAdapter;
     public DialogAdapter dialogAdapter;
+    public StorageSongAdapter storageSongAdapter;
 
 
     //공용
@@ -207,10 +212,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mainViewModel.findStorage(); //storage는 데이터 get까지 여기서 작업
 
+        mainViewModel.storageSongListSubscribe().observe(this, new Observer<List<Song>>() {
+            @Override
+            public void onChanged(List<Song> songs) {
+                storageSongAdapter.setStorageSong(songs);
+            }
+        });
+
+
+
     }
 
     public String getSongUrl(String file){
         return Constants.BASEURL + Constants.FILEPATH + file;
+    }
+
+
+    public User userValidaionCheck(){
+        Gson gson = new Gson();
+        String principal = SharedPreference.getAttribute((MainActivity)mContext, "principal");
+        Log.d(TAG, "onCreateView: 인증" + principal);
+        User user = gson.fromJson(principal, User.class);
+        Log.d(TAG, "onCreateView: 됨?" + user);
+
+        return user;
     }
 
 
@@ -345,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
         storageAdapter = new StorageAdapter((MainActivity)mContext, mainViewModel);
         dialogAdapter = new DialogAdapter((MainActivity)mContext, mainViewModel);
+        storageSongAdapter = new StorageSongAdapter((MainActivity)mContext, mainViewModel);
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);

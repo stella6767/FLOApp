@@ -90,7 +90,7 @@ public class FragHomeCategory extends Fragment {
 
         ivHomeBack.setOnClickListener(v -> {
             //Fragment selectedFragment = new FragHomeChild();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeChild()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_home_child_container, new FragHomeMain()).commit();
         });
 
 

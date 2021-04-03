@@ -98,6 +98,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
         private ImageView ivPlayPlay;
         private ImageView ivPlayArt;
 
+
         public MyPlayHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -106,6 +107,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
             tvPlayId = itemView.findViewById(R.id.tv_play_Id);
             ivPlayPlay = itemView.findViewById(R.id.iv_play_play);
             ivPlayArt = itemView.findViewById(R.id.iv_play_art);
+
+
 
             ivPlayPlay.setOnClickListener(v -> {
 

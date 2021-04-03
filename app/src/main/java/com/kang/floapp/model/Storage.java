@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class Storage {
     private Integer id;
     private String title;
-    private Timestamp createDate;
+    private String createDate;  //TimeStamp json parser 에러 땜에 못 쓰겠음.
 }

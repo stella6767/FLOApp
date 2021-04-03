@@ -2,6 +2,8 @@ package com.kang.floapp.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,6 +34,7 @@ import com.kang.floapp.utils.eventbus.UrlPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
 import com.kang.floapp.view.main.adapter.CategoryListAdapter;
+import com.kang.floapp.view.main.adapter.DialogAdapter;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
 import com.kang.floapp.view.main.adapter.StorageAdapter;
 import com.kang.floapp.view.main.frag.home.FragHome;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public AllSongAdapter allSongAdapter;
     public PlayListAdapter playListAdapter;
     public StorageAdapter storageAdapter;
+    public DialogAdapter dialogAdapter;
 
 
     //공용
@@ -196,7 +200,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(List<Storage> storages) {
                 Log.d(TAG, "onChanged: 뷰 모델에서 변화 감지.");
-                storageAdapter.setStorage(storages);
+                storageAdapter.setStorage(storages);  //두개 다 관찰
+                dialogAdapter.setStorage(storages);
             }
         });
 
@@ -339,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         categoryListAdapter = new CategoryListAdapter();
         playListAdapter = new PlayListAdapter(mContext);//My 플레이리스트
         storageAdapter = new StorageAdapter((MainActivity)mContext, mainViewModel);
+        dialogAdapter = new DialogAdapter((MainActivity)mContext, mainViewModel);
 
         //자식프래그먼트 조절
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -518,6 +524,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvPlayViewArtist.setText(song.getArtist());
         tvPlayViewTitle.setText(song.getTitle());
         tvLyrics.setText(song.getLyrics());
+    }
+
+    public void replace(Fragment fragment) { //신율이가 추가, fragment 전환
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
     }
 
 

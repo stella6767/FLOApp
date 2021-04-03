@@ -16,6 +16,5 @@ public class Song {
     private String lyrics;
     private String date;
     private String img;
-    //private List<> heart
     private String file;
 }

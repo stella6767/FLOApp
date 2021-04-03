@@ -10,13 +10,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.model.dto.StorageSaveReqDto;
+import com.kang.floapp.model.dto.StorageSongSaveReqDto;
 import com.kang.floapp.model.repository.PlaySongRepository;
 import com.kang.floapp.model.repository.SongRepository;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.model.repository.StorageRepository;
+import com.kang.floapp.model.repository.StorageSongRepository;
 import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
 
@@ -29,13 +32,13 @@ public class MainActivityViewModel extends ViewModel {
     private SongRepository songRepository;
     private PlaySongRepository playSongRepository;
     private StorageRepository storageRepository;
+    private StorageSongRepository storageSongRepository;
 
     private MutableLiveData<List<Song>> mtSongList;
     private MutableLiveData<List<PlaySong>> mtPlayList;
     private MutableLiveData<List<Song>> mtSearchSongList;
     private MutableLiveData<List<Storage>> mtStorageList;
-
-
+    private MutableLiveData<List<StorageSong>> mtStorageSongList;
     private MutableLiveData<List<Song>> mtCategoryList;
 
 
@@ -65,32 +68,35 @@ public class MainActivityViewModel extends ViewModel {
         songRepository = new SongRepository();
         playSongRepository = new PlaySongRepository();
         storageRepository = new StorageRepository();
+        storageSongRepository = new StorageSongRepository();
 
         mtSongList = songRepository.initMtSong();
         mtPlayList = playSongRepository.initPlaylist();
         mtCategoryList = songRepository.initCategoryList();
         mtSearchSongList = songRepository.initSearchSongList();
         mtStorageList = storageRepository.initMtStorage();
+        mtStorageSongList = storageSongRepository.initMtStorageSong();
     }
 
 
     public MutableLiveData<List<Song>> subscribe() {
         return mtSongList;
     }
-
     public MutableLiveData<List<PlaySong>> PlayListSubscribe() {
         return mtPlayList;
     }
-
     public MutableLiveData<List<Song>> categoryListSubscribe() {
         return mtCategoryList;
     }
-
     public MutableLiveData<List<Song>> searchSongListSubscribe() {
         return mtSearchSongList;
     }
-
     public MutableLiveData<List<Storage>> storageListSubscribe() {return mtStorageList;}
+    public MutableLiveData<List<StorageSong>> storageSongListSubscribe() {return  mtStorageSongList;}
+
+
+
+
 
     //전체 재생곡 관련
     public void findAll() {
@@ -108,6 +114,10 @@ public class MainActivityViewModel extends ViewModel {
     public void findStorage(){storageRepository.fetchAllStorage();}
     public void addStorage(StorageSaveReqDto storageSaveReqDto){ storageRepository.saveStorage(storageSaveReqDto);}
     public void deleteByStorageId(int id){ storageRepository.deleteById(id); }
+
+
+    //내 저장소에 추가한 곡 관련
+    public void addStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){storageSongRepository.saveStorageSong(storageSongSaveReqDto);}
 
 
 

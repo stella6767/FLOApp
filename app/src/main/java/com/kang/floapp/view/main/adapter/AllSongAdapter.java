@@ -2,6 +2,7 @@ package com.kang.floapp.view.main.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
+import com.kang.floapp.utils.CustomListViewDialog;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.frag.home.FragHome;
+import com.kang.floapp.view.main.frag.storage.FragStorage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,7 +33,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
     private static final String TAG = "AllSongAdapter";
     private MainActivity mainActivity;
     public List<Song> songList = new ArrayList<>();
-    public int songPosition;
+    private StorageAdapter storageAdapter;
 
     public AllSongAdapter() { }
 
@@ -77,7 +80,8 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
         private TextView tvSongId;
         private ImageView ivSongPlay;
         private ImageView ivSongArt;
-
+        private ImageView ivStorageAddBtn1;
+        private CustomListViewDialog customDialog;
 
         public MyViewHolder(@NonNull View itemView) {
 
@@ -87,6 +91,27 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
             tvSongId = itemView.findViewById(R.id.tv_song_Id);
             ivSongPlay = itemView.findViewById(R.id.iv_song_play);
             ivSongArt = itemView.findViewById(R.id.iv_song_art);
+            ivStorageAddBtn1 = itemView.findViewById(R.id.iv_storage_add_btn1);
+
+
+            ivStorageAddBtn1.setOnClickListener(v -> {
+
+                storageAdapter = mainActivity.storageAdapter;
+                Song song = songList.get(getAdapterPosition());
+                Log.d(TAG, "MyViewHolder: add 버튼 클릭됨: " + song.getTitle());
+
+
+
+                mainActivity.dialogAdapter.transSong(song);
+                customDialog = new CustomListViewDialog(mainActivity, mainActivity.dialogAdapter);
+                customDialog.show();
+                customDialog.setCanceledOnTouchOutside(false);
+
+                //((MainActivity)v.getContext()).replace(new FragStorage());
+
+            });
+
+
 
             ivSongPlay.setOnClickListener(v -> {
 

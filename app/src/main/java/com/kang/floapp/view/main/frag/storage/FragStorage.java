@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class FragStorage extends Fragment {
     private RecyclerView rvStorage;
     private StorageAdapter storageAdapter;
     private MainActivityViewModel mainViewModel;
+    //private LinearLayout storageLayout;
 
     // 보관함에서 띄우는 다이얼 객체들
     private AppCompatImageView ivStorageAdd;
@@ -44,11 +46,14 @@ public class FragStorage extends Fragment {
         mainViewModel = mainActivity.mainViewModel;
         ivStorageAdd = view.findViewById(R.id.iv_storage_add);
         rvStorage = view.findViewById(R.id.rv_storage);
+        //storageLayout = view.findViewById(R.id.storage_layout);
+
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         rvStorage.setLayoutManager(manager);
         storageAdapter = mainActivity.storageAdapter;
         rvStorage.setAdapter(storageAdapter);
+
 
 
         ivStorageAdd.setOnClickListener(v -> {

@@ -52,7 +52,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533"
         app:srcCompat="@drawable/ic_play"
         app:tint="@color/white" />
 
@@ -68,5 +67,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:riv_corner_radius="25dip"
         app:riv_mutate_background="true" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

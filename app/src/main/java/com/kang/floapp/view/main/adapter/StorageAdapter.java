@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
+import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.view.main.MainActivity;
@@ -29,6 +33,9 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     private MainActivity mainActivity;
     private MainActivityViewModel mainViewModel;
 
+    private Song song;
+    //private LinearLayout storageLayout;
+
     public StorageAdapter() {
     }
 
@@ -41,6 +48,12 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     public void setStorage(List<Storage> storageList) {
         this.storageList = storageList;
         notifyDataSetChanged();
+    }
+
+    public void transSong(Song song){
+        Log.d(TAG, "transSong: ");
+        Toast.makeText(mainActivity, "곡을 어느 저장소에 추가하겠습니까?", Toast.LENGTH_SHORT).show();
+        this.song = song;
     }
 
     @NonNull
@@ -64,7 +77,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-
+        private ConstraintLayout layoutStorageBtnArea;
         private RoundedImageView ivStorageViewArt;
         private TextView tvStorageTitle;
         private ImageView ivStorageDelete;
@@ -76,17 +89,18 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
             ivStorageViewArt = itemView.findViewById(R.id.iv_view_art);
             tvStorageTitle = itemView.findViewById(R.id.tv_storage_title);
             ivStorageDelete = itemView.findViewById(R.id.iv_storage_delete);
+            layoutStorageBtnArea = itemView.findViewById(R.id.layout_storage_btn_area);
 
 
-            ivStorageViewArt.setOnClickListener(v -> {
-                // 리스트 아이템 ID 찾기
-                int itemPos = getAdapterPosition();
-                Log.d(TAG, "itemPos : " + itemPos);
-                Storage storage = storageList.get(itemPos);
-                Log.d(TAG, "storage : " + storage);
-                int itemId = storage.getId();
+            layoutStorageBtnArea.setOnClickListener(v -> {
+                Log.d(TAG, "MyViewHolder: " + getAdapterPosition());
+                //Storage storage = storageList.get(getAdapterPosition());
+
+                //((MainActivity) v.getContext()).replace(FragStorageSongList.newInstance());
 
             });
+
+
 
 
             // 삭제

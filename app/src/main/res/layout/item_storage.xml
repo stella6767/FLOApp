@@ -2,7 +2,6 @@
 
 
 <LinearLayout
-        android:id="@+id/layout_storage_btn_area"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +11,8 @@
         android:orientation="horizontal">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="330dp"
+        android:id="@+id/layout_storage_btn_area"
+        android:layout_width="250dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -47,35 +47,33 @@
             app:riv_corner_radius="5dip" />
 
 
-        <ImageView
-            android:id="@+id/iv_storage_play"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.533"
-            app:srcCompat="@drawable/ic_play"
-            app:tint="@color/white" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="40dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--  일단은 좀 보자, 이걸 수정버튼으로 활용할지는 생각중
+        <ImageView
+            android:id="@+id/iv_storage_select_add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="92dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_add_box"
+            app:tint="@color/white" />-->
 
         <ImageView
             android:id="@+id/iv_storage_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_width="44dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

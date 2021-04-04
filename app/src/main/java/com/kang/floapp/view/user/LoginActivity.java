@@ -15,15 +15,10 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.kang.floapp.R;
-import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.User;
-import com.kang.floapp.model.dto.AuthLoginRespDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.network.AuthAPI;
-import com.kang.floapp.model.network.SongAPI;
 import com.kang.floapp.utils.SharedPreference;
-import com.kang.floapp.view.common.Constants;
-import com.kang.floapp.view.main.MainActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;

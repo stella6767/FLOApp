@@ -100,8 +100,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                 Song song = songList.get(getAdapterPosition());
                 Log.d(TAG, "MyViewHolder: add 버튼 클릭됨: " + song.getTitle());
 
-
-
                 mainActivity.dialogAdapter.transSong(song);
                 customDialog = new CustomListViewDialog(mainActivity, mainActivity.dialogAdapter);
                 customDialog.show();
@@ -116,9 +114,11 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
             ivSongPlay.setOnClickListener(v -> {
 
 
+                String imageUrl = mainActivity.getImageUrl(songList.get(getAdapterPosition()).getImg());
+
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(songList.get(getAdapterPosition()).getImg())
+                        .load(imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
@@ -138,10 +138,11 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                 tvSongArtist.setText(song.getArtist());
                 tvSongId.setText(song.getId().toString());
 
+                String imgUrl = mainActivity.getImageUrl(song.getImg());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(itemView)
-                        .load(song.getImg())
+                        .load(imgUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(ivSongArt);

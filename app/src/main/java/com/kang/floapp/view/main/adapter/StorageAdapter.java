@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.model.repository.StorageRepository;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
@@ -34,8 +36,9 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     private MainActivity mainActivity;
     private MainActivityViewModel mainViewModel;
 
-    private Song song;
-    //private LinearLayout storageLayout;
+    private String storageImg;
+    private int storageId;
+
 
     public StorageAdapter() {
     }
@@ -45,17 +48,29 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
         this.mainViewModel = mainViewModel;
     }
 
+    public int getStorageId(int position){
+        return storageList.get(position).getId();
+    }
 
     public void setStorage(List<Storage> storageList) {
         this.storageList = storageList;
         notifyDataSetChanged();
     }
 
-    public void transSong(Song song){
-        Log.d(TAG, "transSong: ");
-        Toast.makeText(mainActivity, "곡을 어느 저장소에 추가하겠습니까?", Toast.LENGTH_SHORT).show();
-        this.song = song;
+    public void transImg(String storageImg, int storageId){
+        this.storageImg = storageImg;
+        this.storageId = storageId;
+
+        Log.d(TAG, "transImg: "+storageId);
+
+        //String imageUrl = mainActivity.getImageUrl(storageImg);
+        //Log.d(TAG, "transImg: "+imageUrl);
+
+        storageList.get(storageId-1).setImage(storageImg);
     }
+
+
+
 
     @NonNull
     @Override
@@ -68,6 +83,12 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+
+//        if (storageList.get(position).getId() == storageId) {
+//            holder.setStorageImg();
+//        }
+
         holder.setItem(storageList.get(position));
     }
 
@@ -96,20 +117,20 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
             layoutStorageBtnArea.setOnClickListener(v -> {
                 Log.d(TAG, "MyViewHolder: " + getAdapterPosition());
 
-                mainActivity.replace(new FragStorageSongList(storageList.get(getAdapterPosition()).getId()));
+                mainActivity.Replace(new FragStorageSongList(storageList.get(getAdapterPosition())));
 
             });
 
 
 
 
-            // 삭제
+            // 수정버튼으로 바꿀거임.
             ivStorageDelete.setOnClickListener(v -> {
-                if (storageList != null && (storageList.size() > 0)) {
-                    int id = storageList.get(getAdapterPosition()).getId();
-                    Log.d(TAG, "MyViewHolder:  id:" + id);
-                    mainViewModel.deleteByStorageId(id);
-                }
+//                if (storageList != null && (storageList.size() > 0)) {
+//                    int id = storageList.get(getAdapterPosition()).getId();
+//                    Log.d(TAG, "MyViewHolder:  id:" + id);
+//                    mainViewModel.deleteByStorageId(id);
+//                }
             });
 
 
@@ -117,7 +138,38 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
         public void setItem(Storage storage) {
             tvStorageTitle.setText(storage.getTitle());
+
+
+            String imagUrl = mainActivity.getImageUrl(storage.getImage());
+            Log.d(TAG, "setItem: imgurl: " + imagUrl);
+
+            Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                    .with(itemView)
+                    .load(imagUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(ivStorageViewArt);
+
+            //저장소 안의 토탈개수 표시할 예정
+
         }
+
+
+//        public void setStorageImg(){
+//
+//            if(storageImg != null) {
+//
+//                Log.d(TAG, "setItem: 이미지 셋팅" + storageImg);
+//                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+//                        .with(itemView)
+//                        .load(storageImg)
+//                        .centerCrop()
+//                        .placeholder(R.drawable.ic_launcher_background)
+//                        .into(ivStorageViewArt);
+//            }
+//
+//        }
+
 
 
     }

@@ -52,6 +52,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ImageView ivPlayViewArt;
     public ImageView ivRepeat;
     public ImageView ivRandome;
-    public ImageView ivHeart;
+    public TextView tvRelaseDate;
 
 
     // 홈 화면 음악 컨트롤바
@@ -227,6 +229,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Constants.BASEURL + Constants.FILEPATH + file;
     }
 
+    public String getImageUrl(String image){
+        return Constants.BASEURL + Constants.IMAGEPATH + image;
+    }
+
 
     public User userValidaionCheck(){
         Gson gson = new Gson();
@@ -287,10 +293,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvPlayViewArtist.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getArtist());
         tvPlayViewTitle.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getTitle());
         tvLyrics.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getLyrics());
+        tvRelaseDate.setText(playListAdapter.playList.get(Constants.prevNext).getSong().getRelaseDate());
+
+
+        String imageUrl = getImageUrl(playListAdapter.playList.get(Constants.prevNext).getSong().getImg());
 
         Glide
                 .with(mContext)
-                .load(playListAdapter.playList.get(Constants.prevNext).getSong().getImg())
+                .load(imageUrl)
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(ivPlayViewArt);
@@ -396,8 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayViewArt = findViewById(R.id.ivPlayViewArt);
         ivRepeat = findViewById(R.id.iv_repeat);
         ivRandome = findViewById(R.id.iv_random);
-        ivHeart = findViewById(R.id.iv_heart);
-
+        tvRelaseDate = findViewById(R.id.tv_relasedate);
 
     }
 
@@ -550,14 +559,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvPlayViewArtist.setText(song.getArtist());
         tvPlayViewTitle.setText(song.getTitle());
         tvLyrics.setText(song.getLyrics());
+        tvRelaseDate.setText(song.getRelaseDate());
     }
 
-    public void replace(Fragment fragment) { //신율이가 추가, fragment 전환
+    public void Replace(Fragment fragment) { //신율이가 추가, fragment 전환
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack("");
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
     }
 
+
+    public void backFragment(){
+        getSupportFragmentManager().popBackStack();
+    }
+
+
+
+    public String getNowTime() {
+        long lNow;
+        Date dt;
+        SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        lNow = System.currentTimeMillis();
+        dt = new Date(lNow);
+        return sdfFormat.format(dt);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void songPrepare(UrlPassenger urlPassenger) throws IOException {
@@ -580,9 +606,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void playlistAdd(SongPassenger songPassenger) {
-        Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가" + songPassenger.song);
+        //Log.d(TAG, "playlistAdd: 내 재생목록에 song 추가" + songPassenger.song);
+
+        String songUrl = getSongUrl(songPassenger.song.getFile());
+        Log.d(TAG, "playlistAdd: songUrl: " + songUrl);
+
 
         즉시화면셋팅(songPassenger.song);
+
+        //EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying));
 
         mainViewModel.addAndCallbackPlaysong(new PlaySongSaveReqDto(songPassenger.song), new AddCallback<PlaySong>(){ //인터페이스 콜백패턴.
                     @Override
@@ -592,6 +624,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(mContext, "재생목록에 곡을 추가하였습니다.", Toast.LENGTH_SHORT).show();
                         }else if(result == -1){
                             String songUrl = getSongUrl(playSong.getSong().getFile());
+                            Log.d(TAG, "onSucess: songUrl: " + songUrl);
 
                             if (playListAdapter.playList != null) {
                                 for (PlaySong play : playListAdapter.playList) {

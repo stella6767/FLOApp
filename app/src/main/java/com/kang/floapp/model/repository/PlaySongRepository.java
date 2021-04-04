@@ -12,6 +12,7 @@ import com.kang.floapp.utils.callback.AddCallback;
 
 import java.util.List;
 
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +72,9 @@ public class PlaySongRepository { //일단 나중에 옮기도록 하자
             @Override
             public void onFailure(Call<ResponseDto<PlaySong>> call, Throwable t) {
                 Log.d(TAG, "onFailure: "+t.getMessage());
+                Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
+                Log.d(TAG, "onFailure: "+t.getCause());
+                Log.d(TAG, "onFailure: "+t.fillInStackTrace()); //이런 시발 createDate
                 addCallback.onFailure();
             }
         });
@@ -110,6 +114,9 @@ public class PlaySongRepository { //일단 나중에 옮기도록 하자
         });
 
     }
+
+
+
 
 
 }

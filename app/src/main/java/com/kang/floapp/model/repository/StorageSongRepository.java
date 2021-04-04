@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.MutableLiveData;
 
+import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
 import com.kang.floapp.model.StorageSong;
@@ -14,6 +15,7 @@ import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.StorageSongSaveReqDto;
 import com.kang.floapp.model.network.SongAPI;
 import com.kang.floapp.model.network.StorageSongAPI;
+import com.kang.floapp.view.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,35 +38,30 @@ public class StorageSongRepository {
     }
 
 
-    public void saveStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){
+    public void saveStorageSong(StorageSongSaveReqDto storageSongSaveReqDto, MainActivity mainActivity){
 
-        Call<ResponseDto<StorageSong>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).save(storageSongSaveReqDto);
+        Call<ResponseDto<String>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).save(storageSongSaveReqDto);
 
-        call.enqueue(new Callback<ResponseDto<StorageSong>>() {
+        call.enqueue(new Callback<ResponseDto<String>>() {
             @Override
-            public void onResponse(Call<ResponseDto<StorageSong>> call, Response<ResponseDto<StorageSong>> response) {
+            public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
                 Log.d(TAG, "onResponse: 보관함에 곡 추가하기 : " + response.body().getData());
 
-                if (response.body().getStatusCode() == 1){
-                    ResponseDto<?> result = response.body();
-                    Log.d(TAG, "onResponse: 성공적으로 저장됨" );
+                ResponseDto<?> result = response.body();
 
-//               StorageSong storageSong = response.body().getData();
-//                Song song = storageSong.getSong();
-//                List<Song> storageSongList = mtStorageSongList.getValue(); //가만 생각하니 이게 필요없겠는데??
-//                storageSongList.add(song);
-//                mtStorageSongList.setValue(storageSongList);
+                if (response.body().getStatusCode() == 1){
+                    Log.d(TAG, "onResponse: 성공적으로 저장됨" );
+                    Toast.makeText(mainActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+
                 }else {
                     Log.d(TAG, "onResponse: 저장소에 곡 추가 실패");
-                    //이거 예외처리를 어떻게 할지 생각해봐야겠다.
-
+                    Toast.makeText(mainActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                 }
-
 
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<StorageSong>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<String>> call, Throwable t) {
                 Log.d(TAG, "onFailure: 보관함 추가하기 실패 = " + t.getMessage());
             }
         });
@@ -94,7 +91,42 @@ public class StorageSongRepository {
 
     }
 
-    
+
+    public void deleteByStorageSongId(int userId, int storageId, int songId){
+
+        Call<ResponseDto<Integer>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).deleteById(userId, storageId, songId);
+
+        call.enqueue(new Callback<ResponseDto<Integer>>() {
+            @Override
+            public void onResponse(Call<ResponseDto<Integer>> call, Response<ResponseDto<Integer>> response) {
+                Log.d(TAG, "onResponse: 저장소 곡 삭제 " );
+                ResponseDto<Integer> result = response.body();
+                int id = result.getData();
+
+                if (result.getStatusCode() == 1) {
+//                    List<Song> stoargeSongList = mtStorageSongList.getValue();
+//                    for (int i = 0; i < stoargeSongList.size(); i++) {
+//                        if (stoargeSongList.get(i).getId() == id) {
+//                            stoargeSongList.remove(i);
+//                            break;
+//                        }
+//                        mtPlayList.setValue(playSongList);
+//                    }
+                } else {
+                    Log.d(TAG, "onResponse: 삭제 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDto<Integer>> call, Throwable t) {
+                Log.d(TAG, "onFailure: "+t.getMessage());
+            }
+        });
+
+    }
+
+
+
 
 
 

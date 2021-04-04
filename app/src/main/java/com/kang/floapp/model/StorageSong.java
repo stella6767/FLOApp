@@ -15,6 +15,6 @@ public class StorageSong {
     private User user;
     private Storage storage;
     private Song song;
-    private Timestamp createDate;
+    private String createDate;
 
 }

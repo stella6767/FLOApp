@@ -117,7 +117,7 @@ public class MainActivityViewModel extends ViewModel {
 
 
     //내 저장소에 추가한 곡 관련
-    public void addStorageSong(StorageSongSaveReqDto storageSongSaveReqDto){storageSongRepository.saveStorageSong(storageSongSaveReqDto);}
+    public void addStorageSong(StorageSongSaveReqDto storageSongSaveReqDto, MainActivity mainActivity){storageSongRepository.saveStorageSong(storageSongSaveReqDto, mainActivity);}
     public void findByStorageId(int storageId, int userId){storageSongRepository.fetchFindByStoarageId(storageId,userId);}
 
 

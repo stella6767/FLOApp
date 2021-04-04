@@ -71,6 +71,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
         private TextView tvSearchListTitle;
         private ImageView ivSearchListArt;
         private ImageView ivSearchListPlay;
+        private TextView tvSearchListId;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,14 +80,17 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
             tvSearchListTitle = itemView.findViewById(R.id.tv_search_list_title);
             ivSearchListArt = itemView.findViewById(R.id.iv_search_list_art);
             ivSearchListPlay = itemView.findViewById(R.id.iv_search_list_play);
+            tvSearchListId = itemView.findViewById(R.id.tv_search_list_id);
 
             ivSearchListPlay.setOnClickListener(v -> {
 
                 Log.d(TAG, "categoryViewHolder: 클릭됨");
+
+                String imageUrl = mainActivity.getImageUrl(searchSongList.get(getAdapterPosition()).getImg());
                 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(searchSongList.get(getAdapterPosition()).getImg())
+                        .load(imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
@@ -101,10 +105,13 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
         public void setItem(Song song) {
             tvSearchListArtist.setText(song.getArtist());
             tvSearchListTitle.setText(song.getTitle());
+            tvSearchListId.setText((getAdapterPosition()+1)+"");
+
+            String imageUrl = mainActivity.getImageUrl(song.getImg());
 
             Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                     .with(itemView)
-                    .load(song.getImg())
+                    .load(imageUrl)
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(ivSearchListArt);

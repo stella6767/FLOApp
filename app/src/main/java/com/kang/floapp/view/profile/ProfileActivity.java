@@ -7,10 +7,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 import com.kang.floapp.R;
+import com.kang.floapp.model.User;
 import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
@@ -20,6 +25,9 @@ public class ProfileActivity extends AppCompatActivity {
     private Context mContext = ProfileActivity.this;
     private static final String TAG = "ProfileActivity";
     private MaterialButton mtBtnLogout;
+    private TextView tvUsername;
+    private TextView tvUserEmail;
+    private ImageView ivProfileBack;
 
 
     @Override
@@ -27,7 +35,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
+        ivProfileBack = findViewById(R.id.iv_profile_back);
         mtBtnLogout = findViewById(R.id.mt_btn_logout);
+        tvUsername = findViewById(R.id.tv_username);
+        tvUserEmail = findViewById(R.id.tv_user_email);
 
         mtBtnLogout.setOnClickListener(v -> {
             SharedPreference.removeAttribute(mContext, "principal");
@@ -35,6 +47,16 @@ public class ProfileActivity extends AppCompatActivity {
 
             alert("로그아웃");
         });
+
+        ivProfileBack.setOnClickListener(v -> {
+            finish();
+        });
+
+        User user = userValidaionCheck();
+
+        tvUsername.setText(user.getUsername());
+        tvUserEmail.setText(user.getEmail());
+
     }
 
     private void alert(String value){
@@ -59,5 +81,16 @@ public class ProfileActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //인텐트 플래그 설정
         startActivity(intent);  //인텐트 이동
         finish();   //현재 액티비티 종료
+    }
+
+
+    public User userValidaionCheck(){
+        Gson gson = new Gson();
+        String principal = SharedPreference.getAttribute(mContext, "principal");
+        Log.d(TAG, "onCreateView: 인증" + principal);
+        User user = gson.fromJson(principal, User.class);
+        Log.d(TAG, "onCreateView: 됨?" + user);
+
+        return user;
     }
 }

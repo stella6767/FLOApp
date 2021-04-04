@@ -2,7 +2,6 @@ package com.kang.floapp.model.network;
 
 import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.AuthJoinReqDto;
-import com.kang.floapp.model.dto.AuthLoginRespDto;
 import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.view.common.Constants;
 

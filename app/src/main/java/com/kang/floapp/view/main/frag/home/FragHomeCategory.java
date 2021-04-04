@@ -27,6 +27,7 @@ public class FragHomeCategory extends Fragment {
 
     private static final String TAG = "FragHomeCategory";
     //private FragHomeCategory aaa = FragHomeCategory.this;
+    private MainActivity mainActivity;
 
     public ImageView ivHomeBack;
 
@@ -60,7 +61,7 @@ public class FragHomeCategory extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_home_category, container, false);
 
-        MainActivity mainActivity = (MainActivity) container.getContext();
+        mainActivity = (MainActivity) container.getContext();
         ivHomeBack = view.findViewById(R.id.iv_home_back);
         mainViewModel = mainActivity.mainViewModel;
 
@@ -99,7 +100,7 @@ public class FragHomeCategory extends Fragment {
 
     private void setCategoryImgText(){
 
-        tvCurrentDate.setText(getNowTime());
+        tvCurrentDate.setText(mainActivity.getNowTime());
         tvCategoryDesc.setText(desc);
 
         tvToolbarCategory.setText(category);
@@ -116,14 +117,7 @@ public class FragHomeCategory extends Fragment {
         mainViewModel.findCategory(category);
     }
 
-    public String getNowTime() {
-        long lNow;
-        Date dt;
-        SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        lNow = System.currentTimeMillis();
-        dt = new Date(lNow);
-        return sdfFormat.format(dt);
-    }
+
 
 
     @Override

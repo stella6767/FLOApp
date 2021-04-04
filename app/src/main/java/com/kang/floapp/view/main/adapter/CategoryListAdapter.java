@@ -62,7 +62,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull categoryViewHolder holder, int position) {
-        tvCategoryTotal.setText(getItemCount()+"");
+        tvCategoryTotal.setText(" 총 개수: " + (getItemCount()-1+""));
         holder.setItem(categorySongList.get(position));
     }
 
@@ -94,10 +94,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             ivCategoryListPlay.setOnClickListener(v -> {
 
                 Log.d(TAG, "categoryViewHolder: 클릭됨");
+
+                String imageUrl = mainActivity.getImageUrl(categorySongList.get(getAdapterPosition()).getImg());
                 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(categorySongList.get(getAdapterPosition()).getImg())
+                        .load(imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
@@ -113,9 +115,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             tvCategoryListArtist.setText(song.getArtist());
             tvCategoryListTitle.setText(song.getTitle());
 
+            String imageUrl = mainActivity.getImageUrl(song.getImg());
+
             Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                     .with(itemView)
-                    .load(song.getImg())
+                    .load(imageUrl)
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(ivCategoryListArt);

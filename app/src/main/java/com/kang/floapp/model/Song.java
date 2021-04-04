@@ -12,9 +12,8 @@ public class Song {
     private String title;
     private String artist;
     private String category;
-    private Integer duration;
     private String lyrics;
-    private String date;
+    private String relaseDate;
     private String img;
     private String file;
 }

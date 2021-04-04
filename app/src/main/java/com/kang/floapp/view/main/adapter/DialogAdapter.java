@@ -103,7 +103,9 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MyViewHold
                     StorageSongSaveReqDto storageSongSaveReqDto = new StorageSongSaveReqDto(user, song, storage);
                     Log.d(TAG, "MyViewHolder: storageSong 추기: " + storageSongSaveReqDto);
                     //storageSongSaveReqDto.getStorage().setCreateDate();
-                    mainViewModel.addStorageSong(storageSongSaveReqDto);
+                    mainViewModel.addStorageSong(storageSongSaveReqDto, mainActivity);
+                    mainActivity.storageAdapter.transImg(song.getImg(), storage.getId()); //저장고 이미지 전달용도
+
                 }else{
                     Toast.makeText(mainActivity, "저장소를 이용할려면 로그인이 요구됩니다.", Toast.LENGTH_SHORT).show();
 

@@ -15,8 +15,12 @@ import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.StorageSong;
+import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
+import com.kang.floapp.view.main.frag.storage.FragStorageSongList;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,10 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
     private MainActivity mainActivity;
     private MainActivityViewModel mainViewModel;
 
+    //private FragStorageSongList fragStorageSongList;
+    private TextView tvStoargeListCount;
+
+
     public StorageSongAdapter() {};
 
     public StorageSongAdapter(MainActivity mainActivity, MainActivityViewModel mainViewModel){ //일단 줘봥
@@ -37,12 +45,26 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
 
 
 
+//    public void setFragStorageSongList(FragStorageSongList fragStorageSongList){
+//        this.fragStorageSongList = fragStorageSongList;
+//        fragStorageSongList.tvStoargeListCount.setText(" 개수: " + (storageSongList.size()+""));
+//    }
+
+
+    public void setSongCount(TextView tvStoargeListCount){
+        this.tvStoargeListCount = tvStoargeListCount;
+
+    }
+
+
     public void setStorageSong(List<Song> storageSongList){
         this.storageSongList = storageSongList;
 
         if (storageSongList != null) {
             Log.d(TAG, "setStorageSong: " + storageSongList.size());
         }
+
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -56,6 +78,8 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+        tvStoargeListCount.setText("  " + (getItemCount()+"")+" 곡");
         holder.setItem(storageSongList.get(position));
     }
 
@@ -66,41 +90,60 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvStorageArtist;
-        private TextView tvStorageTitle;
-        private TextView tvStorageId;
-        private ImageView ivStoragePlay;
-        private ImageView ivStorageArt;
+        private TextView tvStorageSongArtist;
+        private TextView tvStorageSongTitle;
+        private TextView tvStorageSongId;
+        private ImageView ivStorageSongPlay;
+        private ImageView ivStorageSongArt;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvStorageTitle = itemView.findViewById(R.id.tv_storage_title);
-            tvStorageArtist = itemView.findViewById(R.id.tv_storage_title);
-            tvStorageId = itemView.findViewById(R.id.tv_stoarge_id);
-            ivStoragePlay = itemView.findViewById(R.id.iv_storage_play);
-            ivStorageArt = itemView.findViewById(R.id.iv_stoarge_art);
+            tvStorageSongTitle = itemView.findViewById(R.id.tv_stoarge_song_title);
+            tvStorageSongArtist = itemView.findViewById(R.id.tv_stoarge_song_artist);
+            tvStorageSongId = itemView.findViewById(R.id.tv_stoarge_song_id);
+            ivStorageSongPlay = itemView.findViewById(R.id.iv_storage_song_play);
+            ivStorageSongArt = itemView.findViewById(R.id.iv_stoarge_song_art);
+
+
+            ivStorageSongPlay.setOnClickListener(v -> {
+
+                String imageUrl = mainActivity.getImageUrl(storageSongList.get(getAdapterPosition()).getImg());
+
+                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                        .with(mainActivity)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(mainActivity.ivPlayViewArt);
+
+                EventBus.getDefault().post(new SongPassenger(storageSongList.get(getAdapterPosition())));
+            });
+
+
 
         }
 
+
         public void setItem(Song song){
-
-
             if(song != null) {
-                tvStorageTitle.setText(song.getTitle());
-                //        tvStorageId.setText(getAdapterPosition() + 1 + "");
-                tvStorageArtist.setText(song.getArtist());
+                tvStorageSongTitle.setText(song.getTitle());
+                tvStorageSongId.setText(getAdapterPosition() + 1 + "");
+                tvStorageSongArtist.setText(song.getArtist());
+
+                String imageUrl = mainActivity.getImageUrl(song.getImg());
+
+                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                        .with(itemView)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(ivStorageSongArt);
 
             }
-//            tvSongTitle.setText(storageSong.getSong().getTitle());
-//            tvSongArtist.setText(storageSong.getSong().getArtist());
-//            Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
-//                    .with(itemView)
-//                    .load(storageSong.getSong().getImg())
-//                    .centerCrop()
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .into(ivStorageSongViewArt);
+
+
         }
 
 

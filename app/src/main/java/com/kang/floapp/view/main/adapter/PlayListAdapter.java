@@ -122,9 +122,12 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
                 mainActivity.tvPlayViewTitle.setText(playList.get(getAdapterPosition()).getSong().getTitle());
                 mainActivity.tvLyrics.setText(playList.get(getAdapterPosition()).getSong().getLyrics());
 
+                String imageUrl = mainActivity.getImageUrl(playList.get(getAdapterPosition()).getSong().getImg());
+
+
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
-                        .load(playList.get(getAdapterPosition()).getSong().getImg())
+                        .load(imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
@@ -151,9 +154,11 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
                 tvPlayId.setText(getAdapterPosition() + 1 + "");
 
 
+                String imageUrl = mainActivity.getImageUrl(playSong.getSong().getImg());
+
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(itemView)
-                        .load(playSong.getSong().getImg())
+                        .load(imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(ivPlayArt);

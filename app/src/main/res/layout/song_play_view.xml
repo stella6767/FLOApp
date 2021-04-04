@@ -57,11 +57,10 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_playView_title" />
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="313dp"
             android:layout_height="187dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/iv_heart"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivPlayViewArt">
@@ -86,19 +85,16 @@
 
         </ScrollView>
 
-        <ImageView
-            android:id="@+id/iv_heart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="15dp"
+        <TextView
+            android:id="@+id/tv_relasedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="발매날짜"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_favorite_border"
-            app:tint="@color/white" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,13 +27,13 @@ import retrofit2.Response;
 public class StorageSongRepository {
     private static final String TAG = "StorageSongRepository";
 
-    private MutableLiveData<List<Song>> mtStorageSongList;
+    private MutableLiveData<List<StorageSong>> mtStorageSongList;
 
     public StorageSongRepository() {
         mtStorageSongList = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Song>> initMtStorageSong(){
+    public MutableLiveData<List<StorageSong>> initMtStorageSong(){
         return mtStorageSongList;
     }
 
@@ -71,20 +71,20 @@ public class StorageSongRepository {
 
     public void fetchFindByStoarageId(int storageId, int userId){
 
-        Call<ResponseDto<List<Song>>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).findAllById(storageId, userId);
+        Call<ResponseDto<List<StorageSong>>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).findAllById(storageId, userId);
 
-        call.enqueue(new Callback<ResponseDto<List<Song>>>() {
+        call.enqueue(new Callback<ResponseDto<List<StorageSong>>>() {
             @Override
-            public void onResponse(Call<ResponseDto<List<Song>>> call, Response<ResponseDto<List<Song>>> response) {
+            public void onResponse(Call<ResponseDto<List<StorageSong>>> call, Response<ResponseDto<List<StorageSong>>> response) {
                 Log.d(TAG, "onResponse: 특정 저장소 곡 리스트 받기 " );
-                ResponseDto<List<Song>> result = response.body();
+                ResponseDto<List<StorageSong>> result = response.body();
                 Log.d(TAG, "onResponse: result: " + result);
                 mtStorageSongList.setValue(result.getData());
 
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<List<Song>>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<List<StorageSong>>> call, Throwable t) {
                 Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
@@ -92,33 +92,32 @@ public class StorageSongRepository {
     }
 
 
-    public void deleteByStorageSongId(int userId, int storageId, int songId){
+    public void deleteByStorageSongId(int id){
 
-        Call<ResponseDto<Integer>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).deleteById(userId, storageId, songId);
+        Call<ResponseDto<String>> call = StorageSongAPI.retrofit.create(StorageSongAPI.class).deleteById(id);
 
-        call.enqueue(new Callback<ResponseDto<Integer>>() {
+        call.enqueue(new Callback<ResponseDto<String>>() {
             @Override
-            public void onResponse(Call<ResponseDto<Integer>> call, Response<ResponseDto<Integer>> response) {
+            public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
                 Log.d(TAG, "onResponse: 저장소 곡 삭제 " );
-                ResponseDto<Integer> result = response.body();
-                int id = result.getData();
+                ResponseDto<String> result = response.body();
 
                 if (result.getStatusCode() == 1) {
-//                    List<Song> stoargeSongList = mtStorageSongList.getValue();
-//                    for (int i = 0; i < stoargeSongList.size(); i++) {
-//                        if (stoargeSongList.get(i).getId() == id) {
-//                            stoargeSongList.remove(i);
-//                            break;
-//                        }
-//                        mtPlayList.setValue(playSongList);
-//                    }
+                    List<StorageSong> stoargeSongList = mtStorageSongList.getValue();
+                    for (int i = 0; i < stoargeSongList.size(); i++) {
+                        if (stoargeSongList.get(i).getId() == id) {
+                            stoargeSongList.remove(i);
+                            break;
+                        }
+                        mtStorageSongList.setValue(stoargeSongList);
+                    }
                 } else {
                     Log.d(TAG, "onResponse: 삭제 실패");
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<Integer>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<String>> call, Throwable t) {
                 Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });

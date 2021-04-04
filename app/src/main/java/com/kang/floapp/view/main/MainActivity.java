@@ -26,6 +26,7 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.PlaySong;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.Storage;
+import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.model.User;
 import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.utils.SharedPreference;
@@ -58,7 +59,7 @@ import java.util.List;
 import java.util.Random;
 
 
-//여기는 Kang7 Branch
+//여기는 Kang8 Branch
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity2";
@@ -214,10 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mainViewModel.findStorage(); //storage는 데이터 get까지 여기서 작업
 
-        mainViewModel.storageSongListSubscribe().observe(this, new Observer<List<Song>>() {
+        mainViewModel.storageSongListSubscribe().observe(this, new Observer<List<StorageSong>>() {
             @Override
-            public void onChanged(List<Song> songs) {
-                storageSongAdapter.setStorageSong(songs);
+            public void onChanged(List<StorageSong> storageSongs) {
+                storageSongAdapter.setStorageSong(storageSongs);
             }
         });
 

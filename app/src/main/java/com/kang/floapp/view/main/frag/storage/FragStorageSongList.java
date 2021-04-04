@@ -105,13 +105,13 @@ public class FragStorageSongList extends Fragment {
         rvStorageSongList.setAdapter(storageSongAdapter);
 
         //storageSongAdapter.setFragStorageSongList(fragStorageSongList);
-        storageSongAdapter.setSongCount(tvStoargeListCount);
+        storageSongAdapter.setStorageSongCount(tvStoargeListCount);
 
 
 
 
         initData();
-
+        swipeListner();
 
         ivStorageBack.setOnClickListener(v -> {
             Log.d(TAG, "onCreateView: back 클릭됨");
@@ -121,24 +121,24 @@ public class FragStorageSongList extends Fragment {
         return view;
     }
 
-//    private void swipeListner(){
-//        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return true;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                Log.d(TAG, "onSwiped: " + viewHolder.getAdapterPosition());
-//                int id = playListAdapter.getSongId(viewHolder.getAdapterPosition());
-//                mainViewModel.deleteByPlaylistId(id);
-//            }
-//        };
-//
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-//        itemTouchHelper.attachToRecyclerView(rvPlayList);
-//    }
+    private void swipeListner(){
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.d(TAG, "onSwiped: " + viewHolder.getAdapterPosition());
+                int id = storageSongAdapter.getStorageSongId(viewHolder.getAdapterPosition());
+                mainViewModel.deleteByStorageSongId(id);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(rvStorageSongList);
+    }
 
 
 

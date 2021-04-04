@@ -28,7 +28,7 @@ import java.util.List;
 public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter.MyViewHolder>{
 
     private static final String TAG = "StorageSongAdapter";
-    public List<Song> storageSongList = new ArrayList<>();
+    public List<StorageSong> storageSongList = new ArrayList<>();
     private MainActivity mainActivity;
     private MainActivityViewModel mainViewModel;
 
@@ -51,13 +51,18 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
 //    }
 
 
-    public void setSongCount(TextView tvStoargeListCount){
+    public void setStorageSongCount(TextView tvStoargeListCount){
         this.tvStoargeListCount = tvStoargeListCount;
 
     }
 
 
-    public void setStorageSong(List<Song> storageSongList){
+    public int getStorageSongId(int position){
+        return storageSongList.get(position).getId();
+    }
+
+
+    public void setStorageSong(List<StorageSong> storageSongList){
         this.storageSongList = storageSongList;
 
         if (storageSongList != null) {
@@ -79,7 +84,7 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        tvStoargeListCount.setText("  " + (getItemCount()+"")+" 곡");
+        tvStoargeListCount.setText("  " + (getItemCount()-1+"")+" 곡");
         holder.setItem(storageSongList.get(position));
     }
 
@@ -109,7 +114,7 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
 
             ivStorageSongPlay.setOnClickListener(v -> {
 
-                String imageUrl = mainActivity.getImageUrl(storageSongList.get(getAdapterPosition()).getImg());
+                String imageUrl = mainActivity.getImageUrl(storageSongList.get(getAdapterPosition()).getSong().getImg());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(mainActivity)
@@ -118,7 +123,7 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
 
-                EventBus.getDefault().post(new SongPassenger(storageSongList.get(getAdapterPosition())));
+                EventBus.getDefault().post(new SongPassenger(storageSongList.get(getAdapterPosition()).getSong()));
             });
 
 
@@ -126,13 +131,13 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
         }
 
 
-        public void setItem(Song song){
-            if(song != null) {
-                tvStorageSongTitle.setText(song.getTitle());
+        public void setItem(StorageSong storageSong){
+            if(storageSong != null) {
+                tvStorageSongTitle.setText(storageSong.getSong().getTitle());
                 tvStorageSongId.setText(getAdapterPosition() + 1 + "");
-                tvStorageSongArtist.setText(song.getArtist());
+                tvStorageSongArtist.setText(storageSong.getSong().getArtist());
 
-                String imageUrl = mainActivity.getImageUrl(song.getImg());
+                String imageUrl = mainActivity.getImageUrl(storageSong.getSong().getImg());
 
                 Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                         .with(itemView)

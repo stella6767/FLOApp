@@ -24,10 +24,10 @@ public interface StorageSongAPI {
     Call<ResponseDto<String>> save(@Body StorageSongSaveReqDto storageSongSaveReqDto);
 
     @GET("storageSong")
-    Call<ResponseDto<List<Song>>> findAllById(@Query("storageId") int stoargeId, @Query("userId") int userId);
+    Call<ResponseDto<List<StorageSong>>> findAllById(@Query("storageId") int stoargeId, @Query("userId") int userId);
 
-    @DELETE("storageSong")
-    Call<ResponseDto<Integer>> deleteById( @Query("userId") int userId, @Query("storageId") int stoargeId, @Query("songId") int songId);
+    @DELETE("storageSong/{id}")
+    Call<ResponseDto<String>> deleteById(@Path("id") int id);
 
 
     Retrofit retrofit = new Retrofit.Builder()

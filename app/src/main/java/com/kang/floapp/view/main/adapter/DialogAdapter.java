@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
@@ -82,7 +83,6 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MyViewHold
 
         private RoundedImageView ivDialogViewArt;
         private TextView tvDialogStorageTitle;
-        private TextView tvdialogStorageSongCount;
         private ImageView ivDialogStorageSelectAdd;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -91,7 +91,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MyViewHold
             ivDialogViewArt = itemView.findViewById(R.id.iv_dialog_view_art);
             tvDialogStorageTitle = itemView.findViewById(R.id.tv_dialog_storage_title);
             ivDialogStorageSelectAdd = itemView.findViewById(R.id.iv_dialog_storage_select_add);
-            tvdialogStorageSongCount = itemView.findViewById(R.id.tv_dialog_storage_song_count);
+
 
             ivDialogStorageSelectAdd.setOnClickListener(v -> {
                 Storage storage = selectStorageList.get(getAdapterPosition());
@@ -119,6 +119,16 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MyViewHold
 
         public void setItem(Storage storage) {
             tvDialogStorageTitle.setText(storage.getTitle());
+
+            String imageUrl = mainActivity.getImageUrl(storage.getImage());
+
+            Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
+                    .with(itemView)
+                    .load(imageUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(ivDialogViewArt);
+
         }
 
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
+import com.kang.floapp.utils.CustomListViewDialog;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.view.main.MainActivity;
 
@@ -26,6 +27,8 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
     private static final String TAG = "SearchSongAdapter";
     private MainActivity mainActivity;
     public List<Song> searchSongList;
+    private TextView tvSearchCount;
+    private StorageAdapter storageAdapter;
 
 
     public void setMusics(List<Song> searchSongList) {
@@ -36,6 +39,11 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+    }
+
+
+    public void setSearchCount(TextView tvSearchCount){
+        this.tvSearchCount = tvSearchCount;
     }
 
 
@@ -52,6 +60,8 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
 
     @Override
     public void onBindViewHolder(@NonNull categoryViewHolder holder, int position) {
+        tvSearchCount.setText((getItemCount()+"")+" 곡");
+
         holder.setItem(searchSongList.get(position));
     }
 
@@ -72,6 +82,8 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
         private ImageView ivSearchListArt;
         private ImageView ivSearchListPlay;
         private TextView tvSearchListId;
+        private ImageView ivStorageAddBtn2;
+        private CustomListViewDialog customDialog;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +93,21 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.ca
             ivSearchListArt = itemView.findViewById(R.id.iv_search_list_art);
             ivSearchListPlay = itemView.findViewById(R.id.iv_search_list_play);
             tvSearchListId = itemView.findViewById(R.id.tv_search_list_id);
+            ivStorageAddBtn2 = itemView.findViewById(R.id.iv_storage_add_btn2);
+
+
+            ivStorageAddBtn2.setOnClickListener(v -> {
+                //storageAdapter = mainActivity.storageAdapter;
+                Song song = searchSongList.get(getAdapterPosition());
+                Log.d(TAG, "MyViewHolder: add 버튼 클릭됨: " + song.getTitle());
+
+                mainActivity.dialogAdapter.transSong(song);
+                customDialog = new CustomListViewDialog(mainActivity, mainActivity.dialogAdapter);
+                customDialog.show();
+                customDialog.setCanceledOnTouchOutside(false);
+
+            });
+
 
             ivSearchListPlay.setOnClickListener(v -> {
 

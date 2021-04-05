@@ -5,7 +5,7 @@
     app:contentInsetStart="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="65dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -17,33 +17,28 @@
 
 
         <TextView
-            android:id="@+id/tv_toolbar_search"
+            android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="검색결과"
+            android:text="프로필 수정"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_search_count"
+        <ImageView
+            android:id="@+id/iv_profile_update_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="개수"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.933"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            app:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.484" />
-
+            app:srcCompat="@drawable/ic_baseline_arrow_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ public class FragSearchResult extends Fragment {
     private RecyclerView rvSearchList;
     private SearchSongAdapter searchSongAdapter;
     private MainActivityViewModel mainViewModel;
+    private TextView tvSearchCount;
 
     public FragSearchResult(String keyword) {
         this.keyword = keyword;
@@ -41,11 +43,14 @@ public class FragSearchResult extends Fragment {
         MainActivity mainActivity = (MainActivity) container.getContext();
         mainViewModel = mainActivity.mainViewModel;
 
+        tvSearchCount = view.findViewById(R.id.tv_search_count);
+
         rvSearchList = view.findViewById(R.id.rv_search_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvSearchList.setLayoutManager(layoutManager);
         searchSongAdapter =  new SearchSongAdapter();
         rvSearchList.setAdapter(searchSongAdapter);
+        searchSongAdapter.setSearchCount(tvSearchCount);
 
         searchSongAdapter.setMainActivity(mainActivity);
 

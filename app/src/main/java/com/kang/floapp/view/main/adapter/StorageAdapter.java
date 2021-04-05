@@ -36,6 +36,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     private MainActivity mainActivity;
     private MainActivityViewModel mainViewModel;
 
+
     private String storageImg;
     private int storageId;
 
@@ -102,7 +103,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
         private ConstraintLayout layoutStorageBtnArea;
         private RoundedImageView ivStorageViewArt;
         private TextView tvStorageTitle;
-        private ImageView ivStorageDelete;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -110,7 +110,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
             ivStorageViewArt = itemView.findViewById(R.id.iv_view_art);
             tvStorageTitle = itemView.findViewById(R.id.tv_storage_title);
-            ivStorageDelete = itemView.findViewById(R.id.iv_storage_delete);
             layoutStorageBtnArea = itemView.findViewById(R.id.layout_storage_btn_area);
 
 
@@ -123,15 +122,6 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
 
 
-
-            // 수정버튼으로 바꿀거임.
-            ivStorageDelete.setOnClickListener(v -> {
-//                if (storageList != null && (storageList.size() > 0)) {
-//                    int id = storageList.get(getAdapterPosition()).getId();
-//                    Log.d(TAG, "MyViewHolder:  id:" + id);
-//                    mainViewModel.deleteByStorageId(id);
-//                }
-            });
 
 
         }

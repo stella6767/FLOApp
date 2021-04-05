@@ -82,6 +82,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tvCategoryListTitle;
         private ImageView ivCategoryListArt;
         private ImageView ivCategoryListPlay;
+        private TextView tvCatecorySongId;
 
         public categoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +91,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             tvCategoryListTitle = itemView.findViewById(R.id.tv_category_list_title);
             ivCategoryListArt = itemView.findViewById(R.id.iv_category_list_art);
             ivCategoryListPlay = itemView.findViewById(R.id.iv_category_list_play);
+            tvCatecorySongId = itemView.findViewById(R.id.tv_catecory_song_id);
 
             ivCategoryListPlay.setOnClickListener(v -> {
 
@@ -114,6 +116,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         public void setItem(Song song) {
             tvCategoryListArtist.setText(song.getArtist());
             tvCategoryListTitle.setText(song.getTitle());
+            tvCatecorySongId.setText((getAdapterPosition()+1)+"");
 
             String imageUrl = mainActivity.getImageUrl(song.getImg());
 

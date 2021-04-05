@@ -2,6 +2,7 @@ package com.kang.floapp.view.main.frag.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Category;
 import com.kang.floapp.model.User;
+import com.kang.floapp.model.dto.ResponseDto;
+import com.kang.floapp.model.network.UserAPI;
+import com.kang.floapp.utils.SharedPreference;
+import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.adapter.CategoryAdapter;
 import com.kang.floapp.view.profile.ProfileActivity;
@@ -23,6 +29,10 @@ import com.kang.floapp.view.user.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragHomeMain extends Fragment {
 
@@ -70,23 +80,72 @@ public class FragHomeMain extends Fragment {
 
         ivProfileMove.setOnClickListener(v -> {
 
-            User user = mainActivity.userValidaionCheck();
+            User checkUser = mainActivity.userValidaionCheck();
 
-
-            if(user != null){
-//                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                getActivity().startActivity(intent);
-                startActivity(new Intent(getActivity(), ProfileActivity.class));
-
+            if((checkUser != null) && (Constants.JSessionValue != null)){
+                findUser(checkUser);
             }else{
+
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+
             }
+
+
+
+//            if(user != null){
+////                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+////                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+////                getActivity().startActivity(intent);
+//                startActivity(new Intent(getActivity(), ProfileActivity.class));
+//
+//            }else{
+//                startActivity(new Intent(getActivity(), LoginActivity.class));
+//            }
+
+
 
         });
 
 
         return view;
+    }
+
+    public void findUser(User checkUser){
+        Call<ResponseDto<User>> call = UserAPI.retrofit.create(UserAPI.class).find(checkUser.getId(), Constants.JSessionValue);
+
+        call.enqueue(new Callback<ResponseDto<User>>() {
+            @Override
+            public void onResponse(Call<ResponseDto<User>> call, Response<ResponseDto<User>> response) {
+                Log.d(TAG, "onResponse: 통신 성공");
+
+                if(response.body() == null || response.body().getStatusCode() != 1){
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }else if(response.body().getStatusCode() == 1){
+
+                    User user = response.body().getData();
+                    Log.d(TAG, "onResponse: 받아온 유저 객체: " + user);
+
+                    Gson gson = new Gson();
+                    String principal = gson.toJson(user);
+                    Log.d(TAG, "onResponse: gson 변환 " + principal);
+                    SharedPreference.setAttribute(getActivity(),"principal",principal);// 세션 저장
+
+
+                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                    intent.putExtra("username",user.getUsername());
+                    intent.putExtra("email",user.getEmail());
+                    startActivity(intent);
+                    //startActivity(new Intent(getActivity(), ProfileActivity.class));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDto<User>> call, Throwable t) {
+                Log.d(TAG, "onFailure: 통신 실패"+t.getMessage());
+            }
+        });
+
     }
 
 

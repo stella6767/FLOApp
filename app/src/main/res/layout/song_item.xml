@@ -2,67 +2,82 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#090D12"
+
     android:layout_width="match_parent"
-    android:layout_margin="20dp"
-    android:layout_height="60dp">
+    android:layout_height="50dp"
+    android:layout_marginBottom="10dp">
 
 
     <TextView
         android:id="@+id/tv_song_artist"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="애쉬아일랜드"
+        android:textColor="@android:color/darker_gray"
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="@+id/tv_song_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_song_title" />
 
     <TextView
         android:id="@+id/tv_song_title"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="멜로디"
         android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/iv_song_art"
+        app:layout_constraintStart_toEndOf="@+id/tv_song_Id"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_songId"
+        android:id="@+id/tv_song_Id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
         android:text="1"
-        android:textColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_song_art"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_song_play"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="68dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533"
         app:srcCompat="@drawable/ic_play"
         app:tint="@color/white" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_song_art"
-        android:layout_width="46dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ashisland_melody"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_corner_radius="25dip"
+        app:riv_corner_radius="3dip"
         app:riv_mutate_background="true" />
+
+
+    <ImageView
+        android:id="@+id/iv_storage_add_btn1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.514"
+        app:srcCompat="@drawable/ic_library_add"
+        app:tint="@android:color/darker_gray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

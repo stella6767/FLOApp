@@ -19,10 +19,10 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivPlayViewArt"
-            android:layout_width="298dp"
-            android:layout_height="172dp"
+            android:layout_width="300dp"
+            android:layout_height="270dp"
             android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/ashisland_melody"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
@@ -35,9 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="멜로디"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="song"
             android:textColor="@color/white"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -48,21 +50,23 @@
             android:id="@+id/tv_playView_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="애쉬아일랜드"
-            android:textColor="@color/white"
-            android:textSize="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="artist"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_playView_title" />
 
         <ScrollView
-            android:layout_width="313dp"
-            android:layout_height="187dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/iv_heart"
+            android:id="@+id/scrollView2"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivPlayViewArt">
 
@@ -86,19 +90,17 @@
 
         </ScrollView>
 
-        <ImageView
-            android:id="@+id/iv_heart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/tv_relasedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="발매날짜"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_favorite_border"
-            app:tint="@color/white" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/ivPlayViewArt" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -173,7 +175,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:tint="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/imageView17"
+            app:layout_constraintEnd_toStartOf="@+id/iv_random"
             app:layout_constraintStart_toEndOf="@+id/iv_play_view_bar"
             app:layout_constraintTop_toTopOf="@+id/iv_playView_prev"
             app:srcCompat="@drawable/ic_skip_next" />
@@ -186,12 +188,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_play_view_bar"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/iv_repeat"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_skip_previous" />
 
         <ImageView
-            android:id="@+id/imageView17"
+            android:id="@+id/iv_random"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:tint="@color/white"
@@ -201,7 +203,7 @@
             app:srcCompat="@drawable/ic_shuffle" />
 
         <ImageView
-            android:id="@+id/imageView18"
+            android:id="@+id/iv_repeat"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:tint="@color/white"

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FloApp</string>
+    <string name="app_real_name">FloApp</string>
+    <string name="app_name">FLO</string>
 </resources>

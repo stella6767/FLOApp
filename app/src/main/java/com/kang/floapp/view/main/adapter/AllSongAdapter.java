@@ -2,6 +2,7 @@ package com.kang.floapp.view.main.adapter;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.CustomListViewDialog;
 import com.kang.floapp.utils.eventbus.SongPassenger;
+import com.kang.floapp.utils.notification.CreateNotification;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.frag.home.FragHome;
@@ -34,6 +42,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
     private MainActivity mainActivity;
     public List<Song> songList = new ArrayList<>();
     private StorageAdapter storageAdapter;
+    private TextView tvFloChart;
 
     public AllSongAdapter() { }
 
@@ -47,6 +56,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
+
+    public void setCount(TextView tvFloChart){
+        this.tvFloChart = tvFloChart;
+    }
 
 
     @NonNull
@@ -62,6 +75,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
+        tvFloChart.setText("FLO 차트 "+ (getItemCount()+"")+"곡");
 
         holder.setItem(songList.get(position));
 
@@ -124,8 +138,28 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
                         .into(mainActivity.ivPlayViewArt);
 
 
+                Glide.with(mainActivity)
+                        .asBitmap().load(imageUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .listener(new RequestListener<Bitmap>() {
+                                      @Override
+                                      public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
+                                          Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
+                                          return false;
+                                      }
 
-                    EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
+                                      @Override
+                                      public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
+                                          Log.d(TAG, "비트맵변환한거0 => " + bitmap);
+                                          CreateNotification.createNotificaion(mainActivity, songList.get(getAdapterPosition()), bitmap);
+                                          return false;
+                                      }
+                                  }
+                        ).submit();
+
+
+                EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
 
             });
 

@@ -13,7 +13,12 @@
         android:theme="@style/Theme.FloApp"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize">
-        <activity android:name=".view.profile.ProfileUpdateActivity"></activity>
+        <receiver
+            android:name=".utils.notification.NotificationActionService"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity android:name=".view.profile.ProfileUpdateActivity" />
         <activity android:name=".view.profile.ProfileActivity" />
         <activity android:name=".view.user.JoinActivity" />
         <activity

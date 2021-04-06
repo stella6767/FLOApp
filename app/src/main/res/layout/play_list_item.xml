@@ -13,10 +13,12 @@
 
     <TextView
         android:id="@+id/tv_play_artist"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/darker_gray"
         android:layout_marginTop="3dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="애쉬아일랜드"
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="@+id/tv_play_title"
@@ -24,11 +26,13 @@
 
     <TextView
         android:id="@+id/tv_play_title"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="7dp"
         android:text="멜로디"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/iv_play_art"
         app:layout_constraintTop_toTopOf="parent" />

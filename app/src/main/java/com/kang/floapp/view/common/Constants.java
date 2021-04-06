@@ -3,7 +3,7 @@ package com.kang.floapp.view.common;
 import com.kang.floapp.model.User;
 
 public class Constants {
-    public static final String BASEURL = "http://172.17.95.114:8080/";
+    public static final String BASEURL = "http://172.17.101.14:8080/";
     public static final String FILEPATH = "songlist/";
     public static final String IMAGEPATH = "image/";
     public static int isPlaying = -1;

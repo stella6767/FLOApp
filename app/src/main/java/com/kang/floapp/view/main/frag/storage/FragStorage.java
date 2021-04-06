@@ -101,8 +101,13 @@ public class FragStorage extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Log.d(TAG, "onSwiped: " + viewHolder.getAdapterPosition());
+
                 int id = storageAdapter.getStorageId(viewHolder.getAdapterPosition());
-                mainViewModel.deleteByStorageId(id);
+
+                if(id != 0) {
+                    mainViewModel.deleteByStorageId(id);
+                }
+
             }
         };
 

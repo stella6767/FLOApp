@@ -78,6 +78,10 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh_allsong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_song_list"
@@ -85,6 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

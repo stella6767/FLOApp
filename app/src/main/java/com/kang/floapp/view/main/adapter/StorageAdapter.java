@@ -50,7 +50,11 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
     }
 
     public int getStorageId(int position){
-        return storageList.get(position).getId();
+        if(storageList.size() > 0) {
+            return storageList.get(position).getId();
+        }else{
+            return 0;
+        }
     }
 
     public void setStorage(List<Storage> storageList) {
@@ -131,7 +135,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
 
 
             String imagUrl = mainActivity.getImageUrl(storage.getImage());
-            Log.d(TAG, "setItem: imgurl: " + imagUrl);
+            Log.d(TAG, "setItem: imgurl: " + imagUrl); //이유를 모르겠네....
 
             Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
                     .with(itemView)

@@ -1,5 +1,6 @@
 package com.kang.floapp.view.main;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -7,9 +8,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.kang.floapp.R;
@@ -32,9 +42,11 @@ import com.kang.floapp.model.dto.PlaySongSaveReqDto;
 import com.kang.floapp.utils.SharedPreference;
 import com.kang.floapp.utils.callback.AddCallback;
 import com.kang.floapp.utils.PlayService;
+import com.kang.floapp.utils.eventbus.NotificationBus;
 import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.eventbus.UrlPassenger;
+import com.kang.floapp.utils.notification.CreateNotification;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.adapter.AllSongAdapter;
 import com.kang.floapp.view.main.adapter.CategoryListAdapter;
@@ -67,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Context mContext = MainActivity.this;
     public int playlistChange = 1;
 
+
+    NotificationManager notificationManager;
 
     //어댑터
     public CategoryListAdapter categoryListAdapter;
@@ -113,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         dataObserver();
         serviceObservers();
+
+
+        createChannel();
 
 
         //new를 미리 해둬서 playlist 어댑터를 메모리에 띄워야 됨.
@@ -181,6 +199,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID, "park", NotificationManager.IMPORTANCE_LOW);
+
+            notificationManager = getSystemService(NotificationManager.class);
+            if(notificationManager != null){
+                notificationManager.createNotificationChannel(channel);
+            }
+
+        }
+    }
 
     public void dataObserver() {
 
@@ -309,6 +338,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String songUrl = getSongUrl(playListAdapter.playList.get(Constants.prevNext).getSong().getFile());
 
+
+        Glide.with((MainActivity)mContext)
+                .asBitmap().load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .listener(new RequestListener<Bitmap>() {
+                              @Override
+                              public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
+                                  Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
+                                  return false;
+                              }
+
+                              @Override
+                              public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
+                                  Log.d(TAG, "비트맵변환한거0 => " + bitmap);
+                                  CreateNotification.createNotificaion((MainActivity)mContext, playListAdapter.playList.get(Constants.prevNext).getSong(), bitmap);
+                                  return false;
+                              }
+                          }
+                ).submit();
 
         Log.d(TAG, "setSongText: " + songUrl);
         EventBus.getDefault().post(new UrlPassenger(songUrl, Constants.isPlaying)); //재생목록 다음 or 이전 곡 재생
@@ -530,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onPrepared(String songUrl) throws IOException { //이거 나중에 스레드로
 
+
         mp.reset();
         mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //하 씨바 미치것네
             @Override
@@ -724,5 +774,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             EventBus.getDefault().unregister(this);
         }
     }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)  //구독
+    public void notificationObsever(NotificationBus notificationBus) {
+        Log.d(TAG, "notificaionObsever: 됨?" + notificationBus.getPlayOrNext());
+
+        if(notificationBus.getPlayOrNext() == 0){
+            playBtnListner();
+        }else if(notificationBus.getPlayOrNext() == -1){
+            nextORPrevClick(-1);
+
+//            Glide.with(mContext)
+//                    .asBitmap().load(playListAdapter.playList.get(Constants.prevNext).getSong())
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .skipMemoryCache(true)
+//                    .listener(new RequestListener<Bitmap>() {
+//                                  @Override
+//                                  public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
+//                                      Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
+//                                      return false;
+//                                  }
+//
+//                                  @Override
+//                                  public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
+//                                      Log.d(TAG, "비트맵변환한거0 => " + bitmap);
+//                                      CreateNotification.createNotificaion((MainActivity)mContext, playListAdapter.playList.get(Constants.prevNext).getSong(), bitmap);
+//                                      return false;
+//                                  }
+//                              }
+//                    ).submit();
+        }else if(notificationBus.getPlayOrNext() == 1){
+            nextORPrevClick(1);
+
+        }
+    }
+
 
 }

@@ -25,6 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="애쉬아일랜드 대표곡 모음집"
         android:textSize="12dp"
         android:textColor="@color/white"
@@ -35,6 +37,8 @@
         android:layout_height="0dp"
         android:layout_weight="0.7"
         android:text="코삼오 대표"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="10dp"
         android:textColor="@android:color/darker_gray"
         android:gravity="center_vertical"/>

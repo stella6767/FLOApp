@@ -1,6 +1,7 @@
 package com.kang.floapp.view.main.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.model.StorageSong;
 import com.kang.floapp.utils.eventbus.SongPassenger;
+import com.kang.floapp.utils.notification.CreateNotification;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
 import com.kang.floapp.view.main.frag.storage.FragStorageSongList;
@@ -84,7 +92,7 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        tvStoargeListCount.setText("  " + (getItemCount()-1+"")+" 곡");
+        tvStoargeListCount.setText("  " + (getItemCount()+"")+" 곡");
         holder.setItem(storageSongList.get(position));
     }
 
@@ -122,6 +130,27 @@ public class StorageSongAdapter extends  RecyclerView.Adapter<StorageSongAdapter
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(mainActivity.ivPlayViewArt);
+
+                Glide.with(mainActivity)
+                        .asBitmap().load(imageUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .listener(new RequestListener<Bitmap>() {
+                                      @Override
+                                      public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
+                                          Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
+                                          return false;
+                                      }
+
+                                      @Override
+                                      public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
+                                          Log.d(TAG, "비트맵변환한거0 => " + bitmap);
+                                          CreateNotification.createNotificaion(mainActivity, storageSongList.get(getAdapterPosition()).getSong(), bitmap);
+                                          return false;
+                                      }
+                                  }
+                        ).submit();
+
 
                 EventBus.getDefault().post(new SongPassenger(storageSongList.get(getAdapterPosition()).getSong()));
             });

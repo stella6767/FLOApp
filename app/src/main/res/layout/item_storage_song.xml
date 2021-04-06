@@ -2,23 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#090D12"
     android:layout_width="match_parent"
-    android:layout_marginTop="20dp"
+    android:layout_height="50dp"
     android:layout_marginLeft="20dp"
+    android:layout_marginTop="20dp"
     android:layout_marginRight="20dp"
-    android:layout_height="50dp">
+    android:background="#090D12">
 
 
     <TextView
         android:id="@+id/tv_stoarge_song_artist"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="애쉬아일랜드"
         android:textColor="@android:color/darker_gray"
         android:textSize="10dp"
-        android:maxLines="1"
-        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="@+id/tv_stoarge_song_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_stoarge_song_title" />
 
@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="7dp"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:text="멜로디"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/iv_stoarge_song_art"
@@ -61,10 +61,11 @@
         android:id="@+id/tv_stoarge_song_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
         android:text="1"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_stoarge_song_title"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/iv_stoarge_song_art"
         app:layout_constraintTop_toTopOf="parent" />
 

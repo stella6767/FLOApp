@@ -11,17 +11,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="120dp"
         android:background="#090D12">
 
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_category_img"
-            android:layout_width="144dp"
-            android:layout_height="107dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:src="@drawable/ashisland_melody"
             app:layout_constraintStart_toStartOf="@+id/guideline87"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,34 +44,34 @@
             android:id="@+id/tv_category_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="35dp"
             android:text="신선한 발라드"
             android:textColor="@color/white"
             android:textSize="17dp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline20"
             app:layout_constraintStart_toEndOf="@+id/iv_category_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_current_date"
-            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="2021.03.20"
-            android:textSize="10dp"
             android:textColor="@android:color/darker_gray"
+            android:textSize="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv_category_desc"
             app:layout_constraintTop_toBottomOf="@+id/tv_category_desc" />
 
         <TextView
             android:id="@+id/tv_category_total"
-            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="총 4곡"
-            android:textSize="10dp"
             android:textColor="@android:color/darker_gray"
+            android:textSize="10dp"
             app:layout_constraintStart_toEndOf="@+id/tv_current_date"
             app:layout_constraintTop_toTopOf="@+id/tv_current_date" />
 
@@ -85,10 +83,10 @@
     <!--이부분은 리사이클러뷰가 들어와야합니다.-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_category_list"
-        android:background="@color/black"
+        android:background="#090D12"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"/>
+        android:layout_height="match_parent"
+       />
 
 
 

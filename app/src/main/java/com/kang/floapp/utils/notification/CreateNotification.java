@@ -1,12 +1,14 @@
 package com.kang.floapp.utils.notification;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -15,6 +17,9 @@ import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class CreateNotification {
     private static final String TAG = "CreateNotification";
@@ -25,20 +30,24 @@ public class CreateNotification {
     public static final String ACTION_PLAY = "actionplay";
     public static final String ACTION_NEXT = "actionnext";
     public static Notification notification;
+    public int drw_play;
 
-    public static void createNotificaion(MainActivity mainActivity, Song song, Bitmap bitmap){
+
+    public static NotificationManagerCompat notificationManagerCompat;
+
+
+
+
+    public static void createNotificaion(MainActivity mainActivity, Song song, Bitmap bitmap, int drw_play){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(mainActivity);
+            //NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(mainActivity);
 
-            //MediaPlayer mp = mainActivity.mp;
+            notificationManagerCompat = NotificationManagerCompat.from(mainActivity);
+            Log.d(TAG, "createNotificaion: 만듬");
+            
+            MediaPlayer mp = mainActivity.mp;
 
-            int drw_play;
 
-            if (Constants.isPlaying == 1) {
-                drw_play = R.drawable.ic_play;
-            } else {
-                drw_play=R.drawable.ic_glyph_solid_pause;
-            }
 
             PendingIntent pendingIntentPrevious;
             int drw_previous;
@@ -51,7 +60,7 @@ public class CreateNotification {
                 drw_previous = R.drawable.ic_skip_previous;
 
 
-
+            //drw_play = R.drawable.ic_play;
             Intent intentPlay = new Intent(mainActivity, NotificationActionService.class)
                     .setAction(ACTION_PLAY);
             intentPlay.putExtra("action","play");
@@ -77,7 +86,9 @@ public class CreateNotification {
                     .setContentTitle(song.getTitle())
                     .setContentText(song.getArtist())
                     .addAction(drw_previous, "Previous", pendingIntentPrevious)
+                    //.addAction( mp.isPlaying() ? R.drawable.ic_glyph_solid_pause : R.drawable.ic_play, "Play", pendingIntentPlay)
                     .addAction(drw_play, "Play", pendingIntentPlay)
+                    //.addAction( R.drawable.ic_glyph_solid_pause, "Play", pendingIntentPlay)
                     .addAction(drw_next, "Next", pendingIntentNext)
                     .setLargeIcon(bitmap)
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView())
@@ -86,6 +97,7 @@ public class CreateNotification {
 
             // Notification을 등록하는 코드.
             notificationManagerCompat.notify(1, notification);
+
 
 
 

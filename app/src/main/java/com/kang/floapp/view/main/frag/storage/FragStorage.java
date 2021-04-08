@@ -80,7 +80,7 @@ public class FragStorage extends Fragment {
                 StorageSaveReqDto storageSaveReqDto = new StorageSaveReqDto();
                 storageSaveReqDto.setTitle(title);
 
-                mainViewModel.addStorage(storageSaveReqDto);
+                mainViewModel.addStorage(storageSaveReqDto, mainActivity);
                 alertDialog.dismiss();
             });
 

@@ -71,7 +71,14 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.MyViewHo
         //String imageUrl = mainActivity.getImageUrl(storageImg);
         //Log.d(TAG, "transImg: "+imageUrl);
 
-        storageList.get(storageId-1).setImage(storageImg);
+        //storageList.get(storageId).setImage(storageImg);
+
+        for (Storage storage: storageList) {
+            if(storage.getId() == storageId){
+                storage.setImage(storageImg);
+            }
+        }
+
     }
 
 

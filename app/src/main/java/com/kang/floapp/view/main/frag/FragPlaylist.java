@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kang.floapp.R;
+import com.kang.floapp.model.User;
 import com.kang.floapp.view.main.MainActivity;
 import com.kang.floapp.view.main.MainActivityViewModel;
 import com.kang.floapp.view.main.adapter.PlayListAdapter;
@@ -65,7 +67,16 @@ public class FragPlaylist extends Fragment {
 
 
     private void initData() {
-        mainViewModel.findPlaylist();
+
+        User user = mainActivity.userValidaionCheck();
+
+        if(user == null){
+            Toast.makeText(mainActivity, "세션이 만료되었습니다. 다시 로그인해주십시오.", Toast.LENGTH_SHORT).show();
+        }else{
+            mainViewModel.findPlaylist(user.getId());
+        }
+
+
     }
 
     private void swipeListner(){

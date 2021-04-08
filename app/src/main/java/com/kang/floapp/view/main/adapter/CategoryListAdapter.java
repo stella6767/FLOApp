@@ -105,34 +105,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
                 Log.d(TAG, "categoryViewHolder: 클릭됨");
 
-                String imageUrl = mainActivity.getImageUrl(categorySongList.get(getAdapterPosition()).getImg());
-                
-                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
-                        .with(mainActivity)
-                        .load(imageUrl)
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .into(mainActivity.ivPlayViewArt);
-
-                Glide.with(mainActivity)
-                        .asBitmap().load(imageUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .listener(new RequestListener<Bitmap>() {
-                                      @Override
-                                      public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
-                                          Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
-                                          return false;
-                                      }
-
-                                      @Override
-                                      public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
-                                          Log.d(TAG, "비트맵변환한거0 => " + bitmap);
-                                          CreateNotification.createNotificaion(mainActivity, categorySongList.get(getAdapterPosition()), bitmap);
-                                          return false;
-                                      }
-                                  }
-                        ).submit();
                 EventBus.getDefault().post(new SongPassenger(categorySongList.get(getAdapterPosition())));
             });
 

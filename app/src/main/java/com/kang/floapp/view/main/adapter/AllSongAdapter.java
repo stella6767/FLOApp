@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.Target;
 import com.kang.floapp.R;
 import com.kang.floapp.model.Song;
 import com.kang.floapp.utils.CustomListViewDialog;
+import com.kang.floapp.utils.eventbus.SongIdPassenger;
 import com.kang.floapp.utils.eventbus.SongPassenger;
 import com.kang.floapp.utils.notification.CreateNotification;
 import com.kang.floapp.view.common.Constants;
@@ -126,39 +127,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.MyViewHo
 
 
             ivSongPlay.setOnClickListener(v -> {
-
-
-                String imageUrl = mainActivity.getImageUrl(songList.get(getAdapterPosition()).getImg());
-
-                Glide //내가 아무것도 안 했는데 스레드로 동작(편안)
-                        .with(mainActivity)
-                        .load(imageUrl)
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .into(mainActivity.ivPlayViewArt);
-
-
-                Glide.with(mainActivity)
-                        .asBitmap().load(imageUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .listener(new RequestListener<Bitmap>() {
-                                      @Override
-                                      public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
-                                          Log.d(TAG, "onLoadFailed: 실패" + e.getMessage());
-                                          return false;
-                                      }
-
-                                      @Override
-                                      public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
-                                          Log.d(TAG, "비트맵변환한거0 => " + bitmap);
-                                          CreateNotification.createNotificaion(mainActivity, songList.get(getAdapterPosition()), bitmap);
-                                          return false;
-                                      }
-                                  }
-                        ).submit();
-
-
                 EventBus.getDefault().post(new SongPassenger(songList.get(getAdapterPosition()))); //재생목록에 추가할 곡 전달
 
             });

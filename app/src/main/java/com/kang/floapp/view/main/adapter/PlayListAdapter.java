@@ -120,6 +120,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
 
             ivPlayPlay.setOnClickListener(v -> {
 
+                Constants.nowSong = playList.get(getAdapterPosition()).getSong();
+
                 EventBus.getDefault().post(new SongIdPassenger(getAdapterPosition()));
 
                 String songUrl = mainActivity.getSongUrl(playList.get(getAdapterPosition()).getSong().getFile());
@@ -155,7 +157,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.MyPlay
                                       @Override
                                       public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
                                           Log.d(TAG, "비트맵변환한거0 => " + bitmap);
-                                          CreateNotification.createNotificaion((MainActivity)v.getContext(), playList.get(getAdapterPosition()).getSong(), bitmap);
+                                          CreateNotification.createNotificaion((MainActivity)v.getContext(), playList.get(getAdapterPosition()).getSong(), bitmap, R.drawable.ic_glyph_solid_pause);
                                           return false;
                                       }
                                   }

@@ -1,6 +1,7 @@
 package com.kang.floapp.model.repository;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -11,6 +12,7 @@ import com.kang.floapp.model.dto.ResponseDto;
 import com.kang.floapp.model.dto.StorageSaveReqDto;
 import com.kang.floapp.model.network.SongAPI;
 import com.kang.floapp.model.network.StorageAPI;
+import com.kang.floapp.view.main.MainActivity;
 
 import java.util.List;
 
@@ -54,22 +56,27 @@ public class StorageRepository {
 
 
 
-    public void saveStorage(StorageSaveReqDto storageSaveReqDto){
+    public void saveStorage(StorageSaveReqDto storageSaveReqDto, MainActivity mainActivity){
 
         Call<ResponseDto<Storage>> call = StorageAPI.retrofit.create(StorageAPI.class).save(storageSaveReqDto);
 
         call.enqueue(new Callback<ResponseDto<Storage>>() {
             @Override
             public void onResponse(Call<ResponseDto<Storage>> call, Response<ResponseDto<Storage>> response) {
-                Log.d(TAG, "onResponse: 보관함 리스트 추가하기 성공 : " + response.body().getData());
 
-                Storage storage = response.body().getData();
-                Log.d(TAG, "onResponse: storage : " + storage);
+                if(response.body().getStatusCode() == 1) {
+                    Log.d(TAG, "onResponse: 보관함 리스트 추가하기 성공 : " + response.body().getData());
 
-                List<Storage> storageList = mtStorageList.getValue();
-                storageList.add(storage);
+                    Storage storage = response.body().getData();
+                    Log.d(TAG, "onResponse: storage : " + storage);
 
-                mtStorageList.setValue(storageList);
+                    List<Storage> storageList = mtStorageList.getValue();
+                    storageList.add(storage);
+
+                    mtStorageList.setValue(storageList);
+                }else{
+                    Toast.makeText(mainActivity, "보관함의 이름은 30자를 초과못합니다.", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

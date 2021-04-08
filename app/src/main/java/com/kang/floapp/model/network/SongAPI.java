@@ -32,8 +32,8 @@ public interface SongAPI {
 
     //////////////////////////////////////////////
 
-    @GET("playSong")
-    Call<ResponseDto<List<PlaySong>>> findPlaylsit();
+    @GET("playSong/{id}")
+    Call<ResponseDto<List<PlaySong>>> findPlaylsit(@Path("id") int id);
 
     @POST("playSong")
     Call<ResponseDto<PlaySong>> insert(@Body PlaySongSaveReqDto song);

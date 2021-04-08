@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kang.floapp.R;
 import com.kang.floapp.utils.eventbus.NotificationBus;
+import com.kang.floapp.view.common.Constants;
 import com.kang.floapp.view.main.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +41,15 @@ public class NotificationActionService extends BroadcastReceiver {
             Toast.makeText(context,action,Toast.LENGTH_SHORT).show();
             //mainActivity.playBtnListner();
             //broadcastCallback.play();
+//
+//            if(Constants.drw_play == R.drawable.ic_glyph_solid_pause){
+//                Log.d(TAG, "onReceive: 여기 타나");
+//                Constants.drw_play = R.drawable.ic_play;
+//                Log.d(TAG, "onReceive: "+Constants.drw_play);
+//            }else{
+//                Constants.drw_play = R.drawable.ic_glyph_solid_pause;
+//            }
+
             EventBus.getDefault().post(new NotificationBus(0));
         }else if (action.equals("prev")){
             Toast.makeText(context,action,Toast.LENGTH_SHORT).show();
